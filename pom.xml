@@ -8,6 +8,12 @@
     <artifactId>shop-directory</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <jsoup.version>1.13.1</jsoup.version>
+        <checkstyle-plugin.version>3.1.2</checkstyle-plugin.version>
+        <compiler-plugin.version>3.8.1</compiler-plugin.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -16,7 +22,18 @@
         </dependency>
     </dependencies>
 
-    <properties>
-       <jsoup.version>1.13.1</jsoup.version>
-    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler-plugin.version}</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
