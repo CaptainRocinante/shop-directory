@@ -12,6 +12,7 @@
         <jsoup.version>1.13.1</jsoup.version>
         <checkstyle-plugin.version>3.1.2</checkstyle-plugin.version>
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
+        <java.version>11</java.version>
     </properties>
 
     <dependencies>
@@ -29,8 +30,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler-plugin.version}</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
