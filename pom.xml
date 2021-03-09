@@ -8,5 +8,15 @@
     <artifactId>shop-directory</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+    </dependencies>
 
+    <properties>
+       <jsoup.version>1.13.1</jsoup.version>
+    </properties>
 </project>
