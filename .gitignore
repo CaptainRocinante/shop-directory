@@ -9,12 +9,13 @@
 
 # IntelliJ Files
 *.iml
+.idea/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
 # Package Files #
-*.jar
+*.jars
 *.war
 *.nar
 *.ear
