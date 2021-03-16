@@ -1,4 +1,4 @@
-package com.rocinante.crawlers;
+package com.rocinante.crawlers.category;
 
 import com.google.common.collect.ImmutableSet;
 import java.io.File;

@@ -1,4 +1,4 @@
-package com.rocinante.crawlers;
+package com.rocinante.crawlers.category;
 
 import java.io.IOException;
 import java.util.*;
