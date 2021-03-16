@@ -6,11 +6,11 @@ import java.util.stream.Collectors;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
-class Siblings {
+class CategorySiblings {
   private final CategoryScorer categoryScorer;
   private final List<Element> siblings;
 
-  public Siblings(CategoryScorer categoryScorer) {
+  public CategorySiblings(CategoryScorer categoryScorer) {
     this.siblings = new ArrayList<>();
     this.categoryScorer = categoryScorer;
   }
@@ -35,8 +35,8 @@ class Siblings {
     getLinks().forEach(l -> System.out.println("Link: " + l));
   }
 
-  public List<Siblings> getChildren() {
-    return SiblingsFactory.createSiblingsFromChildNodes(
+  public List<CategorySiblings> getChildren() {
+    return CategorySiblingsFactory.createSiblingsFromChildNodes(
         siblings
             .stream()
             .map(Node::childNodes)

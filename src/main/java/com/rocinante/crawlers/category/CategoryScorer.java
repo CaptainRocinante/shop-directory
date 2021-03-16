@@ -70,8 +70,8 @@ public class CategoryScorer {
         .anyMatch(CATEGORIES::contains);
   }
 
-  public int score(Siblings siblings) {
-    return siblings
+  public int score(CategorySiblings categorySiblings) {
+    return categorySiblings
         .getLinks()
         .stream()
         .map(Element::text)

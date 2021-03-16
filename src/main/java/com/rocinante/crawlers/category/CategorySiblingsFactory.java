@@ -7,10 +7,10 @@ import java.util.Map;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
-public class SiblingsFactory {
-  public static List<Siblings> createSiblingsFromChildNodes(List<Node> childNodes,
+public class CategorySiblingsFactory {
+  public static List<CategorySiblings> createSiblingsFromChildNodes(List<Node> childNodes,
       CategoryScorer categoryScorer) {
-    Map<String, Siblings> sameTagSiblings = new HashMap<>();
+    Map<String, CategorySiblings> sameTagSiblings = new HashMap<>();
     childNodes
         .stream()
         .filter(x -> x instanceof Element)
@@ -21,9 +21,9 @@ public class SiblingsFactory {
               if (sameTagSiblings.containsKey(elementTag)) {
                 sameTagSiblings.get(elementTag).addElement(element);
               } else {
-                Siblings siblings = new Siblings(categoryScorer);
-                siblings.addElement(element);
-                sameTagSiblings.put(elementTag, siblings);
+                CategorySiblings categorySiblings = new CategorySiblings(categoryScorer);
+                categorySiblings.addElement(element);
+                sameTagSiblings.put(elementTag, categorySiblings);
               }
             });
     return new ArrayList<>(sameTagSiblings.values());
