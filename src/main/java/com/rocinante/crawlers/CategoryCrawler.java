@@ -7,9 +7,10 @@ import org.jsoup.nodes.Document;
 
 public class CategoryCrawler {
   private void bfs(Document document) {
+    final CategoryScorer categoryScorer = new CategoryScorer();
     final Queue<Siblings> bfsQueue =
         new LinkedList<>(
-            SiblingsFactory.createSiblingsFromChildNodes(document.childNodes()));
+            SiblingsFactory.createSiblingsFromChildNodes(document.childNodes(), categoryScorer));
     final PriorityQueue<Siblings> siblingsCategoryScorePriorityQueue = new PriorityQueue<>(
         (o1, o2) -> o2.categoryScore() - o1.categoryScore());
 

@@ -10,9 +10,9 @@ class Siblings {
   private final CategoryScorer categoryScorer;
   private final List<Element> siblings;
 
-  public Siblings() {
+  public Siblings(CategoryScorer categoryScorer) {
     this.siblings = new ArrayList<>();
-    this.categoryScorer = new CategoryScorer();
+    this.categoryScorer = categoryScorer;
   }
 
   public void addElement(Element e) {
@@ -41,7 +41,7 @@ class Siblings {
             .stream()
             .map(Node::childNodes)
             .flatMap(List::stream)
-            .collect(Collectors.toList()));
+            .collect(Collectors.toList()), categoryScorer);
   }
 
   public int categoryScore() {

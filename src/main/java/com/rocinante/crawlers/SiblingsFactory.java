@@ -8,7 +8,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
 public class SiblingsFactory {
-  public static List<Siblings> createSiblingsFromChildNodes(List<Node> childNodes) {
+  public static List<Siblings> createSiblingsFromChildNodes(List<Node> childNodes,
+      CategoryScorer categoryScorer) {
     Map<String, Siblings> sameTagSiblings = new HashMap<>();
     childNodes
         .stream()
@@ -20,7 +21,7 @@ public class SiblingsFactory {
               if (sameTagSiblings.containsKey(elementTag)) {
                 sameTagSiblings.get(elementTag).addElement(element);
               } else {
-                Siblings siblings = new Siblings();
+                Siblings siblings = new Siblings(categoryScorer);
                 siblings.addElement(element);
                 sameTagSiblings.put(elementTag, siblings);
               }
