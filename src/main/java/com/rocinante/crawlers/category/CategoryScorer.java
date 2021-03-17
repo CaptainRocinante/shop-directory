@@ -17,8 +17,8 @@ import org.jsoup.nodes.Element;
 public class CategoryScorer {
   private static final ImmutableSet<String> CATEGORY_FILES =
       new ImmutableSet.Builder<String>()
-          .add("overallCategories.txt")
-          .add("clothesCategories.txt")
+          .add("categories/overallCategories.txt")
+          .add("categories/clothesCategories.txt")
           .build();
 
   private final ImmutableSet<String> categories;
@@ -32,7 +32,7 @@ public class CategoryScorer {
         .map(cFile -> {
           try {
             return new File(
-                Objects.requireNonNull(getClass().getClassLoader().getResource("categories/" + cFile)).toURI());
+                Objects.requireNonNull(getClass().getClassLoader().getResource(cFile)).toURI());
           } catch (URISyntaxException e) {
             throw new RuntimeException(e);
           }
