@@ -1,5 +1,6 @@
 package com.rocinante.crawlers.summary;
 
+import com.rocinante.crawlers.infrastructure.RenderedHtmlProvider;
 import java.io.File;
 import java.io.IOException;
 import org.jsoup.Jsoup;
@@ -10,12 +11,13 @@ public class SummaryCrawler {
 
   }
 
-  public static void main(String[] args) throws IOException {
-    Document doc =
-        Jsoup.parse(
-            new File(SummaryCrawler.class.getClassLoader()
-                .getResource("herschelmensnewarrivals.html").getFile()),
-            "utf-8");
+  public static void main(String[] args) throws InterruptedException {
+    final RenderedHtmlProvider renderedHtmlProvider = new RenderedHtmlProvider();
+    final String pageSource = renderedHtmlProvider.downloadHtml("https://www.dsw"
+        + ".com/en/us/brands/adidas/N-1z141hg");
+    System.out.println(pageSource);
+    final Document doc = Jsoup.parse(pageSource);
+
     SummaryCrawler summaryCrawler = new SummaryCrawler();
     summaryCrawler.bfs(doc);
   }

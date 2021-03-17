@@ -42,7 +42,7 @@ public class CategoryCrawler {
 
 
 
-  public static void main(String[] args) throws IOException, InterruptedException {
+  public static void main(String[] args) throws InterruptedException {
 //    Jsoup.parse(new File(
 //            CategoryCrawler.class.getClassLoader().getResource("nestnewyork.html").getFile()),
 //        "utf-8");
