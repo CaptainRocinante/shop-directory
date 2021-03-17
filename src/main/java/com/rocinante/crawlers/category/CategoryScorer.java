@@ -21,7 +21,7 @@ public class CategoryScorer {
           .add("clothesCategories.txt")
           .build();
 
-  public final ImmutableSet<String> CATEGORIES;
+  private final ImmutableSet<String> categories;
   private final PorterStemmer porterStemmer;
   private final SimpleTokenizer tokenizer;
 
@@ -52,7 +52,7 @@ public class CategoryScorer {
   public CategoryScorer() {
     this.porterStemmer = new PorterStemmer();
     this.tokenizer = SimpleTokenizer.INSTANCE;
-    this.CATEGORIES = ImmutableSet.copyOf(new ImmutableSet.Builder<String>()
+    this.categories = ImmutableSet.copyOf(new ImmutableSet.Builder<String>()
         .addAll(parseAllCategories())
         .build()
         .stream()
@@ -67,7 +67,7 @@ public class CategoryScorer {
     return Arrays.stream(tokenizer.tokenize(text))
         .map(porterStemmer::stem)
         .map(String::toLowerCase)
-        .anyMatch(CATEGORIES::contains);
+        .anyMatch(categories::contains);
   }
 
   public int score(CategorySiblings categorySiblings) {

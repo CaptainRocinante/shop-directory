@@ -13,7 +13,8 @@ public class SummaryCrawler {
   public static void main(String[] args) throws IOException {
     Document doc =
         Jsoup.parse(
-            new File(SummaryCrawler.class.getClassLoader().getResource("herschelmensnewarrivals.html").getFile()),
+            new File(SummaryCrawler.class.getClassLoader()
+                .getResource("herschelmensnewarrivals.html").getFile()),
             "utf-8");
     SummaryCrawler summaryCrawler = new SummaryCrawler();
     summaryCrawler.bfs(doc);

@@ -1,10 +1,14 @@
 package com.rocinante.crawlers.category;
 
+import com.rocinante.crawlers.infrastructure.RenderedHtmlProvider;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class CategoryCrawler {
   private void bfs(Document document) {
@@ -13,8 +17,8 @@ public class CategoryCrawler {
         new LinkedList<>(
             CategorySiblingsFactory
                 .createSiblingsFromChildNodes(document.childNodes(), categoryScorer));
-    final PriorityQueue<CategorySiblings> categorySiblingsCategoryScorePriorityQueue = new PriorityQueue<>(
-        (o1, o2) -> o2.categoryScore() - o1.categoryScore());
+    final PriorityQueue<CategorySiblings> categorySiblingsCategoryScorePriorityQueue =
+        new PriorityQueue<>((o1, o2) -> o2.categoryScore() - o1.categoryScore());
 
     int level = 0;
     while (!bfsQueue.isEmpty()) {
@@ -36,12 +40,17 @@ public class CategoryCrawler {
     }
   }
 
-  public static void main(String[] args) throws IOException {
-    Document doc =
-        Jsoup.parse(
-            new File(CategoryCrawler.class.getClassLoader().getResource("nestnewyork.html").getFile()),
-            "utf-8");
-//    Document doc = Jsoup.connect("https://www.aritzia.com/").get();
+
+
+  public static void main(String[] args) throws IOException, InterruptedException {
+//    Jsoup.parse(new File(
+//            CategoryCrawler.class.getClassLoader().getResource("nestnewyork.html").getFile()),
+//        "utf-8");
+//    Document doc = Jsoup.connect("https://www.dsw.com/").get();
+
+    final RenderedHtmlProvider renderedHtmlProvider = new RenderedHtmlProvider();
+    final String pageSource = renderedHtmlProvider.downloadHtml("https://www.dsw.com/");
+    final Document doc = Jsoup.parse(pageSource);
     CategoryCrawler categoryCrawler = new CategoryCrawler();
     categoryCrawler.bfs(doc);
   }
