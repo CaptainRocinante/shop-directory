@@ -36,7 +36,8 @@ public class RenderedHtmlProvider {
     long initScrollTo = 0;
     long scrollTo = (long) js.executeScript("return document.body.scrollHeight;");
 
-    while (currentScrollCount < maxScrollBudget && (scrollTo != initScrollTo || currentScrollJitter < scrollJitterBudget)) {
+    while (currentScrollCount < maxScrollBudget &&
+        (scrollTo != initScrollTo || currentScrollJitter < scrollJitterBudget)) {
       initScrollTo = scrollTo;
       System.out.printf("Scrolling to %s\n", scrollTo);
       js.executeScript(String.format("window.scrollTo(0, %s);", scrollTo));
@@ -54,8 +55,11 @@ public class RenderedHtmlProvider {
 
   public String downloadHtml(String url) throws InterruptedException {
     webDriver.get(url);
+    Thread.sleep(2000L); // Wait for any init JS to execute
     scrollToBottom();
-    Thread.sleep(5000L);
-    return webDriver.getPageSource();
+    final String pageSource = webDriver.getPageSource();
+    webDriver.close();
+    webDriver.quit();
+    return pageSource;
   }
 }
