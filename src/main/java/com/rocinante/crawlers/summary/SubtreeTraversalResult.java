@@ -9,9 +9,12 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
 
 public class SubtreeTraversalResult {
   private final StringLCSToken rootTag;
+  private final String rootText;
   private final List<SubtreeTraversalResult> childResults;
   private final List<LCSToken> serialized;
   private final int childrenLCSScore;
@@ -51,9 +54,10 @@ public class SubtreeTraversalResult {
     return lcsScore;
   }
 
-  public SubtreeTraversalResult(String rootTag,
+  public SubtreeTraversalResult(Element root,
       List<SubtreeTraversalResult> subtreeTraversalResults) {
-    this.rootTag = new StringLCSToken(rootTag);
+    this.rootTag = new StringLCSToken(root.tagName());
+    this.rootText = root.text();
     this.childResults = subtreeTraversalResults;
     this.serialized = tokenize();
     this.childrenLCSScore =

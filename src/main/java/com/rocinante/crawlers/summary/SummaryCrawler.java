@@ -20,16 +20,14 @@ public class SummaryCrawler {
         .filter(node -> node instanceof Element)
         .forEach(node -> subtreeTraversalResults.add(dfs((Element) node, highestLcsScoreHeap)));
 
-    final String rootTag;
-    rootTag = root.tag().getName();
-    SubtreeTraversalResult result = new SubtreeTraversalResult(rootTag, subtreeTraversalResults);
+    SubtreeTraversalResult result = new SubtreeTraversalResult(root, subtreeTraversalResults);
     highestLcsScoreHeap.add(result);
     return result;
   }
 
   public static void main(String[] args) throws InterruptedException, IOException {
     Document doc = Jsoup.parse(new File(
-            SummaryCrawler.class.getClassLoader().getResource("dswsummarypage.html").getFile()),
+            SummaryCrawler.class.getClassLoader().getResource("nikesummarypage.html").getFile()),
     "utf-8");
 //    Document doc = Jsoup.connect("https://www.dsw.com/").get();
 
