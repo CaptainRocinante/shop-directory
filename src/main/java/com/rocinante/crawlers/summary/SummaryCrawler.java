@@ -12,7 +12,7 @@ import org.jsoup.nodes.Element;
 public class SummaryCrawler {
   private SubtreeTraversalResult dfs(Element root,
       PriorityQueue<SubtreeTraversalResult> highestLcsScoreHeap) {
-    List<SubtreeTraversalResult> subtreeTraversalResults = new LinkedList<>();
+    final List<SubtreeTraversalResult> subtreeTraversalResults = new LinkedList<>();
 
     root
         .childNodes()
@@ -20,7 +20,7 @@ public class SummaryCrawler {
         .filter(node -> node instanceof Element)
         .forEach(node -> subtreeTraversalResults.add(dfs((Element) node, highestLcsScoreHeap)));
 
-    SubtreeTraversalResult result = new SubtreeTraversalResult(root, subtreeTraversalResults);
+    final SubtreeTraversalResult result = new SubtreeTraversalResult(root, subtreeTraversalResults);
     highestLcsScoreHeap.add(result);
     return result;
   }
@@ -41,5 +41,12 @@ public class SummaryCrawler {
     PriorityQueue<SubtreeTraversalResult> highestLcsScoreHeap =
         new PriorityQueue<>((r1, r2) -> r2.getChildrenLCSScore() - r1.getChildrenLCSScore());
     SubtreeTraversalResult subtreeTraversalResult = summaryCrawler.dfs(doc, highestLcsScoreHeap);
+
+    List<SubtreeTraversalResult> topHeapItems = new LinkedList<>();
+    SubtreeTraversalResult top = highestLcsScoreHeap.poll();
+    while (!highestLcsScoreHeap.isEmpty() && top != null && top.getChildrenLCSScore() > 0) {
+      topHeapItems.add(top);
+      top = highestLcsScoreHeap.poll();
+    }
   }
 }

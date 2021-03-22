@@ -5,23 +5,31 @@ import com.rocinante.crawlers.infrastructure.lcs.DelimiterLCSToken;
 import com.rocinante.crawlers.infrastructure.lcs.LCSToken;
 import com.rocinante.crawlers.infrastructure.lcs.LongestCommonSubsequence;
 import com.rocinante.crawlers.infrastructure.lcs.StringLCSToken;
+import com.rocinante.crawlers.summary.selectors.ElementSelectionResult;
+import com.rocinante.crawlers.summary.selectors.AnyLinkWithHrefTextSelector;
+import com.rocinante.crawlers.summary.selectors.AnyPriceSelector;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Tag;
 
 public class SubtreeTraversalResult {
-  private final StringLCSToken rootTag;
-  private final String rootText;
+  public static final AnyLinkWithHrefTextSelector ANY_LINK_WITH_HREF_SELECTOR =
+      new AnyLinkWithHrefTextSelector();
+  public static final AnyPriceSelector ANY_PRICE_SELECTOR = new AnyPriceSelector();
+
+  private Element rootElement;
   private final List<SubtreeTraversalResult> childResults;
   private final List<LCSToken> serialized;
   private final int childrenLCSScore;
+  private final ElementSelectionResult elementSelectionResult;
 
   private List<LCSToken> tokenize() {
     final List<LCSToken> tokens = new LinkedList<>();
-    tokens.add(rootTag);
+    tokens.add(new StringLCSToken(rootElement.tagName()));
     if (!childResults.isEmpty()) {
       tokens.add(new DelimiterLCSToken());
       tokens.addAll(
@@ -54,15 +62,27 @@ public class SubtreeTraversalResult {
     return lcsScore;
   }
 
+  private ElementSelectionResult createElementSelectionResult() {
+    final ElementSelectionResult elementSelectionResult =
+        new ElementSelectionResult(ANY_LINK_WITH_HREF_SELECTOR, ANY_PRICE_SELECTOR);
+    elementSelectionResult.addElementToAllSelectorsMatched(rootElement);
+
+    return this
+        .childResults
+        .stream()
+        .map(SubtreeTraversalResult::getElementSelectionResult)
+        .reduce(elementSelectionResult, ElementSelectionResult::merge);
+  }
+
   public SubtreeTraversalResult(Element root,
       List<SubtreeTraversalResult> subtreeTraversalResults) {
-    this.rootTag = new StringLCSToken(root.tagName());
-    this.rootText = root.text();
+    this.rootElement = root;
     this.childResults = subtreeTraversalResults;
     this.serialized = tokenize();
     this.childrenLCSScore =
         computeLCSScore(childResults.stream().map(SubtreeTraversalResult::getSerialized).collect(
             Collectors.toList()));
+    this.elementSelectionResult = createElementSelectionResult();
   }
 
   public List<LCSToken> getSerialized() {
@@ -71,5 +91,13 @@ public class SubtreeTraversalResult {
 
   public int getChildrenLCSScore() {
     return childrenLCSScore;
+  }
+
+  public List<SubtreeTraversalResult> getChildResults() {
+    return childResults;
+  }
+
+  public ElementSelectionResult getElementSelectionResult() {
+    return elementSelectionResult;
   }
 }
