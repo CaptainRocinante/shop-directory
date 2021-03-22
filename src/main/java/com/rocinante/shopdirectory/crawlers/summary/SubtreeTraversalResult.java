@@ -1,5 +1,6 @@
 package com.rocinante.shopdirectory.crawlers.summary;
 
+import com.rocinante.shopdirectory.selectors.ElementSelector;
 import com.rocinante.shopdirectory.util.Combinatorics;
 import com.rocinante.shopdirectory.lcs.DelimiterLCSToken;
 import com.rocinante.shopdirectory.lcs.LCSToken;
@@ -8,6 +9,7 @@ import com.rocinante.shopdirectory.lcs.StringLCSToken;
 import com.rocinante.shopdirectory.selectors.ElementSelectionResult;
 import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector;
 import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceSelector;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -97,5 +99,16 @@ public class SubtreeTraversalResult {
 
   public ElementSelectionResult getElementSelectionResult() {
     return elementSelectionResult;
+  }
+
+  public List<SubtreeTraversalResult> filterChildrenWithSelectors(ElementSelector... selectors) {
+    return getChildResults()
+        .stream()
+        .filter(child ->
+            Arrays
+                .stream(selectors)
+                .allMatch(selector ->
+                    child.getElementSelectionResult().containsSelectorItems(selector)))
+        .collect(Collectors.toList());
   }
 }

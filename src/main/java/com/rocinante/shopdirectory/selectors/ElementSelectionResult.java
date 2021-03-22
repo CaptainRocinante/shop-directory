@@ -51,4 +51,8 @@ public class ElementSelectionResult {
       return !elementSelectorMap.get(elementSelector).isEmpty();
     }
   }
+
+  public List<ElementProperties> getSelectedProperties(ElementSelector elementSelector) {
+    return elementSelectorMap.get(elementSelector);
+  }
 }

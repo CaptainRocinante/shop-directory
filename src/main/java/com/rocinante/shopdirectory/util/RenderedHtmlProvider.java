@@ -6,9 +6,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 public class RenderedHtmlProvider {
-  private final WebDriver webDriver;
+  private final UserAgentProvider userAgentProvider;
 
-  private WebDriver initWebDriver(UserAgentProvider userAgentProvider) {
+  private WebDriver initWebDriver() {
     String chromeDriverPath = "/usr/local/bin/chromedriver" ;
     System.setProperty("webdriver.chrome.driver", chromeDriverPath);
     ChromeOptions options = new ChromeOptions();
@@ -23,10 +23,10 @@ public class RenderedHtmlProvider {
   }
 
   public RenderedHtmlProvider() {
-    this.webDriver = initWebDriver(new UserAgentProvider());
+    this.userAgentProvider = new UserAgentProvider();
   }
 
-  private void scrollToBottom() throws InterruptedException {
+  private void scrollToBottom(WebDriver webDriver) throws InterruptedException {
     final JavascriptExecutor js = (JavascriptExecutor) webDriver;
 
     int scrollJitterBudget = 3;
@@ -54,10 +54,11 @@ public class RenderedHtmlProvider {
   }
 
   public String downloadHtml(String url) {
+    final WebDriver webDriver = initWebDriver();
     webDriver.get(url);
     try {
       Thread.sleep(2000L); // Wait for any init JS to execute
-      scrollToBottom();
+      scrollToBottom(webDriver);
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }

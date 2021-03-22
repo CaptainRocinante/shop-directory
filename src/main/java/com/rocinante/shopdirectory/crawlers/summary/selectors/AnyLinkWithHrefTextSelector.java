@@ -10,8 +10,8 @@ import java.util.Objects;
 import org.jsoup.nodes.Element;
 
 public class AnyLinkWithHrefTextSelector implements ElementSelector {
-  private static final String URL_PROPERTY = "url";
-  private static final String TEXT_PROPERTY = "text";
+  public static final String URL_PROPERTY = "url";
+  public static final String TEXT_PROPERTY = "text";
 
   @Override
   public Either<ElementNotSelected, ElementProperties> select(Element element) {

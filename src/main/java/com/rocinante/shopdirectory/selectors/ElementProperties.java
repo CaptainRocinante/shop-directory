@@ -12,4 +12,8 @@ public class ElementProperties {
     this.element = element;
     this.selectedProperties = selectedProperties;
   }
+
+  public Object getProperty(String key) {
+    return selectedProperties.get(key);
+  }
 }
