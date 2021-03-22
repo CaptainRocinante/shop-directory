@@ -1,17 +1,29 @@
 package com.rocinante.crawlers.summary.selectors;
 
-import com.rocinante.crawlers.infrastructure.ElementSelector;
+import com.google.common.collect.ImmutableSet;
+import com.rocinante.crawlers.infrastructure.selectors.ElementNotSelected;
+import com.rocinante.crawlers.infrastructure.selectors.ElementProperties;
+import com.rocinante.crawlers.infrastructure.selectors.ElementSelector;
+import io.vavr.control.Either;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import org.jsoup.nodes.Element;
 
 public class AnyPriceSelector implements ElementSelector {
-  private static final Pattern pricePattern = Pattern.compile("(USD|EUR|€|\\$|£)\\s*(\\d{1,3}(?:["
+  private static final String MONEY_OBJECT_PROPERTY = "money";
+  private static final Pattern PRICE_PATTERN = Pattern.compile("(USD|EUR|€|\\$|£)\\s*(\\d{1,3}(?:["
       + ".,]\\d{3})*(?:[.,]\\d{2})?)|(\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})?)\\s*?(USD|EUR|€|\\$|£)");
 
   @Override
-  public boolean select(Element element) {
-    return element.ownText().matches(pricePattern.pattern());
+  public Either<ElementNotSelected, ElementProperties> select(Element element) {
+    if (!element.ownText().matches(PRICE_PATTERN.pattern())) {
+      return Either.left(ElementNotSelected.getInstance());
+    } else {
+      Map<String, Object> properties = new HashMap<>();
+      return Either.right(new ElementProperties(element, properties));
+    }
   }
 
   @Override

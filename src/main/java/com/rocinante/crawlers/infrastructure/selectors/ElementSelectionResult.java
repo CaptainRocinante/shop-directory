@@ -1,16 +1,15 @@
-package com.rocinante.crawlers.summary.selectors;
+package com.rocinante.crawlers.infrastructure.selectors;
 
-import com.rocinante.crawlers.infrastructure.ElementSelector;
+import io.vavr.control.Either;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.jsoup.nodes.Element;
 
 public class ElementSelectionResult {
-  private final Map<ElementSelector, List<Element>> elementSelectorMap;
+  private final Map<ElementSelector, List<ElementProperties>> elementSelectorMap;
 
   public ElementSelectionResult() {
     this.elementSelectorMap = new HashMap<>();
@@ -25,7 +24,7 @@ public class ElementSelectionResult {
     final ElementSelectionResult elementSelectionResult = new ElementSelectionResult();
     elementSelectionResult.elementSelectorMap.putAll(this.elementSelectorMap);
 
-    for (final Map.Entry<ElementSelector, List<Element>> e : other.elementSelectorMap.entrySet()) {
+    for (final Map.Entry<ElementSelector, List<ElementProperties>> e : other.elementSelectorMap.entrySet()) {
       if (elementSelectionResult.elementSelectorMap.containsKey(e.getKey())) {
         elementSelectionResult.elementSelectorMap.get(e.getKey()).addAll(e.getValue());
       } else {
@@ -37,9 +36,19 @@ public class ElementSelectionResult {
 
   public void addElementToAllSelectorsMatched(Element element) {
     elementSelectorMap.keySet().forEach(elementSelector -> {
-      if (elementSelector.select(element)) {
-        elementSelectorMap.get(elementSelector).add(element);
+      final Either<ElementNotSelected, ElementProperties> selectionResult =
+          elementSelector.select(element);
+      if (selectionResult.isRight()) {
+        elementSelectorMap.get(elementSelector).add(selectionResult.get());
       }
     });
+  }
+
+  public boolean containsSelectorItems(ElementSelector elementSelector) {
+    if (!elementSelectorMap.containsKey(elementSelector)) {
+      return false;
+    } else {
+      return !elementSelectorMap.get(elementSelector).isEmpty();
+    }
   }
 }

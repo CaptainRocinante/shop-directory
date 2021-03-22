@@ -5,14 +5,12 @@ import com.rocinante.crawlers.infrastructure.lcs.DelimiterLCSToken;
 import com.rocinante.crawlers.infrastructure.lcs.LCSToken;
 import com.rocinante.crawlers.infrastructure.lcs.LongestCommonSubsequence;
 import com.rocinante.crawlers.infrastructure.lcs.StringLCSToken;
-import com.rocinante.crawlers.summary.selectors.ElementSelectionResult;
+import com.rocinante.crawlers.infrastructure.selectors.ElementSelectionResult;
 import com.rocinante.crawlers.summary.selectors.AnyLinkWithHrefTextSelector;
 import com.rocinante.crawlers.summary.selectors.AnyPriceSelector;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.jsoup.nodes.Element;
 

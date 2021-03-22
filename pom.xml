@@ -15,6 +15,8 @@
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
         <selenium.version>3.141.59</selenium.version>
         <open-nlp.version>1.9.3</open-nlp.version>
+        <vavr.version>0.10.3</vavr.version>
+        <moneta.version>1.4.2</moneta.version>
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
         <java.version>11</java.version>
     </properties>
@@ -40,7 +42,16 @@
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>${vavr.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.javamoney</groupId>
+            <artifactId>moneta</artifactId>
+            <version>${moneta.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

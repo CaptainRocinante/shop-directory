@@ -1,5 +1,8 @@
 package com.rocinante.crawlers.summary;
 
+import static com.rocinante.crawlers.summary.SubtreeTraversalResult.ANY_LINK_WITH_HREF_SELECTOR;
+import static com.rocinante.crawlers.summary.SubtreeTraversalResult.ANY_PRICE_SELECTOR;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -27,8 +30,8 @@ public class SummaryCrawler {
 
   public static void main(String[] args) throws InterruptedException, IOException {
     Document doc = Jsoup.parse(new File(
-            SummaryCrawler.class.getClassLoader().getResource("nikesummarypage.html").getFile()),
-    "utf-8");
+            SummaryCrawler.class.getClassLoader().getResource("dswsummarypage.html").getFile()),
+    "utf-8", "https://www.dsw.com/en/us/brands/adidas/N-1z141hg");
 //    Document doc = Jsoup.connect("https://www.dsw.com/").get();
 
 //    final RenderedHtmlProvider renderedHtmlProvider = new RenderedHtmlProvider();
@@ -45,7 +48,10 @@ public class SummaryCrawler {
     List<SubtreeTraversalResult> topHeapItems = new LinkedList<>();
     SubtreeTraversalResult top = highestLcsScoreHeap.poll();
     while (!highestLcsScoreHeap.isEmpty() && top != null && top.getChildrenLCSScore() > 0) {
-      topHeapItems.add(top);
+      if (top.getElementSelectionResult().containsSelectorItems(ANY_LINK_WITH_HREF_SELECTOR) &&
+          top.getElementSelectionResult().containsSelectorItems(ANY_PRICE_SELECTOR)) {
+        topHeapItems.add(top);
+      }
       top = highestLcsScoreHeap.poll();
     }
   }
