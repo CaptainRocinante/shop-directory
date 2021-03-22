@@ -1,4 +1,4 @@
-package com.rocinante.crawlers.infrastructure;
+package com.rocinante.shopdirectory.util;
 
 import java.util.ArrayList;
 import java.util.List;

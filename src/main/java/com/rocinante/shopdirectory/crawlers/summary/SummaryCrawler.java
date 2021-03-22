@@ -1,7 +1,7 @@
-package com.rocinante.crawlers.summary;
+package com.rocinante.shopdirectory.crawlers.summary;
 
-import static com.rocinante.crawlers.summary.SubtreeTraversalResult.ANY_LINK_WITH_HREF_SELECTOR;
-import static com.rocinante.crawlers.summary.SubtreeTraversalResult.ANY_PRICE_SELECTOR;
+import static com.rocinante.shopdirectory.crawlers.summary.SubtreeTraversalResult.ANY_LINK_WITH_HREF_SELECTOR;
+import static com.rocinante.shopdirectory.crawlers.summary.SubtreeTraversalResult.ANY_PRICE_SELECTOR;
 
 import java.io.File;
 import java.io.IOException;

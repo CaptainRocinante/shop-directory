@@ -1,14 +1,9 @@
-package com.rocinante.crawlers.category;
+package com.rocinante.shopdirectory.crawlers.category;
 
-import com.rocinante.crawlers.infrastructure.RenderedHtmlProvider;
-import java.io.File;
-import java.io.IOException;
+import com.rocinante.shopdirectory.util.RenderedHtmlProvider;
 import java.util.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 public class CategoryCrawler {
   private void bfs(Document document) {

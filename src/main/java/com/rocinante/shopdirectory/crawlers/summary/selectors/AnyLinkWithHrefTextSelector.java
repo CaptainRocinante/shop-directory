@@ -1,8 +1,8 @@
-package com.rocinante.crawlers.summary.selectors;
+package com.rocinante.shopdirectory.crawlers.summary.selectors;
 
-import com.rocinante.crawlers.infrastructure.selectors.ElementNotSelected;
-import com.rocinante.crawlers.infrastructure.selectors.ElementProperties;
-import com.rocinante.crawlers.infrastructure.selectors.ElementSelector;
+import com.rocinante.shopdirectory.selectors.ElementNotSelected;
+import com.rocinante.shopdirectory.selectors.ElementProperties;
+import com.rocinante.shopdirectory.selectors.ElementSelector;
 import io.vavr.control.Either;
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.rocinante.crawlers.infrastructure.selectors;
+package com.rocinante.shopdirectory.selectors;
 
 import java.util.Map;
 import org.jsoup.nodes.Element;

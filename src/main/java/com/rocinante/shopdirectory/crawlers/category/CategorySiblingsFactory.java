@@ -1,4 +1,4 @@
-package com.rocinante.crawlers.category;
+package com.rocinante.shopdirectory.crawlers.category;
 
 import java.util.ArrayList;
 import java.util.HashMap;

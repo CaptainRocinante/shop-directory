@@ -1,4 +1,4 @@
-package com.rocinante.crawlers.infrastructure.selectors;
+package com.rocinante.shopdirectory.selectors;
 
 import io.vavr.control.Either;
 import org.jsoup.nodes.Element;

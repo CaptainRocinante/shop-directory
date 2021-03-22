@@ -1,4 +1,4 @@
-package com.rocinante.crawlers.infrastructure.selectors;
+package com.rocinante.shopdirectory.selectors;
 
 public class ElementNotSelected {
   private static ElementNotSelected instance;

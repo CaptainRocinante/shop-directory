@@ -1,4 +1,4 @@
-package com.rocinante.crawlers.infrastructure;
+package com.rocinante.shopdirectory.util;
 
 import com.google.common.collect.ImmutableSet;
 import java.io.File;

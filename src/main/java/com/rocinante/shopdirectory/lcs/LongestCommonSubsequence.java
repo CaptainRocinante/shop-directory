@@ -1,4 +1,4 @@
-package com.rocinante.crawlers.infrastructure.lcs;
+package com.rocinante.shopdirectory.lcs;
 
 import java.util.List;
 

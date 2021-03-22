@@ -1,4 +1,4 @@
-package com.rocinante.crawlers.infrastructure;
+package com.rocinante.shopdirectory.util;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
