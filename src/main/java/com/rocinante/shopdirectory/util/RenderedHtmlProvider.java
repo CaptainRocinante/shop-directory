@@ -53,10 +53,14 @@ public class RenderedHtmlProvider {
     }
   }
 
-  public String downloadHtml(String url) throws InterruptedException {
+  public String downloadHtml(String url) {
     webDriver.get(url);
-    Thread.sleep(2000L); // Wait for any init JS to execute
-    scrollToBottom();
+    try {
+      Thread.sleep(2000L); // Wait for any init JS to execute
+      scrollToBottom();
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
     final String pageSource = webDriver.getPageSource();
     webDriver.close();
     webDriver.quit();

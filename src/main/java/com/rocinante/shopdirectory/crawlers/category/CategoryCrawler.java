@@ -1,11 +1,21 @@
 package com.rocinante.shopdirectory.crawlers.category;
 
+import com.rocinante.shopdirectory.crawlers.CrawlContext;
+import com.rocinante.shopdirectory.crawlers.Crawler;
+import com.rocinante.shopdirectory.crawlers.CrawlerType;
+import com.rocinante.shopdirectory.crawlers.MapCrawlContext;
 import com.rocinante.shopdirectory.util.RenderedHtmlProvider;
 import java.util.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-public class CategoryCrawler {
+public class CategoryCrawler implements Crawler<List<Category>> {
+  private final RenderedHtmlProvider renderedHtmlProvider;
+
+  public CategoryCrawler(RenderedHtmlProvider renderedHtmlProvider) {
+    this.renderedHtmlProvider = renderedHtmlProvider;
+  }
+
   private void bfs(Document document) {
     final CategoryScorer categoryScorer = new CategoryScorer();
     final Queue<CategorySiblings> bfsQueue =
@@ -35,7 +45,23 @@ public class CategoryCrawler {
     }
   }
 
+  @Override
+  public CrawlerType type() {
+    return CrawlerType.CATEGORY;
+  }
 
+  @Override
+  public List<Category> crawlUrl(String url, CrawlContext crawlContext) {
+    return crawlHtml(renderedHtmlProvider.downloadHtml(url), url, new MapCrawlContext(null));
+
+  }
+
+  @Override
+  public List<Category> crawlHtml(String html, String baseUrl, CrawlContext crawlContext) {
+    final Document doc = Jsoup.parse(html);
+    bfs(doc);
+    return null;
+  }
 
   public static void main(String[] args) throws InterruptedException {
 //    Jsoup.parse(new File(
@@ -43,10 +69,7 @@ public class CategoryCrawler {
 //        "utf-8");
 //    Document doc = Jsoup.connect("https://www.dsw.com/").get();
 
-    final RenderedHtmlProvider renderedHtmlProvider = new RenderedHtmlProvider();
-    final String pageSource = renderedHtmlProvider.downloadHtml("https://www.dsw.com/");
-    final Document doc = Jsoup.parse(pageSource);
-    CategoryCrawler categoryCrawler = new CategoryCrawler();
-    categoryCrawler.bfs(doc);
+    CategoryCrawler categoryCrawler = new CategoryCrawler(new RenderedHtmlProvider());
+    categoryCrawler.crawlUrl("https://www.dsw.com/", new MapCrawlContext(null));
   }
 }
