@@ -5,6 +5,7 @@ import com.rocinante.shopdirectory.selectors.ElementProperties;
 import com.rocinante.shopdirectory.selectors.ElementSelector;
 import io.vavr.control.Either;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +23,34 @@ public class AnyPriceSelector implements ElementSelector {
   public static final String LIST_MONEY_OBJECT_PROPERTY = "list_money";
   private static final Pattern PRICE_PATTERN = Pattern.compile("(USD|\\$)\\s*(\\d{1,3}(?:["
       + ".,]\\d{3})*(?:[.,]\\d{2})?)|(\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})?)\\s*?(USD|\\$)");
+  private static final Pattern PRICE_RANGE_PATTERN = Pattern.compile(
+      String.format("((%s){1})\\s*[-]\\s*((%s){1})", PRICE_PATTERN.pattern(),
+          PRICE_PATTERN.pattern()));
 
   @Override
   public Either<ElementNotSelected, ElementProperties> select(Element element) {
-    final Matcher matcher = PRICE_PATTERN.matcher(element.text());
-    final List<MatchResult> matchResults = matcher.results().collect(Collectors.toList());
+//    final Matcher priceRangeMatcher = PRICE_RANGE_PATTERN.matcher(element.text());
+//    if (priceRangeMatcher.matches()) {
+//      final String beginningRangePrice = priceRangeMatcher.group(1);
+//      final Matcher parsedPrice = PRICE_PATTERN.matcher(beginningRangePrice);
+//      final Map<String, Object> properties = new HashMap<>();
+//      if (!parsedPrice.matches()) {
+//        throw new IllegalStateException();
+//      }
+//      final String amount = parsedPrice.group(2) != null ? parsedPrice.group(2) :
+//          parsedPrice.group(3);
+//      final MonetaryAmount monetaryAmount = Monetary
+//          .getDefaultAmountFactory()
+//          .setCurrency("USD")
+//          .setNumber(Double.parseDouble(amount.replace(",", "")))
+//          .create();
+//      properties.put(LIST_MONEY_OBJECT_PROPERTY,
+//          Collections.singletonList(FastMoney.from(monetaryAmount)));
+//      return Either.right(new ElementProperties(element, properties));
+//    }
+
+    final Matcher priceMatcher = PRICE_PATTERN.matcher(element.text());
+    final List<MatchResult> matchResults = priceMatcher.results().collect(Collectors.toList());
     if (matchResults.size() == 0) {
       return Either.left(ElementNotSelected.getInstance());
     } else {
@@ -35,7 +59,7 @@ public class AnyPriceSelector implements ElementSelector {
 
       matchResults
           .forEach(result -> {
-            final String amount = result.group(2) != null ? result.group(2) : matcher.group(3);
+            final String amount = result.group(2) != null ? result.group(2) : priceMatcher.group(3);
             final MonetaryAmount monetaryAmount = Monetary
                 .getDefaultAmountFactory()
                 .setCurrency("USD")

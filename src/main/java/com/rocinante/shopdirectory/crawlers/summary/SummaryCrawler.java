@@ -111,7 +111,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
           final Tuple2<FastMoney, FastMoney> priceProperties =
               getOriginalAndSalePrice(esr.getSelectedProperties(ANY_PRICE_SELECTOR));
           return new ProductSummary((String) urlProperties.getProperty(URL_PROPERTY),
-              (String) urlProperties.getProperty(TEXT_PROPERTY), "",
+              (String) urlProperties.getProperty(TEXT_PROPERTY), null,
               priceProperties._1(), priceProperties._2());
         })
         .collect(Collectors.toList());
@@ -124,7 +124,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
 //        ResourceUtils.readFileContents("dswsummarypage.html"),
 //        "https://www.dsw.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries = summaryCrawler.crawlUrl(
-        "https://www.gymshark.com/collections/equipment/",
+        "https://www.kmart.com.au/category/mens/mens-accessories/mens-wallets/508519#.plp-wrapper",
         new MapCrawlContext(null));
     productSummaries.forEach(ps -> System.out.println(ps.toString()));
   }
