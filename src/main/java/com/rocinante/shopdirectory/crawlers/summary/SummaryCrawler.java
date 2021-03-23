@@ -2,7 +2,7 @@ package com.rocinante.shopdirectory.crawlers.summary;
 
 import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector.TEXT_PROPERTY;
 import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector.URL_PROPERTY;
-import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceSelector.MONEY_OBJECT_PROPERTY;
+import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceSelector.LIST_MONEY_OBJECT_PROPERTY;
 
 import com.rocinante.shopdirectory.crawlers.CrawlContext;
 import com.rocinante.shopdirectory.crawlers.Crawler;
@@ -15,11 +15,11 @@ import com.rocinante.shopdirectory.selectors.ElementSelector;
 import com.rocinante.shopdirectory.util.MoneyUtils;
 import com.rocinante.shopdirectory.util.RenderedHtmlProvider;
 import io.vavr.Tuple2;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
-import javax.money.MonetaryAmount;
 import org.javamoney.moneta.FastMoney;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -66,20 +66,24 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   }
 
   private Tuple2<FastMoney, FastMoney> getOriginalAndSalePrice(List<ElementProperties> prices) {
-    if (prices.size() == 1) {
-      return new Tuple2<>((FastMoney) prices.get(0).getProperty(MONEY_OBJECT_PROPERTY), null);
-    }
     final FastMoney highestAmount =
-        prices.stream().map(p -> (FastMoney) p.getProperty(MONEY_OBJECT_PROPERTY)).reduce(
-            MoneyUtils::max).orElseThrow();
+        prices.stream()
+            .map(p -> (List<FastMoney>) p.getProperty(LIST_MONEY_OBJECT_PROPERTY))
+            .flatMap(Collection::stream)
+            .reduce(MoneyUtils::max)
+            .orElseThrow();
     final FastMoney lowestAmount =
-        prices.stream().map(p -> (FastMoney) p.getProperty(MONEY_OBJECT_PROPERTY)).reduce(
-            MoneyUtils::min).orElseThrow();
+        prices.stream()
+            .map(p -> (List<FastMoney>) p.getProperty(LIST_MONEY_OBJECT_PROPERTY))
+            .flatMap(Collection::stream)
+            .reduce(MoneyUtils::min)
+            .orElseThrow();
     return new Tuple2<>(highestAmount, lowestAmount);
   }
 
   @Override
   public List<ProductSummary> crawlHtml(String html, String baseUrl, CrawlContext crawlContext) {
+    System.out.println(html);
     final PriorityQueue<SubtreeTraversalResult> highestLcsScoreHeap =
         new PriorityQueue<>((r1, r2) -> r2.getChildrenLCSScore() - r1.getChildrenLCSScore());
     final PriorityQueue<SubtreeTraversalResult> highestChildrenElementSelectorScoreHeap =
@@ -120,7 +124,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
 //        ResourceUtils.readFileContents("dswsummarypage.html"),
 //        "https://www.dsw.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries = summaryCrawler.crawlUrl(
-        "https://www.kmart.com.au/category/mens/mens-accessories/mens-wallets/508519#.plp-wrapper",
+        "https://www.gymshark.com/collections/equipment/",
         new MapCrawlContext(null));
     productSummaries.forEach(ps -> System.out.println(ps.toString()));
   }
