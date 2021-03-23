@@ -1,7 +1,5 @@
 package com.rocinante.shopdirectory.crawlers.summary;
 
-import static com.rocinante.shopdirectory.crawlers.summary.SubtreeTraversalResult.ANY_LINK_WITH_HREF_SELECTOR;
-import static com.rocinante.shopdirectory.crawlers.summary.SubtreeTraversalResult.ANY_PRICE_SELECTOR;
 import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector.TEXT_PROPERTY;
 import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector.URL_PROPERTY;
 
@@ -9,9 +7,11 @@ import com.rocinante.shopdirectory.crawlers.CrawlContext;
 import com.rocinante.shopdirectory.crawlers.Crawler;
 import com.rocinante.shopdirectory.crawlers.CrawlerType;
 import com.rocinante.shopdirectory.crawlers.MapCrawlContext;
+import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector;
+import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceSelector;
 import com.rocinante.shopdirectory.selectors.ElementProperties;
+import com.rocinante.shopdirectory.selectors.ElementSelector;
 import com.rocinante.shopdirectory.util.RenderedHtmlProvider;
-import com.rocinante.shopdirectory.util.ResourceUtils;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -20,6 +20,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
 public class SummaryCrawler implements Crawler<List<ProductSummary>> {
+  public static final AnyLinkWithHrefTextSelector ANY_LINK_WITH_HREF_SELECTOR =
+      new AnyLinkWithHrefTextSelector();
+  public static final AnyPriceSelector ANY_PRICE_SELECTOR = new AnyPriceSelector();
+  public static final ElementSelector[] ALL_SUMMARY_SELECTORS = new ElementSelector[] {
+      ANY_LINK_WITH_HREF_SELECTOR,
+      ANY_PRICE_SELECTOR
+  };
+
   private final RenderedHtmlProvider renderedHtmlProvider;
 
   public SummaryCrawler(RenderedHtmlProvider renderedHtmlProvider) {
@@ -36,7 +44,8 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
         .filter(node -> node instanceof Element)
         .forEach(node -> subtreeTraversalResults.add(dfs((Element) node, highestLcsScoreHeap)));
 
-    final SubtreeTraversalResult result = new SubtreeTraversalResult(root, subtreeTraversalResults);
+    final SubtreeTraversalResult result = new SubtreeTraversalResult(
+        root, subtreeTraversalResults, ALL_SUMMARY_SELECTORS);
     highestLcsScoreHeap.add(result);
     return result;
   }
@@ -57,12 +66,13 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
         new PriorityQueue<>((r1, r2) -> r2.getChildrenLCSScore() - r1.getChildrenLCSScore());
     final PriorityQueue<SubtreeTraversalResult> highestChildrenElementSelectorScoreHeap =
         new PriorityQueue<>((r1, r2) ->
-            r2.filterChildrenWithSelectors(ANY_LINK_WITH_HREF_SELECTOR, ANY_PRICE_SELECTOR).size()
-                - r1.filterChildrenWithSelectors(ANY_LINK_WITH_HREF_SELECTOR, ANY_PRICE_SELECTOR).size());
+            r2.childrenCountMatchingAllSelectors() - r1.childrenCountMatchingAllSelectors());
     dfs(Jsoup.parse(html, baseUrl), highestLcsScoreHeap);
     SubtreeTraversalResult top = highestLcsScoreHeap.poll();
     while (!highestLcsScoreHeap.isEmpty() && top != null && top.getChildrenLCSScore() > 0) {
-      highestChildrenElementSelectorScoreHeap.add(top);
+      if (top.childrenCountMatchingAllSelectors() != 0) {
+        highestChildrenElementSelectorScoreHeap.add(top);
+      }
       top = highestLcsScoreHeap.poll();
     }
 
@@ -70,7 +80,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
 
     assert productsRoot != null;
     return productsRoot
-        .getChildResults()
+        .getChildrenWithAllSelectors()
         .stream()
         .map(SubtreeTraversalResult::getElementSelectionResult)
         .map(esr -> {
@@ -84,21 +94,12 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
 
 
   public static void main(String[] args) {
-//    Document doc = Jsoup.parse(new File(
-//            SummaryCrawler.class.getClassLoader().getResource("dswsummarypage.html").getFile()),
-//        "utf-8", "https://www.dsw.com/en/us/brands/adidas/N-1z141hg");
-//    Document doc = Jsoup.connect("https://www.dsw.com/").get();
-
-//    final RenderedHtmlProvider renderedHtmlProvider = new RenderedHtmlProvider();
-//    final String pageSource = renderedHtmlProvider.downloadHtml("https://www.dsw"
-//        + ".com/en/us/brands/adidas/N-1z141hg");
-//    System.out.println(pageSource);
-//    final Document doc = Jsoup.parse(pageSource);
-
     final SummaryCrawler summaryCrawler = new SummaryCrawler(new RenderedHtmlProvider());
-    List<ProductSummary> productSummaries = summaryCrawler.crawlHtml(
-        ResourceUtils.readFileContents("dswsummarypage.html"),
-        "https://www.dsw.com/", new MapCrawlContext(null));
+//    List<ProductSummary> productSummaries = summaryCrawler.crawlHtml(
+//        ResourceUtils.readFileContents("dswsummarypage.html"),
+//        "https://www.dsw.com/", new MapCrawlContext(null));
+    List<ProductSummary> productSummaries = summaryCrawler.crawlUrl("https://www.ulta.com/tools-brushes-skincare-tools-facial-rollers?N=1c333q8",
+        new MapCrawlContext(null));
     productSummaries.forEach(ps -> System.out.println(ps.toString()));
   }
 }
