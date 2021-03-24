@@ -6,6 +6,7 @@ import com.rocinante.shopdirectory.crawlers.CrawlerType;
 import com.rocinante.shopdirectory.crawlers.MapCrawlContext;
 import com.rocinante.shopdirectory.util.RenderedHtmlProvider;
 import java.util.*;
+import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -16,7 +17,7 @@ public class CategoryCrawler implements Crawler<List<Category>> {
     this.renderedHtmlProvider = renderedHtmlProvider;
   }
 
-  private void bfs(Document document) {
+  private List<Category> bfs(Document document) {
     final CategoryScorer categoryScorer = new CategoryScorer();
     final Queue<CategorySiblings> bfsQueue =
         new LinkedList<>(
@@ -39,10 +40,21 @@ public class CategoryCrawler implements Crawler<List<Category>> {
       ++level;
     }
 
+    final Set<Category> allCategories = new HashSet<>();
     while (!categorySiblingsCategoryScorePriorityQueue.isEmpty()) {
       CategorySiblings current = categorySiblingsCategoryScorePriorityQueue.poll();
+      if (current.categoryScore() > 3) {
+        allCategories.addAll(
+            current
+                .getLinks()
+                .stream()
+                .map(element -> new Category(element.attr("abs:href"), element.text()))
+                .collect(Collectors.toList())
+        );
+      }
       current.printAllLinks();
     }
+    return new ArrayList<>(allCategories);
   }
 
   @Override
@@ -58,9 +70,8 @@ public class CategoryCrawler implements Crawler<List<Category>> {
 
   @Override
   public List<Category> crawlHtml(String html, String baseUrl, CrawlContext crawlContext) {
-    final Document doc = Jsoup.parse(html);
-    bfs(doc);
-    return null;
+    final Document doc = Jsoup.parse(html, baseUrl);
+    return bfs(doc);
   }
 
   public static void main(String[] args) throws InterruptedException {
@@ -70,6 +81,8 @@ public class CategoryCrawler implements Crawler<List<Category>> {
 //    Document doc = Jsoup.connect("https://www.dsw.com/").get();
 
     CategoryCrawler categoryCrawler = new CategoryCrawler(new RenderedHtmlProvider());
-    categoryCrawler.crawlUrl("https://www.dsw.com/", new MapCrawlContext(null));
+    List<Category> categories = categoryCrawler.crawlUrl("https://www.dsw.com/",
+        new MapCrawlContext(null));
+    categories.forEach(c -> System.out.println(c.toString()));
   }
 }
