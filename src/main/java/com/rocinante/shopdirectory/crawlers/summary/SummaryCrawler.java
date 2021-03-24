@@ -10,6 +10,7 @@ import com.rocinante.shopdirectory.crawlers.CrawlContext;
 import com.rocinante.shopdirectory.crawlers.Crawler;
 import com.rocinante.shopdirectory.crawlers.CrawlerType;
 import com.rocinante.shopdirectory.crawlers.MapCrawlContext;
+import com.rocinante.shopdirectory.crawlers.category.CategoryScorer;
 import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector;
 import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceSelector;
 import com.rocinante.shopdirectory.crawlers.summary.selectors.ImageSelector;
@@ -47,9 +48,11 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   };
 
   private final RenderedHtmlProvider renderedHtmlProvider;
+  private final CategoryScorer categoryScorer;
 
   public SummaryCrawler(RenderedHtmlProvider renderedHtmlProvider) {
     this.renderedHtmlProvider = renderedHtmlProvider;
+    this.categoryScorer = new CategoryScorer();
   }
 
   private SubtreeTraversalResult dfs(Node root,
@@ -100,7 +103,9 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     final List<StringLCSToken> urlTokens = Tokenizer.alphaNumericLcsTokens(url);
 
     final AtomicInteger maxLcsScore = new AtomicInteger(Integer.MIN_VALUE);
+    final AtomicInteger maxCategoryScore = new AtomicInteger(Integer.MIN_VALUE);
     final AtomicReference<String> maxLcsScoreText = new AtomicReference<>(null);
+    final AtomicReference<String> maxCategoryScoreText = new AtomicReference<>(null);
 
     allTextNodesSelected
         .stream()
@@ -109,12 +114,18 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
           final List<StringLCSToken> textTokens = Tokenizer.alphaNumericLcsTokens(text);
           final int lcsScore = LongestCommonSubsequence
               .computeLcsStringTokensOnly(textTokens, urlTokens);
+          final int categoryScore = categoryScorer.scoreText(text);
           if (lcsScore != 0 && lcsScore > maxLcsScore.get()) {
             maxLcsScore.set(lcsScore);
             maxLcsScoreText.set(text);
           }
+          if (categoryScore != 0 && categoryScore > maxCategoryScore.get()) {
+            maxCategoryScore.set(categoryScore);
+            maxCategoryScoreText.set(text);
+          }
         });
-    return maxLcsScoreText.get() != null ? maxLcsScoreText.get() : urlText;
+    return maxLcsScoreText.get() != null ? maxLcsScoreText.get() :
+        (maxCategoryScoreText.get() != null ? maxCategoryScoreText.get() : urlText);
   }
 
   @Override
@@ -167,7 +178,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
 //        ResourceUtils.readFileContents("dswsummarypage.html"),
 //        "https://www.dsw.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries = summaryCrawler.crawlUrl(
-        "https://www.gymshark.com/collections/equipment/?page=0&id=4857431097546",
+        "https://www.gap.com/browse/category.do?cid=5156&nav=meganav%3AMen%3ACategories%3AShorts#pageId=0&department=75",
         new MapCrawlContext(null));
     productSummaries.forEach(ps -> System.out.println(ps.toString()));
   }

@@ -63,11 +63,11 @@ public class CategoryScorer {
         .collect(Collectors.toSet()));
   }
 
-  private boolean evalLinkText(String text) {
+  public int scoreText(String text) {
     return Arrays.stream(tokenizer.tokenize(text))
         .map(porterStemmer::stem)
         .map(String::toLowerCase)
-        .anyMatch(categories::contains);
+        .reduce(0, (sum, t) -> sum + (categories.contains(t) ? 1 : 0), Integer::sum);
   }
 
   public int score(CategorySiblings categorySiblings) {
@@ -75,6 +75,6 @@ public class CategoryScorer {
         .getLinks()
         .stream()
         .map(Element::text)
-        .reduce(0, (sum, text) -> sum + (evalLinkText(text) ? 1 : 0), Integer::sum);
+        .reduce(0, (sum, text) -> sum + scoreText(text), Integer::sum);
   }
 }

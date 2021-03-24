@@ -9,11 +9,13 @@ import opennlp.tools.tokenize.SimpleTokenizer;
 
 public class Tokenizer {
   private final static Pattern ALPHA_NUMERIC_PATTERN = Pattern.compile("^[a-zA-Z0-9]+$");
+  private final static Pattern ONLY_NUMBERS_PATTERN = Pattern.compile("^[0-9]+$");
 
   public static List<StringLCSToken> alphaNumericLcsTokens(String sentence) {
     return Arrays
         .stream(SimpleTokenizer.INSTANCE.tokenize(sentence))
         .filter(token -> ALPHA_NUMERIC_PATTERN.matcher(token).matches())
+        .filter(token -> !ONLY_NUMBERS_PATTERN.matcher(token).matches())
         .map(StringLCSToken::new)
         .collect(Collectors.toList());
   }
