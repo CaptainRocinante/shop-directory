@@ -28,4 +28,8 @@ public class LongestCommonSubsequence {
   public static int computeLcs(List<LCSToken> a, List<LCSToken> b) {
     return lcs(a.toArray(new LCSToken[0]), b.toArray(new LCSToken[0]));
   }
+
+  public static int computeLcsStringTokensOnly(List<StringLCSToken> a, List<StringLCSToken> b) {
+    return lcs(a.toArray(new LCSToken[0]), b.toArray(new LCSToken[0]));
+  }
 }
