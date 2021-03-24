@@ -62,7 +62,7 @@ public class AnyPriceSelector implements NodeSelector {
 
       matchResults
           .forEach(result -> {
-            final String amount = result.group(2) != null ? result.group(2) : priceMatcher.group(3);
+            final String amount = result.group(2) != null ? result.group(2) : result.group(3);
             final MonetaryAmount monetaryAmount = Monetary
                 .getDefaultAmountFactory()
                 .setCurrency("USD")
