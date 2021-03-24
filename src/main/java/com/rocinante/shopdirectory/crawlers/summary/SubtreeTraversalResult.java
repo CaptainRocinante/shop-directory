@@ -13,10 +13,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 
 public class SubtreeTraversalResult {
-
-  private Element rootElement;
+  private Node rootNode;
   private final List<SubtreeTraversalResult> childResults;
   private final List<SubtreeTraversalResult> childrenWithAllSelectors;
   private final List<LCSToken> serialized;
@@ -25,7 +25,9 @@ public class SubtreeTraversalResult {
 
   private List<LCSToken> tokenize() {
     final List<LCSToken> tokens = new LinkedList<>();
-    tokens.add(new StringLCSToken(rootElement.tagName()));
+    if (rootNode instanceof Element) {
+      tokens.add(new StringLCSToken(((Element) rootNode).tagName()));
+    }
     if (!childResults.isEmpty()) {
       tokens.add(new DelimiterLCSToken());
       tokens.addAll(
@@ -61,7 +63,7 @@ public class SubtreeTraversalResult {
   private NodeSelectionResult createElementSelectionResult(NodeSelector... nodeSelectors) {
     final NodeSelectionResult nodeSelectionResult =
         new NodeSelectionResult(nodeSelectors);
-    nodeSelectionResult.addNodeToAllSelectorsMatched(rootElement);
+    nodeSelectionResult.addNodeToAllSelectorsMatched(rootNode);
 
     return this
         .childResults
@@ -81,10 +83,10 @@ public class SubtreeTraversalResult {
         .collect(Collectors.toList());
   }
 
-  public SubtreeTraversalResult(Element root,
+  public SubtreeTraversalResult(Node root,
       List<SubtreeTraversalResult> subtreeTraversalResults,
       NodeSelector[] nodeSelectors) {
-    this.rootElement = root;
+    this.rootNode = root;
     this.childResults = subtreeTraversalResults;
     this.serialized = tokenize();
     this.childrenLCSScore =

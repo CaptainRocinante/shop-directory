@@ -24,7 +24,7 @@ import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 import org.javamoney.moneta.FastMoney;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 
 public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   public static final AnyLinkWithHrefTextSelector ANY_LINK_WITH_HREF_SELECTOR =
@@ -43,15 +43,13 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     this.renderedHtmlProvider = renderedHtmlProvider;
   }
 
-  private SubtreeTraversalResult dfs(Element root,
+  private SubtreeTraversalResult dfs(Node root,
       PriorityQueue<SubtreeTraversalResult> highestLcsScoreHeap) {
     final List<SubtreeTraversalResult> subtreeTraversalResults = new LinkedList<>();
 
     root
         .childNodes()
-        .stream()
-        .filter(node -> node instanceof Element)
-        .forEach(node -> subtreeTraversalResults.add(dfs((Element) node, highestLcsScoreHeap)));
+        .forEach(node -> subtreeTraversalResults.add(dfs(node, highestLcsScoreHeap)));
 
     final SubtreeTraversalResult result = new SubtreeTraversalResult(
         root, subtreeTraversalResults, ALL_SUMMARY_SELECTORS);
