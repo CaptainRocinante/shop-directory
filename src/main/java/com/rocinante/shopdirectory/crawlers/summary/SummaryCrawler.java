@@ -3,6 +3,7 @@ package com.rocinante.shopdirectory.crawlers.summary;
 import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector.TEXT_PROPERTY;
 import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector.URL_PROPERTY;
 import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceSelector.LIST_MONEY_OBJECT_PROPERTY;
+import static com.rocinante.shopdirectory.crawlers.summary.selectors.ImageSelector.IMAGE_SRC_URL;
 
 import com.rocinante.shopdirectory.crawlers.CrawlContext;
 import com.rocinante.shopdirectory.crawlers.Crawler;
@@ -10,6 +11,7 @@ import com.rocinante.shopdirectory.crawlers.CrawlerType;
 import com.rocinante.shopdirectory.crawlers.MapCrawlContext;
 import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector;
 import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceSelector;
+import com.rocinante.shopdirectory.crawlers.summary.selectors.ImageSelector;
 import com.rocinante.shopdirectory.selectors.ElementProperties;
 import com.rocinante.shopdirectory.selectors.ElementSelector;
 import com.rocinante.shopdirectory.util.MoneyUtils;
@@ -28,9 +30,11 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   public static final AnyLinkWithHrefTextSelector ANY_LINK_WITH_HREF_SELECTOR =
       new AnyLinkWithHrefTextSelector();
   public static final AnyPriceSelector ANY_PRICE_SELECTOR = new AnyPriceSelector();
+  public static final ImageSelector IMAGE_SELECTOR = new ImageSelector();
   public static final ElementSelector[] ALL_SUMMARY_SELECTORS = new ElementSelector[] {
       ANY_LINK_WITH_HREF_SELECTOR,
-      ANY_PRICE_SELECTOR
+      ANY_PRICE_SELECTOR,
+      IMAGE_SELECTOR
   };
 
   private final RenderedHtmlProvider renderedHtmlProvider;
@@ -110,8 +114,14 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
               esr.getSelectedProperties(ANY_LINK_WITH_HREF_SELECTOR).get(0);
           final Tuple2<FastMoney, FastMoney> priceProperties =
               getOriginalAndSalePrice(esr.getSelectedProperties(ANY_PRICE_SELECTOR));
+          final List<String> imageUrls =
+              esr.getSelectedProperties(IMAGE_SELECTOR)
+                  .stream()
+                  .map(p -> (String) p.getProperty(IMAGE_SRC_URL))
+                  .collect(Collectors.toList());
+
           return new ProductSummary((String) urlProperties.getProperty(URL_PROPERTY),
-              (String) urlProperties.getProperty(TEXT_PROPERTY), null,
+              (String) urlProperties.getProperty(TEXT_PROPERTY), imageUrls,
               priceProperties._1(), priceProperties._2());
         })
         .collect(Collectors.toList());
