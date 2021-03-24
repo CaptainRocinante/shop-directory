@@ -37,15 +37,15 @@ public class RenderedHtmlProvider {
     long scrollTo = (long) js.executeScript("return document.body.scrollHeight;");
 
     while (currentScrollCount < maxScrollBudget &&
-        (scrollTo != initScrollTo || currentScrollJitter < scrollJitterBudget)) {
+        (scrollTo > initScrollTo || currentScrollJitter < scrollJitterBudget)) {
       long scrollInterval = (scrollTo - initScrollTo) / 10;
-      long currentScrollTo = Math.min(initScrollTo + scrollInterval, scrollTo);
+      long currentScrollTo = initScrollTo + scrollInterval;
       do {
         System.out.printf("Scrolling to %s\n", currentScrollTo);
         Thread.sleep(100L);
         js.executeScript(String.format("window.scrollTo(0, %s);", currentScrollTo));
         currentScrollTo = currentScrollTo + scrollInterval;
-      } while (currentScrollTo < scrollTo);
+      } while (currentScrollTo < scrollTo && scrollInterval > 0);
 
       initScrollTo = scrollTo;
       scrollTo = (long) js.executeScript("return document.body.scrollHeight;");

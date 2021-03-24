@@ -178,7 +178,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
 //        ResourceUtils.readFileContents("dswsummarypage.html"),
 //        "https://www.dsw.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries = summaryCrawler.crawlUrl(
-        "https://www.gap.com/browse/category.do?cid=5156&nav=meganav%3AMen%3ACategories%3AShorts#pageId=0&department=75",
+        "https://www.giorgioarmanibeauty-usa.com/landing-pages/makeup-fragrance-engraving/",
         new MapCrawlContext(null));
     productSummaries.forEach(ps -> System.out.println(ps.toString()));
   }
