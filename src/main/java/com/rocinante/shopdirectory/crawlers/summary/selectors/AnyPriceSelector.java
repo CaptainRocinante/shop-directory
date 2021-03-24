@@ -1,11 +1,10 @@
 package com.rocinante.shopdirectory.crawlers.summary.selectors;
 
-import com.rocinante.shopdirectory.selectors.ElementNotSelected;
-import com.rocinante.shopdirectory.selectors.ElementProperties;
-import com.rocinante.shopdirectory.selectors.ElementSelector;
+import com.rocinante.shopdirectory.selectors.NodeNotSelected;
+import com.rocinante.shopdirectory.selectors.NodeProperties;
+import com.rocinante.shopdirectory.selectors.NodeSelector;
 import io.vavr.control.Either;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +17,9 @@ import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import org.javamoney.moneta.FastMoney;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 
-public class AnyPriceSelector implements ElementSelector {
+public class AnyPriceSelector implements NodeSelector {
   public static final String LIST_MONEY_OBJECT_PROPERTY = "list_money";
   private static final Pattern PRICE_PATTERN = Pattern.compile("(USD|\\$)\\s*(\\d{1,3}(?:["
       + ".,]\\d{3})*(?:[.,]\\d{2})?)|(\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})?)\\s*?(USD|\\$)");
@@ -28,7 +28,7 @@ public class AnyPriceSelector implements ElementSelector {
           PRICE_PATTERN.pattern()));
 
   @Override
-  public Either<ElementNotSelected, ElementProperties> select(Element element) {
+  public Either<NodeNotSelected, NodeProperties> select(Node node) {
 //    final Matcher priceRangeMatcher = PRICE_RANGE_PATTERN.matcher(element.text());
 //    if (priceRangeMatcher.matches()) {
 //      final String beginningRangePrice = priceRangeMatcher.group(1);
@@ -48,11 +48,14 @@ public class AnyPriceSelector implements ElementSelector {
 //          Collections.singletonList(FastMoney.from(monetaryAmount)));
 //      return Either.right(new ElementProperties(element, properties));
 //    }
-
+    if (!(node instanceof Element)) {
+      return Either.left(NodeNotSelected.getInstance());
+    }
+    final Element element = (Element) node;
     final Matcher priceMatcher = PRICE_PATTERN.matcher(element.text());
     final List<MatchResult> matchResults = priceMatcher.results().collect(Collectors.toList());
     if (matchResults.size() == 0) {
-      return Either.left(ElementNotSelected.getInstance());
+      return Either.left(NodeNotSelected.getInstance());
     } else {
       final Map<String, Object> properties = new HashMap<>();
       final List<FastMoney> allMoney = new ArrayList<>();
@@ -68,7 +71,7 @@ public class AnyPriceSelector implements ElementSelector {
             allMoney.add(FastMoney.from(monetaryAmount));
           });
       properties.put(LIST_MONEY_OBJECT_PROPERTY, allMoney);
-      return Either.right(new ElementProperties(element, properties));
+      return Either.right(new NodeProperties(element, properties));
     }
   }
 

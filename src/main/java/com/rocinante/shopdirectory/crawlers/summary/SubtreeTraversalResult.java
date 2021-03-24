@@ -1,12 +1,12 @@
 package com.rocinante.shopdirectory.crawlers.summary;
 
-import com.rocinante.shopdirectory.selectors.ElementSelector;
+import com.rocinante.shopdirectory.selectors.NodeSelector;
 import com.rocinante.shopdirectory.util.Combinatorics;
 import com.rocinante.shopdirectory.lcs.DelimiterLCSToken;
 import com.rocinante.shopdirectory.lcs.LCSToken;
 import com.rocinante.shopdirectory.lcs.LongestCommonSubsequence;
 import com.rocinante.shopdirectory.lcs.StringLCSToken;
-import com.rocinante.shopdirectory.selectors.ElementSelectionResult;
+import com.rocinante.shopdirectory.selectors.NodeSelectionResult;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -21,7 +21,7 @@ public class SubtreeTraversalResult {
   private final List<SubtreeTraversalResult> childrenWithAllSelectors;
   private final List<LCSToken> serialized;
   private final int childrenLCSScore;
-  private final ElementSelectionResult elementSelectionResult;
+  private final NodeSelectionResult nodeSelectionResult;
 
   private List<LCSToken> tokenize() {
     final List<LCSToken> tokens = new LinkedList<>();
@@ -58,40 +58,40 @@ public class SubtreeTraversalResult {
     return lcsScore;
   }
 
-  private ElementSelectionResult createElementSelectionResult(ElementSelector... elementSelectors) {
-    final ElementSelectionResult elementSelectionResult =
-        new ElementSelectionResult(elementSelectors);
-    elementSelectionResult.addElementToAllSelectorsMatched(rootElement);
+  private NodeSelectionResult createElementSelectionResult(NodeSelector... nodeSelectors) {
+    final NodeSelectionResult nodeSelectionResult =
+        new NodeSelectionResult(nodeSelectors);
+    nodeSelectionResult.addNodeToAllSelectorsMatched(rootElement);
 
     return this
         .childResults
         .stream()
-        .map(SubtreeTraversalResult::getElementSelectionResult)
-        .reduce(elementSelectionResult, ElementSelectionResult::merge);
+        .map(SubtreeTraversalResult::getNodeSelectionResult)
+        .reduce(nodeSelectionResult, NodeSelectionResult::merge);
   }
 
-  private List<SubtreeTraversalResult> filterChildrenWithSelectors(ElementSelector... selectors) {
+  private List<SubtreeTraversalResult> filterChildrenWithSelectors(NodeSelector... selectors) {
     return getChildResults()
         .stream()
         .filter(child ->
             Arrays
                 .stream(selectors)
                 .allMatch(selector ->
-                    child.getElementSelectionResult().containsSelectorItems(selector)))
+                    child.getNodeSelectionResult().containsSelectorItems(selector)))
         .collect(Collectors.toList());
   }
 
   public SubtreeTraversalResult(Element root,
       List<SubtreeTraversalResult> subtreeTraversalResults,
-      ElementSelector[] elementSelectors) {
+      NodeSelector[] nodeSelectors) {
     this.rootElement = root;
     this.childResults = subtreeTraversalResults;
     this.serialized = tokenize();
     this.childrenLCSScore =
         computeLCSScore(childResults.stream().map(SubtreeTraversalResult::getSerialized).collect(
             Collectors.toList()));
-    this.elementSelectionResult = createElementSelectionResult(elementSelectors);
-    this.childrenWithAllSelectors = filterChildrenWithSelectors(elementSelectors);
+    this.nodeSelectionResult = createElementSelectionResult(nodeSelectors);
+    this.childrenWithAllSelectors = filterChildrenWithSelectors(nodeSelectors);
   }
 
   public List<LCSToken> getSerialized() {
@@ -106,8 +106,8 @@ public class SubtreeTraversalResult {
     return childResults;
   }
 
-  public ElementSelectionResult getElementSelectionResult() {
-    return elementSelectionResult;
+  public NodeSelectionResult getNodeSelectionResult() {
+    return nodeSelectionResult;
   }
 
   public List<SubtreeTraversalResult> getChildrenWithAllSelectors() {

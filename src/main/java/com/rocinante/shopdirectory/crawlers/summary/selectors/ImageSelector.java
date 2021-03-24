@@ -1,25 +1,30 @@
 package com.rocinante.shopdirectory.crawlers.summary.selectors;
 
-import com.rocinante.shopdirectory.selectors.ElementNotSelected;
-import com.rocinante.shopdirectory.selectors.ElementProperties;
-import com.rocinante.shopdirectory.selectors.ElementSelector;
+import com.rocinante.shopdirectory.selectors.NodeNotSelected;
+import com.rocinante.shopdirectory.selectors.NodeProperties;
+import com.rocinante.shopdirectory.selectors.NodeSelector;
 import io.vavr.control.Either;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 
-public class ImageSelector implements ElementSelector {
+public class ImageSelector implements NodeSelector {
   public static final String IMAGE_SRC_URL = "image_url";
 
   @Override
-  public Either<ElementNotSelected, ElementProperties> select(Element element) {
+  public Either<NodeNotSelected, NodeProperties> select(Node node) {
+    if (!(node instanceof Element)) {
+      return Either.left(NodeNotSelected.getInstance());
+    }
+    final Element element = (Element) node;
     if (element.tagName().equals("img")) {
       Map<String, Object> properties = new HashMap<>();
       properties.put(IMAGE_SRC_URL, element.attr("abs:src"));
-      return Either.right(new ElementProperties(element, properties));
+      return Either.right(new NodeProperties(element, properties));
     } else {
-      return Either.left(ElementNotSelected.getInstance());
+      return Either.left(NodeNotSelected.getInstance());
     }
   }
 

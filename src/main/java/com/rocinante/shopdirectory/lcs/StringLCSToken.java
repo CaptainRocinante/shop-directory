@@ -12,7 +12,7 @@ public class StringLCSToken implements LCSToken {
     if (!(otherLCSToken instanceof StringLCSToken)) {
       return false;
     } else {
-      return str.equals(((StringLCSToken) otherLCSToken).str);
+      return str.equalsIgnoreCase(((StringLCSToken) otherLCSToken).str);
     }
   }
 }

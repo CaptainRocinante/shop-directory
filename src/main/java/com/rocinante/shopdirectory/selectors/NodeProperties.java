@@ -1,15 +1,15 @@
 package com.rocinante.shopdirectory.selectors;
 
 import java.util.Map;
-import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 
-public class ElementProperties {
-  private final Element element;
+public class NodeProperties {
+  private final Node node;
   private Map<String, Object> selectedProperties;
 
-  public ElementProperties(Element element,
+  public NodeProperties(Node node,
       Map<String, Object> selectedProperties) {
-    this.element = element;
+    this.node = node;
     this.selectedProperties = selectedProperties;
   }
 

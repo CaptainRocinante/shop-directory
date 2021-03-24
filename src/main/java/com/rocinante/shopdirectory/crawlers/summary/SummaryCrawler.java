@@ -12,8 +12,8 @@ import com.rocinante.shopdirectory.crawlers.MapCrawlContext;
 import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector;
 import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceSelector;
 import com.rocinante.shopdirectory.crawlers.summary.selectors.ImageSelector;
-import com.rocinante.shopdirectory.selectors.ElementProperties;
-import com.rocinante.shopdirectory.selectors.ElementSelector;
+import com.rocinante.shopdirectory.selectors.NodeProperties;
+import com.rocinante.shopdirectory.selectors.NodeSelector;
 import com.rocinante.shopdirectory.util.MoneyUtils;
 import com.rocinante.shopdirectory.util.RenderedHtmlProvider;
 import io.vavr.Tuple2;
@@ -31,7 +31,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
       new AnyLinkWithHrefTextSelector();
   public static final AnyPriceSelector ANY_PRICE_SELECTOR = new AnyPriceSelector();
   public static final ImageSelector IMAGE_SELECTOR = new ImageSelector();
-  public static final ElementSelector[] ALL_SUMMARY_SELECTORS = new ElementSelector[] {
+  public static final NodeSelector[] ALL_SUMMARY_SELECTORS = new NodeSelector[] {
       ANY_LINK_WITH_HREF_SELECTOR,
       ANY_PRICE_SELECTOR,
       IMAGE_SELECTOR
@@ -69,7 +69,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     return crawlHtml(renderedHtmlProvider.downloadHtml(url), url, new MapCrawlContext(null));
   }
 
-  private Tuple2<FastMoney, FastMoney> getOriginalAndSalePrice(List<ElementProperties> prices) {
+  private Tuple2<FastMoney, FastMoney> getOriginalAndSalePrice(List<NodeProperties> prices) {
     final FastMoney highestAmount =
         prices.stream()
             .map(p -> (List<FastMoney>) p.getProperty(LIST_MONEY_OBJECT_PROPERTY))
@@ -108,9 +108,9 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     return productsRoot
         .getChildrenWithAllSelectors()
         .stream()
-        .map(SubtreeTraversalResult::getElementSelectionResult)
+        .map(SubtreeTraversalResult::getNodeSelectionResult)
         .map(esr -> {
-          final ElementProperties urlProperties =
+          final NodeProperties urlProperties =
               esr.getSelectedProperties(ANY_LINK_WITH_HREF_SELECTOR).get(0);
           final Tuple2<FastMoney, FastMoney> priceProperties =
               getOriginalAndSalePrice(esr.getSelectedProperties(ANY_PRICE_SELECTOR));
