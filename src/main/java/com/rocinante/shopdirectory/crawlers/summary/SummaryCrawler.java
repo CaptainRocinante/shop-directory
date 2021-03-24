@@ -21,6 +21,7 @@ import com.rocinante.shopdirectory.selectors.NodeProperties;
 import com.rocinante.shopdirectory.selectors.NodeSelector;
 import com.rocinante.shopdirectory.util.MoneyUtils;
 import com.rocinante.shopdirectory.util.RenderedHtmlProvider;
+import com.rocinante.shopdirectory.util.ResourceUtils;
 import com.rocinante.shopdirectory.util.Tokenizer;
 import io.vavr.Tuple2;
 import java.util.Collection;
@@ -175,10 +176,10 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   public static void main(String[] args) {
     final SummaryCrawler summaryCrawler = new SummaryCrawler(new RenderedHtmlProvider());
 //    List<ProductSummary> productSummaries = summaryCrawler.crawlHtml(
-//        ResourceUtils.readFileContents("dswsummarypage.html"),
-//        "https://www.dsw.com/", new MapCrawlContext(null));
+//        ResourceUtils.readFileContents("dswdummy.html"),
+//        "https://www.chubbiesshorts.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries = summaryCrawler.crawlUrl(
-        "https://www.giorgioarmanibeauty-usa.com/landing-pages/makeup-fragrance-engraving/",
+        "https://www.chubbiesshorts.com/collections/the-sweat-shorts-loungers#easy-mesh-2020-lounge",
         new MapCrawlContext(null));
     productSummaries.forEach(ps -> System.out.println(ps.toString()));
   }

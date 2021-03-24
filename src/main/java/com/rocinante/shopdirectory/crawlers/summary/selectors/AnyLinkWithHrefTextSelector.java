@@ -20,8 +20,7 @@ public class AnyLinkWithHrefTextSelector implements NodeSelector {
       return Either.left(NodeNotSelected.getInstance());
     }
     final Element element = (Element) node;
-    if(element.tagName().equals("a") && element.hasAttr("href")
-        && !element.text().isBlank()) {
+    if (element.tagName().equals("a") && element.hasAttr("href")) {
       Map<String, Object> properties = new HashMap<>();
       properties.put(URL_PROPERTY, element.attr("abs:href"));
       properties.put(TEXT_PROPERTY, element.text());
