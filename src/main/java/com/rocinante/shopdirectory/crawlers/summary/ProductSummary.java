@@ -10,7 +10,8 @@ import org.javamoney.moneta.FastMoney;
 public class ProductSummary {
   private final String url;
   private final String inferredDescription;
-  private final List<String> imageUrls;
+  private final List<String> productImages;
+  private final List<String> additionalImages;
   private final FastMoney originalPrice;
   private final FastMoney salePrice;
 }

@@ -15,19 +15,20 @@ import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTex
 import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceSelector;
 import com.rocinante.shopdirectory.crawlers.summary.selectors.ImageSelector;
 import com.rocinante.shopdirectory.crawlers.summary.selectors.TextNodeSelector;
+import com.rocinante.shopdirectory.html.RenderedHtml;
 import com.rocinante.shopdirectory.lcs.LongestCommonSubsequence;
 import com.rocinante.shopdirectory.lcs.StringLCSToken;
 import com.rocinante.shopdirectory.selectors.NodeProperties;
 import com.rocinante.shopdirectory.selectors.NodeSelector;
 import com.rocinante.shopdirectory.util.MoneyUtils;
-import com.rocinante.shopdirectory.util.RenderedHtmlProvider;
-import com.rocinante.shopdirectory.util.ResourceUtils;
+import com.rocinante.shopdirectory.html.RenderedHtmlProvider;
 import com.rocinante.shopdirectory.util.Tokenizer;
 import io.vavr.Tuple2;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -130,13 +131,41 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
         (maxCategoryScoreText.get() != null ? maxCategoryScoreText.get() : urlText);
   }
 
+  private Tuple2<List<String>, List<String>> getProductImages(List<NodeProperties> imageProperties,
+      Map<String, int[]> imageSrcDimensionMap) {
+    final List<String> allImages = imageProperties
+        .stream()
+        .map(ip -> (String) ip.getProperty(IMAGE_SRC_URL))
+        .collect(Collectors.toList());
+
+    final int largestImageSize = allImages
+        .stream()
+        .map(i -> {
+          final int[] dimensions = imageSrcDimensionMap.get(i);
+          return dimensions[0] * dimensions[1];
+        }).reduce(Integer::max).orElseThrow();
+
+    final List<String> productImages = new LinkedList<>();
+    final List<String> otherImages = new LinkedList<>();
+
+    allImages.forEach(i -> {
+      final int[] dimensions = imageSrcDimensionMap.get(i);
+      if (dimensions[0] * dimensions[1] == largestImageSize) {
+        productImages.add(i);
+      } else {
+        otherImages.add(i);
+      }
+    });
+    return new Tuple2<>(productImages, otherImages);
+  }
+
   @Override
-  public List<ProductSummary> crawlHtml(String html, String baseUrl, CrawlContext crawlContext) {
+  public List<ProductSummary> crawlHtml(RenderedHtml html, String baseUrl, CrawlContext crawlContext) {
     System.out.println(html);
     final PriorityQueue<SubtreeTraversalResult> highestLcsScoreHeap =
         new PriorityQueue<>((r1, r2) -> r2.getChildrenLCSScore() - r1.getChildrenLCSScore());
     final List<SubtreeTraversalResult> productRoots = new LinkedList<>();
-    dfs(Jsoup.parse(html, baseUrl), highestLcsScoreHeap);
+    dfs(Jsoup.parse(html.getHtml(), baseUrl), highestLcsScoreHeap);
     SubtreeTraversalResult top = highestLcsScoreHeap.poll();
     while (!highestLcsScoreHeap.isEmpty() && top != null && top.getChildrenLCSScore() > 0) {
       if (top.childrenCountMatchingAllSelectors() > 2) {
@@ -158,16 +187,15 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
                       esr.getSelectedProperties(ANY_LINK_WITH_HREF_SELECTOR).get(0);
                   final Tuple2<FastMoney, FastMoney> priceProperties =
                       getOriginalAndSalePrice(esr.getSelectedProperties(ANY_PRICE_SELECTOR));
-                  final List<String> imageUrls =
-                      esr.getSelectedProperties(IMAGE_SELECTOR)
-                          .stream()
-                          .map(p -> (String) p.getProperty(IMAGE_SRC_URL))
-                          .collect(Collectors.toList());
+                  final Tuple2<List<String>, List<String>> imageUrls =
+                      getProductImages(esr.getSelectedProperties(IMAGE_SELECTOR),
+                          html.getImageSrcDimensionMap());
                   final List<NodeProperties> textNodeProperties =
                       esr.getSelectedProperties(TEXT_NODE_SELECTOR);
                   final String productTitle = getProductTitle(textNodeProperties, urlProperties);
                   return new ProductSummary((String) urlProperties.getProperty(URL_PROPERTY),
-                      productTitle, imageUrls, priceProperties._1(), priceProperties._2());
+                      productTitle, imageUrls._1(), imageUrls._2(), priceProperties._1(),
+                      priceProperties._2());
                 })
                 .collect(Collectors.toList())));
     return results;
@@ -180,7 +208,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
 //        ResourceUtils.readFileContents("dswdummy.html"),
 //        "https://www.chubbiesshorts.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries = summaryCrawler.crawlUrl(
-        "https://www.dsw.com/en/us/brands/steve-madden/N-1z141c7",
+        "https://www.lillypulitzer.com/prints/suite-views/",
         new MapCrawlContext(null));
     productSummaries.forEach(ps -> System.out.println(ps.toString()));
   }

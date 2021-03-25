@@ -4,7 +4,8 @@ import com.rocinante.shopdirectory.crawlers.CrawlContext;
 import com.rocinante.shopdirectory.crawlers.Crawler;
 import com.rocinante.shopdirectory.crawlers.CrawlerType;
 import com.rocinante.shopdirectory.crawlers.MapCrawlContext;
-import com.rocinante.shopdirectory.util.RenderedHtmlProvider;
+import com.rocinante.shopdirectory.html.RenderedHtml;
+import com.rocinante.shopdirectory.html.RenderedHtmlProvider;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
@@ -64,13 +65,14 @@ public class CategoryCrawler implements Crawler<List<Category>> {
 
   @Override
   public List<Category> crawlUrl(String url, CrawlContext crawlContext) {
-    return crawlHtml(renderedHtmlProvider.downloadHtml(url), url, new MapCrawlContext(null));
+    return crawlHtml(renderedHtmlProvider.downloadHtml(url)
+        , url, new MapCrawlContext(null));
 
   }
 
   @Override
-  public List<Category> crawlHtml(String html, String baseUrl, CrawlContext crawlContext) {
-    final Document doc = Jsoup.parse(html, baseUrl);
+  public List<Category> crawlHtml(RenderedHtml html, String baseUrl, CrawlContext crawlContext) {
+    final Document doc = Jsoup.parse(html.getHtml(), baseUrl);
     return bfs(doc);
   }
 
@@ -81,7 +83,8 @@ public class CategoryCrawler implements Crawler<List<Category>> {
 //    Document doc = Jsoup.connect("https://www.dsw.com/").get();
 
     CategoryCrawler categoryCrawler = new CategoryCrawler(new RenderedHtmlProvider());
-    List<Category> categories = categoryCrawler.crawlUrl("https://www.dsw.com/",
+    List<Category> categories = categoryCrawler.crawlUrl(
+        "http://afterpay.com/",
         new MapCrawlContext(null));
     categories.forEach(c -> System.out.println(c.toString()));
   }

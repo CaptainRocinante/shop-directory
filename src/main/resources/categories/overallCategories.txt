@@ -41,3 +41,5 @@ Office
 Gear
 Sports
 Shop
+Deals
+Popular

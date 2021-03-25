@@ -1,7 +1,15 @@
-package com.rocinante.shopdirectory.util;
+package com.rocinante.shopdirectory.html;
 
+import com.rocinante.shopdirectory.util.UserAgentProvider;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -60,7 +68,27 @@ public class RenderedHtmlProvider {
     }
   }
 
-  public String downloadHtml(String url) {
+  public Map<String, int[]> getImageSrcToRenderedDimensionsMap(WebDriver webDriver) {
+    final List<WebElement> img = webDriver.findElements(By.tagName("img"));
+    return img
+        .stream()
+        .filter(webElement -> {
+          final String src = webElement.getAttribute("src");
+          return src != null && !src.isBlank();
+        })
+        .collect(Collectors.toMap(we -> we.getAttribute("src"), we -> {
+          final Dimension d = we.getSize();
+          return new int[] {d.height, d.width};
+        }, (v1, v2) -> {
+          if (v1[0] * v1[1] >= v2[0] * v2[1]) {
+            return v1;
+          } else {
+            return v2;
+          }
+        }));
+  }
+
+  public RenderedHtml downloadHtml(String url) {
     final WebDriver webDriver = initWebDriver();
     webDriver.get(url);
     try {
@@ -69,9 +97,10 @@ public class RenderedHtmlProvider {
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
-    final String pageSource = webDriver.getPageSource();
+    final RenderedHtml renderedHtml = new RenderedHtml(webDriver.getPageSource(),
+        getImageSrcToRenderedDimensionsMap(webDriver));
     webDriver.close();
     webDriver.quit();
-    return pageSource;
+    return renderedHtml;
   }
 }
