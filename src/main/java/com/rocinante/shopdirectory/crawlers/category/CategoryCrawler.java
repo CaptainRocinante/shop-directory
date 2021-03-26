@@ -84,7 +84,7 @@ public class CategoryCrawler implements Crawler<List<Category>> {
 
     CategoryCrawler categoryCrawler = new CategoryCrawler(new RenderedHtmlProvider());
     List<Category> categories = categoryCrawler.crawlUrl(
-        "http://afterpay.com/",
+        "https://www.goat.com/",
         new MapCrawlContext(null));
     categories.forEach(c -> System.out.println(c.toString()));
   }

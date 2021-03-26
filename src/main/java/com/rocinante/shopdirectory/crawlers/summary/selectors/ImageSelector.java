@@ -3,15 +3,18 @@ package com.rocinante.shopdirectory.crawlers.summary.selectors;
 import com.rocinante.shopdirectory.selectors.NodeNotSelected;
 import com.rocinante.shopdirectory.selectors.NodeProperties;
 import com.rocinante.shopdirectory.selectors.NodeSelector;
+import com.rocinante.shopdirectory.util.HtmlUtils;
 import io.vavr.control.Either;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
 public class ImageSelector implements NodeSelector {
-  public static final String IMAGE_SRC_URL = "image_url";
+  public static final String IMAGE_SRC_URLS = "image_urls";
 
   @Override
   public Either<NodeNotSelected, NodeProperties> select(Node node) {
@@ -19,9 +22,18 @@ public class ImageSelector implements NodeSelector {
       return Either.left(NodeNotSelected.getInstance());
     }
     final Element element = (Element) node;
-    if (element.tagName().equals("img")) {
-      Map<String, Object> properties = new HashMap<>();
-      properties.put(IMAGE_SRC_URL, element.attr("abs:src"));
+    if (element.tagName().equals("img"))  {
+      final Map<String, Object> properties = new HashMap<>();
+      final List<String> imageUrls = new LinkedList<>();
+      final String src = element.attr("abs:src");
+      final String srcSet = element.attr("abs:srcset");
+      if (!src.isBlank()) {
+        imageUrls.add(src);
+      }
+      if (!srcSet.isBlank()) {
+        imageUrls.add(HtmlUtils.extractImageUrlsFromSrcSet(srcSet).get(0));
+      }
+      properties.put(IMAGE_SRC_URLS, imageUrls);
       return Either.right(new NodeProperties(element, properties));
     } else {
       return Either.left(NodeNotSelected.getInstance());

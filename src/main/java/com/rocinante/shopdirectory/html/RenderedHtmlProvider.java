@@ -1,6 +1,11 @@
 package com.rocinante.shopdirectory.html;
 
+import com.rocinante.shopdirectory.util.HtmlUtils;
 import com.rocinante.shopdirectory.util.UserAgentProvider;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -68,24 +73,40 @@ public class RenderedHtmlProvider {
     }
   }
 
-  public Map<String, int[]> getImageSrcToRenderedDimensionsMap(WebDriver webDriver) {
+  private Map<String, int[]> getImagePathsToRenderedDimensionsMap(WebDriver webDriver) {
     final List<WebElement> img = webDriver.findElements(By.tagName("img"));
-    return img
-        .stream()
-        .filter(webElement -> {
+    final Map<String, int[]> result = new HashMap<>();
+    img.forEach(
+        webElement -> {
+          final int height = webElement.getSize().height;
+          final int width = webElement.getSize().width;
+          final int[] dimensions = new int[] {height, width};
+          final String srcSet = webElement.getAttribute("srcset");
           final String src = webElement.getAttribute("src");
-          return src != null && !src.isBlank();
-        })
-        .collect(Collectors.toMap(we -> we.getAttribute("src"), we -> {
-          final Dimension d = we.getSize();
-          return new int[] {d.height, d.width};
-        }, (v1, v2) -> {
-          if (v1[0] * v1[1] >= v2[0] * v2[1]) {
-            return v1;
-          } else {
-            return v2;
+          if (srcSet != null && !srcSet.isBlank()) {
+            HtmlUtils
+                .extractImageUrlsFromSrcSet(srcSet)
+                .stream()
+                .map(
+                    s -> {
+                      try {
+                        return new URI(s);
+                      } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                      }
+                    })
+                .forEach(uri -> result.put(HtmlUtils.normalizedUriRepresentation(uri), dimensions));
           }
-        }));
+          if (src != null && !src.isBlank()) {
+            try {
+              final URI uri = new URI(src);
+              result.put(HtmlUtils.normalizedUriRepresentation(uri), dimensions);
+            } catch (URISyntaxException e) {
+              throw new RuntimeException(e);
+            }
+          }
+        });
+    return result;
   }
 
   public RenderedHtml downloadHtml(String url) {
@@ -97,8 +118,9 @@ public class RenderedHtmlProvider {
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
+    final Map<String, int[]> imageDimensionsMap = getImagePathsToRenderedDimensionsMap(webDriver);
     final RenderedHtml renderedHtml = new RenderedHtml(webDriver.getPageSource(),
-        getImageSrcToRenderedDimensionsMap(webDriver));
+        imageDimensionsMap);
     webDriver.close();
     webDriver.quit();
     return renderedHtml;
