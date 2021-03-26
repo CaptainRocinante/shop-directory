@@ -21,33 +21,12 @@ import org.jsoup.nodes.Node;
 
 public class AnyPriceSelector implements NodeSelector {
   public static final String LIST_MONEY_OBJECT_PROPERTY = "list_money";
-  private static final Pattern PRICE_PATTERN = Pattern.compile("(USD|\\$)\\s*(\\d{1,3}(?:["
+  public static final Pattern PRICE_PATTERN = Pattern.compile("(USD|\\$)\\s*(\\d{1,3}(?:["
       + ".,]\\d{3})*(?:[.,]\\d{2})?)|(\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})?)\\s*?(USD|\\$)");
-  private static final Pattern PRICE_RANGE_PATTERN = Pattern.compile(
-      String.format("((%s){1})\\s*[-]\\s*((%s){1})", PRICE_PATTERN.pattern(),
-          PRICE_PATTERN.pattern()));
+
 
   @Override
   public Either<NodeNotSelected, NodeProperties> select(Node node) {
-//    final Matcher priceRangeMatcher = PRICE_RANGE_PATTERN.matcher(element.text());
-//    if (priceRangeMatcher.matches()) {
-//      final String beginningRangePrice = priceRangeMatcher.group(1);
-//      final Matcher parsedPrice = PRICE_PATTERN.matcher(beginningRangePrice);
-//      final Map<String, Object> properties = new HashMap<>();
-//      if (!parsedPrice.matches()) {
-//        throw new IllegalStateException();
-//      }
-//      final String amount = parsedPrice.group(2) != null ? parsedPrice.group(2) :
-//          parsedPrice.group(3);
-//      final MonetaryAmount monetaryAmount = Monetary
-//          .getDefaultAmountFactory()
-//          .setCurrency("USD")
-//          .setNumber(Double.parseDouble(amount.replace(",", "")))
-//          .create();
-//      properties.put(LIST_MONEY_OBJECT_PROPERTY,
-//          Collections.singletonList(FastMoney.from(monetaryAmount)));
-//      return Either.right(new ElementProperties(element, properties));
-//    }
     if (!(node instanceof Element)) {
       return Either.left(NodeNotSelected.getInstance());
     }

@@ -1,5 +1,6 @@
 package com.rocinante.shopdirectory.crawlers.summary;
 
+import com.google.common.collect.ObjectArrays;
 import com.rocinante.shopdirectory.selectors.NodeSelector;
 import com.rocinante.shopdirectory.util.Combinatorics;
 import com.rocinante.shopdirectory.lcs.DelimiterLCSToken;
@@ -72,7 +73,7 @@ public class SubtreeTraversalResult {
         .reduce(nodeSelectionResult, NodeSelectionResult::merge);
   }
 
-  private List<SubtreeTraversalResult> filterChildrenWithSelectors(NodeSelector... selectors) {
+  private List<SubtreeTraversalResult> filterChildrenWithRequiredSelectors(NodeSelector... selectors) {
     return getChildResults()
         .stream()
         .filter(child ->
@@ -85,15 +86,18 @@ public class SubtreeTraversalResult {
 
   public SubtreeTraversalResult(Node root,
       List<SubtreeTraversalResult> subtreeTraversalResults,
-      NodeSelector[] nodeSelectors) {
+      NodeSelector[] requiredNodeSelectors,
+      NodeSelector[] optionalNodeSelectors) {
     this.rootNode = root;
     this.childResults = subtreeTraversalResults;
     this.serialized = tokenize();
     this.childrenLCSScore =
         computeLCSScore(childResults.stream().map(SubtreeTraversalResult::getSerialized).collect(
             Collectors.toList()));
-    this.nodeSelectionResult = createElementSelectionResult(nodeSelectors);
-    this.childrenWithAllSelectors = filterChildrenWithSelectors(nodeSelectors);
+    this.nodeSelectionResult = createElementSelectionResult(
+        ObjectArrays.concat(requiredNodeSelectors, optionalNodeSelectors, NodeSelector.class)
+    );
+    this.childrenWithAllSelectors = filterChildrenWithRequiredSelectors(requiredNodeSelectors);
   }
 
   public List<LCSToken> getSerialized() {
