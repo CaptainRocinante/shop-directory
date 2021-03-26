@@ -55,14 +55,14 @@ public class RenderedHtmlProvider {
       long currentScrollTo = initScrollTo + scrollInterval;
       do {
         System.out.printf("Scrolling to %s\n", currentScrollTo);
-        Thread.sleep(100L);
+        Thread.sleep(1000L);
         js.executeScript(String.format("window.scrollTo(0, %s);", currentScrollTo));
         currentScrollTo = currentScrollTo + scrollInterval;
       } while (currentScrollTo < scrollTo && scrollInterval > 0);
 
       initScrollTo = scrollTo;
       scrollTo = (long) js.executeScript("return document.body.scrollHeight;");
-      Thread.sleep(200L);
+      Thread.sleep(2000L);
       ++currentScrollCount;
 
       if (scrollTo != initScrollTo) {

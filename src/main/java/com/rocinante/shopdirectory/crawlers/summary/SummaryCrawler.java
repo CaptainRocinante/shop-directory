@@ -242,7 +242,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
 //        ResourceUtils.readFileContents("dswdummy.html"),
 //        "https://www.chubbiesshorts.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries = summaryCrawler.crawlUrl(
-        "https://www.goat.com/sneakers/travis-scott-x-air-max-270-react-ct2864-200",
+        "https://www.goat.com/collections/designer-sneakers-d99c9869-a97a-44df-ace5-38e4f1d21574",
         new MapCrawlContext(null));
     productSummaries.forEach(ps -> System.out.println(ps.toString()));
   }
