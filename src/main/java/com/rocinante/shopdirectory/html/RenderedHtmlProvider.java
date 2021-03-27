@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -14,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+@Slf4j
 public class RenderedHtmlProvider {
   private final UserAgentProvider userAgentProvider;
 
@@ -50,7 +52,7 @@ public class RenderedHtmlProvider {
       long scrollInterval = (scrollTo - initScrollTo) / 10;
       long currentScrollTo = initScrollTo + scrollInterval;
       do {
-        System.out.printf("Scrolling to %s\n", currentScrollTo);
+        log.info("Scrolling to {}", currentScrollTo);
         Thread.sleep(1000L);
         js.executeScript(String.format("window.scrollTo(0, %s);", currentScrollTo));
         currentScrollTo = currentScrollTo + scrollInterval;

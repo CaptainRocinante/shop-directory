@@ -3,9 +3,11 @@ package com.rocinante.shopdirectory.crawlers.category;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
+@Slf4j
 class CategorySiblings {
   private final CategoryScorer categoryScorer;
   private final List<Element> siblings;
@@ -27,9 +29,9 @@ class CategorySiblings {
 
   public void printAllLinks() {
     if (getLinks().size() != 0) {
-      System.out.printf(
-          "\n-------------------\nPrinting a set of Sibling links\n-------------------\nScore = "
-              + "%d\n",
+      log.info("\n-------------------\nPrinting a set of Sibling "
+              + "links\n-------------------\nScore = "
+              + "{}\n",
           categoryScore());
     }
     getLinks().forEach(l -> System.out.println("Link: " + l));
