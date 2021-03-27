@@ -22,7 +22,7 @@ public class ImageSelector implements NodeSelector {
       return Either.left(NodeNotSelected.getInstance());
     }
     final Element element = (Element) node;
-    if (element.tagName().equals("img"))  {
+    if (element.tagName().equals("img")) {
       final Map<String, Object> properties = new HashMap<>();
       final List<String> imageUrls = new LinkedList<>();
       final String src = element.attr("abs:src");

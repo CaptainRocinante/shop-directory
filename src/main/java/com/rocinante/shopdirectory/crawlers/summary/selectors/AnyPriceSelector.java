@@ -21,9 +21,10 @@ import org.jsoup.nodes.Node;
 
 public class AnyPriceSelector implements NodeSelector {
   public static final String LIST_MONEY_OBJECT_PROPERTY = "list_money";
-  public static final Pattern PRICE_PATTERN = Pattern.compile("(USD|\\$)\\s*(\\d{1,3}(?:["
-      + ".,]\\d{3})*(?:[.,]\\d{2})?)|(\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})?)\\s*?(USD|\\$)");
-
+  public static final Pattern PRICE_PATTERN =
+      Pattern.compile(
+          "(USD|\\$)\\s*(\\d{1,3}(?:["
+              + ".,]\\d{3})*(?:[.,]\\d{2})?)|(\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})?)\\s*?(USD|\\$)");
 
   @Override
   public Either<NodeNotSelected, NodeProperties> select(Node node) {
@@ -39,14 +40,14 @@ public class AnyPriceSelector implements NodeSelector {
       final Map<String, Object> properties = new HashMap<>();
       final List<FastMoney> allMoney = new ArrayList<>();
 
-      matchResults
-          .forEach(result -> {
+      matchResults.forEach(
+          result -> {
             final String amount = result.group(2) != null ? result.group(2) : result.group(3);
-            final MonetaryAmount monetaryAmount = Monetary
-                .getDefaultAmountFactory()
-                .setCurrency("USD")
-                .setNumber(Double.parseDouble(amount.replace(",", "")))
-                .create();
+            final MonetaryAmount monetaryAmount =
+                Monetary.getDefaultAmountFactory()
+                    .setCurrency("USD")
+                    .setNumber(Double.parseDouble(amount.replace(",", "")))
+                    .create();
             allMoney.add(FastMoney.from(monetaryAmount));
           });
       properties.put(LIST_MONEY_OBJECT_PROPERTY, allMoney);

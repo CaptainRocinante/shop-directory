@@ -7,8 +7,7 @@ public class NodeProperties {
   private final Node node;
   private Map<String, Object> selectedProperties;
 
-  public NodeProperties(Node node,
-      Map<String, Object> selectedProperties) {
+  public NodeProperties(Node node, Map<String, Object> selectedProperties) {
     this.node = node;
     this.selectedProperties = selectedProperties;
   }

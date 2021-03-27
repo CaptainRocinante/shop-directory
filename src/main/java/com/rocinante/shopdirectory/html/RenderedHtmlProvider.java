@@ -18,7 +18,7 @@ public class RenderedHtmlProvider {
   private final UserAgentProvider userAgentProvider;
 
   private WebDriver initWebDriver() {
-    String chromeDriverPath = "/usr/local/bin/chromedriver" ;
+    String chromeDriverPath = "/usr/local/bin/chromedriver";
     System.setProperty("webdriver.chrome.driver", chromeDriverPath);
     ChromeOptions options = new ChromeOptions();
     options.addArguments(
@@ -45,8 +45,8 @@ public class RenderedHtmlProvider {
     long initScrollTo = 0;
     long scrollTo = (long) js.executeScript("return document.body.scrollHeight;");
 
-    while (currentScrollCount < maxScrollBudget &&
-        (scrollTo > initScrollTo || currentScrollJitter < scrollJitterBudget)) {
+    while (currentScrollCount < maxScrollBudget
+        && (scrollTo > initScrollTo || currentScrollJitter < scrollJitterBudget)) {
       long scrollInterval = (scrollTo - initScrollTo) / 10;
       long currentScrollTo = initScrollTo + scrollInterval;
       do {
@@ -80,9 +80,7 @@ public class RenderedHtmlProvider {
           final String srcSet = webElement.getAttribute("srcset");
           final String src = webElement.getAttribute("src");
           if (srcSet != null && !srcSet.isBlank()) {
-            HtmlUtils
-                .extractImageUrlsFromSrcSet(srcSet)
-                .stream()
+            HtmlUtils.extractImageUrlsFromSrcSet(srcSet).stream()
                 .map(
                     s -> {
                       try {
@@ -115,8 +113,8 @@ public class RenderedHtmlProvider {
       throw new RuntimeException(e);
     }
     final Map<String, int[]> imageDimensionsMap = getImagePathsToRenderedDimensionsMap(webDriver);
-    final RenderedHtml renderedHtml = new RenderedHtml(webDriver.getPageSource(),
-        imageDimensionsMap);
+    final RenderedHtml renderedHtml =
+        new RenderedHtml(webDriver.getPageSource(), imageDimensionsMap);
     webDriver.close();
     webDriver.quit();
     return renderedHtml;

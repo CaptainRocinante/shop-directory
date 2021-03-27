@@ -8,11 +8,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
 public class CategorySiblingsFactory {
-  public static List<CategorySiblings> createSiblingsFromChildNodes(List<Node> childNodes,
-      CategoryScorer categoryScorer) {
+  public static List<CategorySiblings> createSiblingsFromChildNodes(
+      List<Node> childNodes, CategoryScorer categoryScorer) {
     Map<String, CategorySiblings> sameTagSiblings = new HashMap<>();
-    childNodes
-        .stream()
+    childNodes.stream()
         .filter(x -> x instanceof Element)
         .map(x -> (Element) x)
         .forEach(

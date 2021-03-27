@@ -28,8 +28,8 @@ public class CategoryCrawler implements Crawler<List<Category>> {
     final CategoryScorer categoryScorer = new CategoryScorer();
     final Queue<CategorySiblings> bfsQueue =
         new LinkedList<>(
-            CategorySiblingsFactory
-                .createSiblingsFromChildNodes(document.childNodes(), categoryScorer));
+            CategorySiblingsFactory.createSiblingsFromChildNodes(
+                document.childNodes(), categoryScorer));
     final PriorityQueue<CategorySiblings> categorySiblingsCategoryScorePriorityQueue =
         new PriorityQueue<>((o1, o2) -> o2.categoryScore() - o1.categoryScore());
 
@@ -52,12 +52,9 @@ public class CategoryCrawler implements Crawler<List<Category>> {
       CategorySiblings current = categorySiblingsCategoryScorePriorityQueue.poll();
       if (current.categoryScore() > 3) {
         allCategories.addAll(
-            current
-                .getLinks()
-                .stream()
+            current.getLinks().stream()
                 .map(element -> new Category(element.attr("abs:href"), element.text()))
-                .collect(Collectors.toList())
-        );
+                .collect(Collectors.toList()));
       }
       current.printAllLinks();
     }
@@ -71,9 +68,7 @@ public class CategoryCrawler implements Crawler<List<Category>> {
 
   @Override
   public List<Category> crawlUrl(String url, CrawlContext crawlContext) {
-    return crawlHtml(renderedHtmlProvider.downloadHtml(url)
-        , url, new MapCrawlContext(null));
-
+    return crawlHtml(renderedHtmlProvider.downloadHtml(url), url, new MapCrawlContext(null));
   }
 
   @Override
@@ -83,15 +78,14 @@ public class CategoryCrawler implements Crawler<List<Category>> {
   }
 
   public static void main(String[] args) throws InterruptedException {
-//    Jsoup.parse(new File(
-//            CategoryCrawler.class.getClassLoader().getResource("nestnewyork.html").getFile()),
-//        "utf-8");
-//    Document doc = Jsoup.connect("https://www.dsw.com/").get();
+    //    Jsoup.parse(new File(
+    //            CategoryCrawler.class.getClassLoader().getResource("nestnewyork.html").getFile()),
+    //        "utf-8");
+    //    Document doc = Jsoup.connect("https://www.dsw.com/").get();
 
     CategoryCrawler categoryCrawler = new CategoryCrawler(new RenderedHtmlProvider());
-    List<Category> categories = categoryCrawler.crawlUrl(
-        "https://www.adidas.com/",
-        new MapCrawlContext(null));
+    List<Category> categories =
+        categoryCrawler.crawlUrl("https://www.adidas.com/", new MapCrawlContext(null));
     categories.forEach(c -> System.out.println(c.toString()));
   }
 }

@@ -5,8 +5,7 @@ import java.util.Objects;
 public class NodeNotSelected {
   private static NodeNotSelected instance;
 
-  private NodeNotSelected() {
-  }
+  private NodeNotSelected() {}
 
   public static NodeNotSelected getInstance() {
     if (instance == null) {

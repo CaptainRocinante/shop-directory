@@ -35,13 +35,16 @@ public class NodeSelectionResult {
   }
 
   public void addNodeToAllSelectorsMatched(Node node) {
-    nodeSelectorMap.keySet().forEach(nodeSelector -> {
-      final Either<NodeNotSelected, NodeProperties> selectionResult =
-          nodeSelector.select(node);
-      if (selectionResult.isRight()) {
-        nodeSelectorMap.get(nodeSelector).add(selectionResult.get());
-      }
-    });
+    nodeSelectorMap
+        .keySet()
+        .forEach(
+            nodeSelector -> {
+              final Either<NodeNotSelected, NodeProperties> selectionResult =
+                  nodeSelector.select(node);
+              if (selectionResult.isRight()) {
+                nodeSelectorMap.get(nodeSelector).add(selectionResult.get());
+              }
+            });
   }
 
   public boolean containsSelectorItems(NodeSelector nodeSelector) {

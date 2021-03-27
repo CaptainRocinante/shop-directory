@@ -17,7 +17,7 @@ public class Combinatorics {
 
   public static List<int[]> generateNcR(int n, int r) {
     List<int[]> combinations = new ArrayList<>();
-    helper(combinations, new int[r], 0, n-1, 0);
+    helper(combinations, new int[r], 0, n - 1, 0);
     return combinations;
   }
 }

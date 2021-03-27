@@ -25,42 +25,41 @@ public class CategoryScorer {
   private final PorterStemmer porterStemmer;
   private final SimpleTokenizer tokenizer;
 
-
   private List<String> parseAllCategories() {
-    return CATEGORY_FILES
-        .stream()
-        .map(cFile -> {
-          try {
-            return new File(
-                Objects.requireNonNull(getClass().getClassLoader().getResource(cFile)).toURI());
-          } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-          }
-        })
-        .map(f -> {
-          try {
-            return Files.readAllLines(f.toPath(), Charset.defaultCharset());
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
-        })
+    return CATEGORY_FILES.stream()
+        .map(
+            cFile -> {
+              try {
+                return new File(
+                    Objects.requireNonNull(getClass().getClassLoader().getResource(cFile)).toURI());
+              } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+              }
+            })
+        .map(
+            f -> {
+              try {
+                return Files.readAllLines(f.toPath(), Charset.defaultCharset());
+              } catch (IOException e) {
+                throw new RuntimeException(e);
+              }
+            })
         .flatMap(List::stream)
         .collect(Collectors.toList());
   }
 
-
   public CategoryScorer() {
     this.porterStemmer = new PorterStemmer();
     this.tokenizer = SimpleTokenizer.INSTANCE;
-    this.categories = ImmutableSet.copyOf(new ImmutableSet.Builder<String>()
-        .addAll(parseAllCategories())
-        .build()
-        .stream()
-        .map(tokenizer::tokenize)
-        .map(s -> String.join(" ", s))
-        .map(String::toLowerCase)
-        .map(porterStemmer::stem)
-        .collect(Collectors.toSet()));
+    this.categories =
+        ImmutableSet.copyOf(
+            new ImmutableSet.Builder<String>()
+                .addAll(parseAllCategories()).build().stream()
+                    .map(tokenizer::tokenize)
+                    .map(s -> String.join(" ", s))
+                    .map(String::toLowerCase)
+                    .map(porterStemmer::stem)
+                    .collect(Collectors.toSet()));
   }
 
   public int scoreText(String text) {
@@ -71,9 +70,7 @@ public class CategoryScorer {
   }
 
   public int score(CategorySiblings categorySiblings) {
-    return categorySiblings
-        .getLinks()
-        .stream()
+    return categorySiblings.getLinks().stream()
         .map(Element::text)
         .reduce(0, (sum, text) -> sum + scoreText(text), Integer::sum);
   }

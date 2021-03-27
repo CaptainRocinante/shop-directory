@@ -6,12 +6,10 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 public class MapCrawlContext implements CrawlContext {
-  private final Map<String,Object> variables;
+  private final Map<String, Object> variables;
 
   public MapCrawlContext(@Nullable Map<String, Object> variables) {
-    this.variables = (variables == null?
-        new LinkedHashMap<>(10) :
-        new LinkedHashMap<>(variables));
+    this.variables = (variables == null ? new LinkedHashMap<>(10) : new LinkedHashMap<>(variables));
   }
 
   @Override

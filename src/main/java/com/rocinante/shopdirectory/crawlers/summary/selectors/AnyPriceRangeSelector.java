@@ -34,13 +34,13 @@ public class AnyPriceRangeSelector implements NodeSelector {
     if (!parsedPrice.matches()) {
       throw new IllegalStateException();
     }
-    final String amount = parsedPrice.group(2) != null ? parsedPrice.group(2) :
-        parsedPrice.group(3);
-    final MonetaryAmount monetaryAmount = Monetary
-        .getDefaultAmountFactory()
-        .setCurrency("USD")
-        .setNumber(Double.parseDouble(amount.replace(",", "")))
-        .create();
+    final String amount =
+        parsedPrice.group(2) != null ? parsedPrice.group(2) : parsedPrice.group(3);
+    final MonetaryAmount monetaryAmount =
+        Monetary.getDefaultAmountFactory()
+            .setCurrency("USD")
+            .setNumber(Double.parseDouble(amount.replace(",", "")))
+            .create();
     return FastMoney.from(monetaryAmount);
   }
 
@@ -55,8 +55,8 @@ public class AnyPriceRangeSelector implements NodeSelector {
       final FastMoney beginningRangePrice = getFastMoney(priceRangeMatcher.group(1));
       final FastMoney endingRangePrice = getFastMoney(priceRangeMatcher.group(7));
       final Map<String, Object> properties = new HashMap<>();
-      properties.put(RANGE_MONEY_OBJECT_PROPERTY,
-          Range.closed(beginningRangePrice, endingRangePrice));
+      properties.put(
+          RANGE_MONEY_OBJECT_PROPERTY, Range.closed(beginningRangePrice, endingRangePrice));
       return Either.right(new NodeProperties(node, properties));
     } else {
       return Either.left(NodeNotSelected.getInstance());

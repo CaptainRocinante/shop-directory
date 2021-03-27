@@ -10,7 +10,6 @@ public class Category {
   private final String categoryUrl;
   private final String categoryName;
 
-
   @Override
   public int hashCode() {
     return Objects.hash(categoryUrl);
@@ -18,7 +17,7 @@ public class Category {
 
   @Override
   public boolean equals(Object obj) {
-    return obj instanceof Category &&
-        (((Category) obj).categoryUrl.equalsIgnoreCase(this.categoryUrl));
+    return obj instanceof Category
+        && (((Category) obj).categoryUrl.equalsIgnoreCase(this.categoryUrl));
   }
 }

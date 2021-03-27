@@ -32,12 +32,10 @@ public class SubtreeTraversalResult {
     if (!childResults.isEmpty()) {
       tokens.add(new DelimiterLCSToken());
       tokens.addAll(
-          childResults
-              .stream()
+          childResults.stream()
               .map(SubtreeTraversalResult::getSerialized)
               .flatMap(Collection::stream)
-              .collect(Collectors.toList())
-      );
+              .collect(Collectors.toList()));
       tokens.add(new DelimiterLCSToken());
     }
     return tokens;
@@ -62,29 +60,27 @@ public class SubtreeTraversalResult {
   }
 
   private NodeSelectionResult createElementSelectionResult(NodeSelector... nodeSelectors) {
-    final NodeSelectionResult nodeSelectionResult =
-        new NodeSelectionResult(nodeSelectors);
+    final NodeSelectionResult nodeSelectionResult = new NodeSelectionResult(nodeSelectors);
     nodeSelectionResult.addNodeToAllSelectorsMatched(rootNode);
 
-    return this
-        .childResults
-        .stream()
+    return this.childResults.stream()
         .map(SubtreeTraversalResult::getNodeSelectionResult)
         .reduce(nodeSelectionResult, NodeSelectionResult::merge);
   }
 
-  private List<SubtreeTraversalResult> filterChildrenWithRequiredSelectors(NodeSelector... selectors) {
-    return getChildResults()
-        .stream()
-        .filter(child ->
-            Arrays
-                .stream(selectors)
-                .allMatch(selector ->
-                    child.getNodeSelectionResult().containsSelectorItems(selector)))
+  private List<SubtreeTraversalResult> filterChildrenWithRequiredSelectors(
+      NodeSelector... selectors) {
+    return getChildResults().stream()
+        .filter(
+            child ->
+                Arrays.stream(selectors)
+                    .allMatch(
+                        selector -> child.getNodeSelectionResult().containsSelectorItems(selector)))
         .collect(Collectors.toList());
   }
 
-  public SubtreeTraversalResult(Node root,
+  public SubtreeTraversalResult(
+      Node root,
       List<SubtreeTraversalResult> subtreeTraversalResults,
       NodeSelector[] requiredNodeSelectors,
       NodeSelector[] optionalNodeSelectors) {
@@ -92,11 +88,13 @@ public class SubtreeTraversalResult {
     this.childResults = subtreeTraversalResults;
     this.serialized = tokenize();
     this.childrenLCSScore =
-        computeLCSScore(childResults.stream().map(SubtreeTraversalResult::getSerialized).collect(
-            Collectors.toList()));
-    this.nodeSelectionResult = createElementSelectionResult(
-        ObjectArrays.concat(requiredNodeSelectors, optionalNodeSelectors, NodeSelector.class)
-    );
+        computeLCSScore(
+            childResults.stream()
+                .map(SubtreeTraversalResult::getSerialized)
+                .collect(Collectors.toList()));
+    this.nodeSelectionResult =
+        createElementSelectionResult(
+            ObjectArrays.concat(requiredNodeSelectors, optionalNodeSelectors, NodeSelector.class));
     this.childrenWithAllSelectors = filterChildrenWithRequiredSelectors(requiredNodeSelectors);
   }
 

@@ -9,8 +9,11 @@ import org.apache.commons.io.FileUtils;
 public class ResourceUtils {
   public static String readFileContents(String resourcesFilePath) {
     final String data;
-    final File file = new File(
-        Objects.requireNonNull(ResourceUtils.class.getClassLoader().getResource(resourcesFilePath)).getFile());
+    final File file =
+        new File(
+            Objects.requireNonNull(
+                    ResourceUtils.class.getClassLoader().getResource(resourcesFilePath))
+                .getFile());
     try {
       data = FileUtils.readFileToString(file, "UTF-8");
     } catch (IOException e) {
