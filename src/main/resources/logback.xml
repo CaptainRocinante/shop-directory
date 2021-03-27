@@ -1,4 +1,9 @@
 <configuration>
+  <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+    <!-- reset all previous level configurations of all j.u.l. loggers -->
+    <resetJUL>true</resetJUL>
+  </contextListener>
+
   # Console appender
   <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
     <layout class="ch.qos.logback.classic.PatternLayout">
@@ -21,4 +26,14 @@
     <appender-ref ref="stdout" />
     <appender-ref ref="fout" />
   </root>
+
+  # Override log level for specified packages
+  <logger name="org.javamoney.moneta.FastMoney" level="ERROR">
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="fout"/>
+  </logger>
+  <logger name="org.javamoney.moneta.DefaultMonetaryContextFactory" level="ERROR">
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="fout"/>
+  </logger>
 </configuration>
