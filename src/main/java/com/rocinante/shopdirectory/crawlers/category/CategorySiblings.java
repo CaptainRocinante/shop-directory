@@ -34,7 +34,7 @@ class CategorySiblings {
               + "{}\n",
           categoryScore());
     }
-    getLinks().forEach(l -> System.out.println("Link: " + l));
+    getLinks().forEach(l -> log.info("Link {}", l));
   }
 
   public List<CategorySiblings> getChildren() {

@@ -14,9 +14,11 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+@Slf4j
 public class CategoryCrawler implements Crawler<List<Category>> {
   private final RenderedHtmlProvider renderedHtmlProvider;
 
@@ -33,18 +35,14 @@ public class CategoryCrawler implements Crawler<List<Category>> {
     final PriorityQueue<CategorySiblings> categorySiblingsCategoryScorePriorityQueue =
         new PriorityQueue<>((o1, o2) -> o2.categoryScore() - o1.categoryScore());
 
-    int level = 0;
     while (!bfsQueue.isEmpty()) {
       int currentLevelCount = bfsQueue.size();
-
-      System.out.println("List for level " + level + " of size " + currentLevelCount);
 
       for (int i = 0; i < currentLevelCount; ++i) {
         CategorySiblings current = bfsQueue.poll();
         categorySiblingsCategoryScorePriorityQueue.add(current);
         bfsQueue.addAll(current.getChildren());
       }
-      ++level;
     }
 
     final Set<Category> allCategories = new HashSet<>();
@@ -86,6 +84,6 @@ public class CategoryCrawler implements Crawler<List<Category>> {
     CategoryCrawler categoryCrawler = new CategoryCrawler(new RenderedHtmlProvider());
     List<Category> categories =
         categoryCrawler.crawlUrl("https://www.adidas.com/", new MapCrawlContext(null));
-    categories.forEach(c -> System.out.println(c.toString()));
+    categories.forEach(c -> log.info("Category {}", c.toString()));
   }
 }

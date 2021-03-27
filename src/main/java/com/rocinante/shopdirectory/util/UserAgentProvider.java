@@ -47,9 +47,4 @@ public class UserAgentProvider {
   public String getRandomUserAgent() {
     return userAgents.get(random.nextInt(userAgents.size())).trim();
   }
-
-  public static void main(String[] args) {
-    UserAgentProvider userAgentProvider = new UserAgentProvider();
-    System.out.print(userAgentProvider.getRandomUserAgent());
-  }
 }

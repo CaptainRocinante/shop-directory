@@ -40,10 +40,12 @@ import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.javamoney.moneta.FastMoney;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Node;
 
+@Slf4j
 public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   public static final AnyLinkWithHrefTextSelector ANY_LINK_WITH_HREF_SELECTOR =
       new AnyLinkWithHrefTextSelector();
@@ -235,7 +237,6 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   @Override
   public List<ProductSummary> crawlHtml(
       RenderedHtml html, String baseUrl, CrawlContext crawlContext) {
-    //    System.out.println(html);
     final PriorityQueue<SubtreeTraversalResult> highestLcsScoreHeap =
         new PriorityQueue<>((r1, r2) -> r2.getChildrenLCSScore() - r1.getChildrenLCSScore());
     final List<SubtreeTraversalResult> productRoots = new LinkedList<>();
@@ -290,6 +291,6 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     List<ProductSummary> productSummaries =
         summaryCrawler.crawlUrl(
             "https://www.dsw.com/en/us/brands/steve-madden/N-1z141c7", new MapCrawlContext(null));
-    productSummaries.forEach(ps -> System.out.println(ps.toString()));
+    productSummaries.forEach(ps -> log.info("ProductSummary: {}", ps.toString()));
   }
 }
