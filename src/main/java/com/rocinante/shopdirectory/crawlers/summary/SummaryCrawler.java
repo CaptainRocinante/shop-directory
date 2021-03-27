@@ -139,19 +139,28 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
 
     allTextNodesSelected.stream()
         .map(np -> (String) np.getProperty(OWN_TEXT_PROPERTY))
+        .distinct()
         .forEach(
             text -> {
               final List<StringLCSToken> textTokens = Tokenizer.alphaNumericLcsTokens(text);
               final int lcsScore =
                   LongestCommonSubsequence.computeLcsStringTokensOnly(textTokens, urlTokens);
               final int categoryScore = categoryScorer.scoreText(text);
-              if (lcsScore != 0 && lcsScore > maxLcsScore.get()) {
-                maxLcsScore.set(lcsScore);
-                maxLcsScoreText.set(text);
+              if (lcsScore != 0) {
+                if (lcsScore > maxLcsScore.get()) {
+                  maxLcsScore.set(lcsScore);
+                  maxLcsScoreText.set(text);
+                } else if (lcsScore == maxLcsScore.get()) {
+                  maxLcsScoreText.set(maxLcsScoreText.get() + " " + text);
+                }
               }
-              if (categoryScore != 0 && categoryScore > maxCategoryScore.get()) {
-                maxCategoryScore.set(categoryScore);
-                maxCategoryScoreText.set(text);
+              if (categoryScore != 0) {
+                if (categoryScore > maxCategoryScore.get()) {
+                  maxCategoryScore.set(categoryScore);
+                  maxCategoryScoreText.set(text);
+                } else if (categoryScore == maxCategoryScore.get()) {
+                  maxCategoryScoreText.set(maxCategoryScoreText.get() + " " + text);
+                }
               }
             });
     return maxLcsScoreText.get() != null
@@ -280,7 +289,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     //        "https://www.chubbiesshorts.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries =
         summaryCrawler.crawlUrl(
-            "https://www.savagex.com/products/bras?nav=bras-main", new MapCrawlContext(null));
+            "https://www.dsw.com/en/us/brands/steve-madden/N-1z141c7", new MapCrawlContext(null));
     productSummaries.forEach(ps -> System.out.println(ps.toString()));
   }
 }

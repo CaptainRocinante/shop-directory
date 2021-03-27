@@ -21,7 +21,7 @@ public class TextNodeSelector implements NodeSelector {
       if (ownText.isBlank()) {
         return Either.left(NodeNotSelected.getInstance());
       }
-      properties.put(OWN_TEXT_PROPERTY, ownText);
+      properties.put(OWN_TEXT_PROPERTY, ownText.trim());
       return Either.right(new NodeProperties(textNode, properties));
     } else {
       return Either.left(NodeNotSelected.getInstance());
