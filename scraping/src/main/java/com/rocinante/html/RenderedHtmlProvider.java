@@ -1,7 +1,7 @@
-package com.rocinante.shopdirectory.html;
+package com.rocinante.html;
 
-import com.rocinante.shopdirectory.util.HtmlUtils;
-import com.rocinante.shopdirectory.util.UserAgentProvider;
+import com.rocinante.util.HtmlUtils;
+import com.rocinante.util.UserAgentProvider;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;

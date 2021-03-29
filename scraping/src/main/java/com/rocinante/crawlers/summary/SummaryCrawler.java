@@ -1,32 +1,30 @@
-package com.rocinante.shopdirectory.crawlers.summary;
+package com.rocinante.crawlers.summary;
 
-import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector.TEXT_PROPERTY;
-import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector.URL_PROPERTY;
-import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceRangeSelector.RANGE_MONEY_OBJECT_PROPERTY;
-import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceSelector.LIST_MONEY_OBJECT_PROPERTY;
-import static com.rocinante.shopdirectory.crawlers.summary.selectors.ImageSelector.IMAGE_SRC_URLS;
-import static com.rocinante.shopdirectory.crawlers.summary.selectors.TextNodeSelector.OWN_TEXT_PROPERTY;
+import static com.rocinante.crawlers.summary.selectors.AnyLinkWithHrefTextSelector.TEXT_PROPERTY;
+import static com.rocinante.crawlers.summary.selectors.AnyLinkWithHrefTextSelector.URL_PROPERTY;
+import static com.rocinante.crawlers.summary.selectors.AnyPriceRangeSelector.RANGE_MONEY_OBJECT_PROPERTY;
+import static com.rocinante.crawlers.summary.selectors.AnyPriceSelector.LIST_MONEY_OBJECT_PROPERTY;
 
 import com.google.common.collect.Range;
-import com.rocinante.shopdirectory.crawlers.CrawlContext;
-import com.rocinante.shopdirectory.crawlers.Crawler;
-import com.rocinante.shopdirectory.crawlers.CrawlerType;
-import com.rocinante.shopdirectory.crawlers.MapCrawlContext;
-import com.rocinante.shopdirectory.crawlers.category.CategoryScorer;
-import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyLinkWithHrefTextSelector;
-import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceRangeSelector;
-import com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceSelector;
-import com.rocinante.shopdirectory.crawlers.summary.selectors.ImageSelector;
-import com.rocinante.shopdirectory.crawlers.summary.selectors.TextNodeSelector;
-import com.rocinante.shopdirectory.html.RenderedHtml;
-import com.rocinante.shopdirectory.html.RenderedHtmlProvider;
-import com.rocinante.shopdirectory.lcs.LongestCommonSubsequence;
-import com.rocinante.shopdirectory.lcs.StringLCSToken;
-import com.rocinante.shopdirectory.selectors.NodeProperties;
-import com.rocinante.shopdirectory.selectors.NodeSelector;
-import com.rocinante.shopdirectory.util.HtmlUtils;
-import com.rocinante.shopdirectory.util.MoneyUtils;
-import com.rocinante.shopdirectory.util.Tokenizer;
+import com.rocinante.crawlers.summary.selectors.ImageSelector;
+import com.rocinante.crawlers.summary.selectors.TextNodeSelector;
+import com.rocinante.html.RenderedHtml;
+import com.rocinante.lcs.LongestCommonSubsequence;
+import com.rocinante.selectors.NodeProperties;
+import com.rocinante.crawlers.CrawlContext;
+import com.rocinante.crawlers.Crawler;
+import com.rocinante.crawlers.CrawlerType;
+import com.rocinante.crawlers.MapCrawlContext;
+import com.rocinante.crawlers.category.CategoryScorer;
+import com.rocinante.crawlers.summary.selectors.AnyLinkWithHrefTextSelector;
+import com.rocinante.crawlers.summary.selectors.AnyPriceRangeSelector;
+import com.rocinante.crawlers.summary.selectors.AnyPriceSelector;
+import com.rocinante.html.RenderedHtmlProvider;
+import com.rocinante.lcs.StringLCSToken;
+import com.rocinante.selectors.NodeSelector;
+import com.rocinante.util.HtmlUtils;
+import com.rocinante.util.MoneyUtils;
+import com.rocinante.util.Tokenizer;
 import io.vavr.Tuple2;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -140,7 +138,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     final AtomicReference<String> maxCategoryScoreText = new AtomicReference<>(null);
 
     allTextNodesSelected.stream()
-        .map(np -> (String) np.getProperty(OWN_TEXT_PROPERTY))
+        .map(np -> (String) np.getProperty(TextNodeSelector.OWN_TEXT_PROPERTY))
         .distinct()
         .forEach(
             text -> {
@@ -174,7 +172,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
       List<NodeProperties> imageProperties, Map<String, int[]> imageSrcDimensionMap) {
     final List<String> allImages =
         imageProperties.stream()
-            .map(ip -> (List<String>) ip.getProperty(IMAGE_SRC_URLS))
+            .map(ip -> (List<String>) ip.getProperty(ImageSelector.IMAGE_SRC_URLS))
             .flatMap(Collection::stream)
             .collect(Collectors.toList());
 

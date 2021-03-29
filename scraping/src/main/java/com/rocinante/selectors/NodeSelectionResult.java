@@ -1,4 +1,4 @@
-package com.rocinante.shopdirectory.selectors;
+package com.rocinante.selectors;
 
 import io.vavr.control.Either;
 import java.util.Arrays;

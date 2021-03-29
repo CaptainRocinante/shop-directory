@@ -1,4 +1,4 @@
-package com.rocinante.shopdirectory.util;
+package com.rocinante.util;
 
 import java.util.ArrayList;
 import java.util.List;

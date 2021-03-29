@@ -1,4 +1,4 @@
-package com.rocinante.shopdirectory.crawlers.summary;
+package com.rocinante.crawlers.summary;
 
 import com.google.common.collect.Range;
 import java.util.List;

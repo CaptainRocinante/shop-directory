@@ -1,4 +1,4 @@
-package com.rocinante.shopdirectory.html;
+package com.rocinante.html;
 
 import java.util.Map;
 import lombok.Data;

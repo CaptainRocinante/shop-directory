@@ -1,4 +1,4 @@
-package com.rocinante.shopdirectory.util;
+package com.rocinante.util;
 
 import java.net.URI;
 import java.util.Arrays;

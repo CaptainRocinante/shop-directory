@@ -1,4 +1,4 @@
-package com.rocinante.shopdirectory.crawlers;
+package com.rocinante.crawlers;
 
 public enum CrawlerType {
   CATEGORY,

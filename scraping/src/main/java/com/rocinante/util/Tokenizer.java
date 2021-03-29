@@ -1,6 +1,6 @@
-package com.rocinante.shopdirectory.util;
+package com.rocinante.util;
 
-import com.rocinante.shopdirectory.lcs.StringLCSToken;
+import com.rocinante.lcs.StringLCSToken;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;

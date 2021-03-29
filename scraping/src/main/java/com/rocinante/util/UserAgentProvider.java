@@ -1,4 +1,4 @@
-package com.rocinante.shopdirectory.util;
+package com.rocinante.util;
 
 import com.google.common.collect.ImmutableSet;
 import java.io.File;

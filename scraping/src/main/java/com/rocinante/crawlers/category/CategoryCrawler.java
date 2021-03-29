@@ -1,11 +1,11 @@
-package com.rocinante.shopdirectory.crawlers.category;
+package com.rocinante.crawlers.category;
 
-import com.rocinante.shopdirectory.crawlers.CrawlContext;
-import com.rocinante.shopdirectory.crawlers.Crawler;
-import com.rocinante.shopdirectory.crawlers.CrawlerType;
-import com.rocinante.shopdirectory.crawlers.MapCrawlContext;
-import com.rocinante.shopdirectory.html.RenderedHtml;
-import com.rocinante.shopdirectory.html.RenderedHtmlProvider;
+import com.rocinante.crawlers.CrawlContext;
+import com.rocinante.crawlers.Crawler;
+import com.rocinante.crawlers.CrawlerType;
+import com.rocinante.crawlers.MapCrawlContext;
+import com.rocinante.html.RenderedHtml;
+import com.rocinante.html.RenderedHtmlProvider;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;

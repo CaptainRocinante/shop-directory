@@ -1,4 +1,4 @@
-package com.rocinante.shopdirectory.lcs;
+package com.rocinante.lcs;
 
 public class StringLCSToken implements LCSToken {
   private final String str;

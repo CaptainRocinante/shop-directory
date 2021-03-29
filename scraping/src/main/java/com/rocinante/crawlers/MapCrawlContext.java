@@ -1,4 +1,4 @@
-package com.rocinante.shopdirectory.crawlers;
+package com.rocinante.crawlers;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

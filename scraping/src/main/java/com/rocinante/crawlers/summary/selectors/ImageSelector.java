@@ -1,9 +1,9 @@
-package com.rocinante.shopdirectory.crawlers.summary.selectors;
+package com.rocinante.crawlers.summary.selectors;
 
-import com.rocinante.shopdirectory.selectors.NodeNotSelected;
-import com.rocinante.shopdirectory.selectors.NodeProperties;
-import com.rocinante.shopdirectory.selectors.NodeSelector;
-import com.rocinante.shopdirectory.util.HtmlUtils;
+import com.rocinante.selectors.NodeNotSelected;
+import com.rocinante.selectors.NodeProperties;
+import com.rocinante.selectors.NodeSelector;
+import com.rocinante.util.HtmlUtils;
 import io.vavr.control.Either;
 import java.util.HashMap;
 import java.util.LinkedList;

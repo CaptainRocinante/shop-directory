@@ -1,4 +1,4 @@
-package com.rocinante.shopdirectory.util;
+package com.rocinante.util;
 
 import org.javamoney.moneta.FastMoney;
 

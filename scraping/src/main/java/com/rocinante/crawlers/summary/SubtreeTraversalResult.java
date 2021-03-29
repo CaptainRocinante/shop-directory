@@ -1,13 +1,13 @@
-package com.rocinante.shopdirectory.crawlers.summary;
+package com.rocinante.crawlers.summary;
 
 import com.google.common.collect.ObjectArrays;
-import com.rocinante.shopdirectory.lcs.DelimiterLCSToken;
-import com.rocinante.shopdirectory.lcs.LCSToken;
-import com.rocinante.shopdirectory.lcs.LongestCommonSubsequence;
-import com.rocinante.shopdirectory.lcs.StringLCSToken;
-import com.rocinante.shopdirectory.selectors.NodeSelectionResult;
-import com.rocinante.shopdirectory.selectors.NodeSelector;
-import com.rocinante.shopdirectory.util.Combinatorics;
+import com.rocinante.lcs.DelimiterLCSToken;
+import com.rocinante.lcs.LCSToken;
+import com.rocinante.lcs.LongestCommonSubsequence;
+import com.rocinante.lcs.StringLCSToken;
+import com.rocinante.selectors.NodeSelectionResult;
+import com.rocinante.selectors.NodeSelector;
+import com.rocinante.util.Combinatorics;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;

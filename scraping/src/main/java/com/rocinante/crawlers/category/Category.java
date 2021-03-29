@@ -1,4 +1,4 @@
-package com.rocinante.shopdirectory.crawlers.category;
+package com.rocinante.crawlers.category;
 
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;

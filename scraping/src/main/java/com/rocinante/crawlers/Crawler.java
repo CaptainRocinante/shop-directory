@@ -1,6 +1,6 @@
-package com.rocinante.shopdirectory.crawlers;
+package com.rocinante.crawlers;
 
-import com.rocinante.shopdirectory.html.RenderedHtml;
+import com.rocinante.html.RenderedHtml;
 
 public interface Crawler<R> {
   CrawlerType type();

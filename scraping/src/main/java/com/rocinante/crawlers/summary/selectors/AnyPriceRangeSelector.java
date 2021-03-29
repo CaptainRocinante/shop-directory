@@ -1,12 +1,12 @@
-package com.rocinante.shopdirectory.crawlers.summary.selectors;
+package com.rocinante.crawlers.summary.selectors;
 
-import static com.rocinante.shopdirectory.crawlers.summary.selectors.AnyPriceSelector.PRICE_PATTERN;
+import static com.rocinante.crawlers.summary.selectors.AnyPriceSelector.PRICE_PATTERN;
 
 import com.google.common.collect.Range;
-import com.rocinante.shopdirectory.selectors.NodeNotSelected;
-import com.rocinante.shopdirectory.selectors.NodeProperties;
-import com.rocinante.shopdirectory.selectors.NodeSelector;
-import com.rocinante.shopdirectory.util.ResourceUtils;
+import com.rocinante.selectors.NodeProperties;
+import com.rocinante.selectors.NodeNotSelected;
+import com.rocinante.selectors.NodeSelector;
+import com.rocinante.util.ResourceUtils;
 import io.vavr.control.Either;
 import java.util.HashMap;
 import java.util.Map;
