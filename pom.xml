@@ -29,7 +29,7 @@
     <jul-to-slf4j-version>1.7.30</jul-to-slf4j-version>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
     <java.version>11</java.version>
-    <spring.version>2.4.4</spring.version>
+    <spring-boot.version>2.4.4</spring-boot.version>
   </properties>
 
   <dependencyManagement>
@@ -51,12 +51,6 @@
         <version>${moneta.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>${lombok.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
@@ -66,18 +60,24 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
-        <version>${spring.version}</version>
+        <version>${spring-boot.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
-        <version>${spring.version}</version>
+        <version>${spring-boot.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
     <!--    Logging dependencies-->
     <dependency>
       <groupId>org.slf4j</groupId>
