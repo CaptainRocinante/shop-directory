@@ -1,6 +1,5 @@
 package com.rocinante.shops.datastore.entities;
 
-import com.neovisionaries.i18n.CountryCode;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import org.hibernate.annotations.Type;
 
 @Entity
 public class BnplProvider {
