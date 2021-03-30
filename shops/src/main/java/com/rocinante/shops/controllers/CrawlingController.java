@@ -1,4 +1,4 @@
-package com.rocinante.directory.controllers;
+package com.rocinante.shops.controllers;
 
 import com.rocinante.crawlers.category.CategoryCrawler;
 import com.rocinante.crawlers.summary.SummaryCrawler;

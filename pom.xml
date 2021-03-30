@@ -12,7 +12,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>scraping</module>
-    <module>directory</module>
+    <module>shops</module>
   </modules>
   <groupId>com.rocinante</groupId>
   <artifactId>shop-directory</artifactId>

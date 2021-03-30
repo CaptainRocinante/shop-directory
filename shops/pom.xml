@@ -8,12 +8,13 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>directory</artifactId>
+  <artifactId>shops</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
     <postgres-jdbc.version>42.2.19</postgres-jdbc.version>
     <flyway.version>7.7.1</flyway.version>
+    <i18n.version>1.28</i18n.version>
   </properties>
 
   <dependencies>
@@ -47,6 +48,11 @@
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>${postgres-jdbc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.neovisionaries</groupId>
+      <artifactId>nv-i18n</artifactId>
+      <version>${i18n.version}</version>
     </dependency>
   </dependencies>
 
