@@ -54,7 +54,7 @@ public class CategoryCrawler implements Crawler<List<Category>> {
                 .map(element -> new Category(element.attr("abs:href"), element.text()))
                 .collect(Collectors.toList()));
       }
-      current.printAllLinks();
+//      current.printAllLinks();
     }
     return new ArrayList<>(allCategories);
   }

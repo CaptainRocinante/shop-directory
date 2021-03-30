@@ -10,8 +10,12 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Product {
   @Id
@@ -44,6 +48,9 @@ public class Product {
 
   @Column
   private BigDecimal originalPriceUpperRange;
+
+  @Column
+  private OffsetDateTime createdAt;
 
   @Column
   private OffsetDateTime lastCrawledAt;

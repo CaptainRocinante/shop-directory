@@ -32,6 +32,7 @@ CREATE TABLE merchant_inferred_category (
   url                       VARCHAR(2048) NOT NULL,
   enabled                   BOOLEAN NOT NULL,
   merchant_uuid             UUID NOT NULL,
+  created_at                TIMESTAMP NOT NULL,
   last_crawled_at           TIMESTAMP DEFAULT NULL,
   UNIQUE (url, merchant_uuid),
   FOREIGN KEY (merchant_uuid) REFERENCES merchant (uuid)
@@ -48,6 +49,7 @@ CREATE TABLE product (
   current_price_upper_range                     NUMERIC NOT NULL,
   original_price_lower_range                    NUMERIC DEFAULT NULL,
   original_price_upper_range                    NUMERIC DEFAULT NULL,
+  created_at                                    TIMESTAMP NOT NULL,
   last_crawled_at                               TIMESTAMP DEFAULT NULL,
   UNIQUE (url),
   FOREIGN KEY (merchant_inferred_category_uuid) REFERENCES merchant_inferred_category (uuid)

@@ -1,11 +1,13 @@
 package com.rocinante.crawlers.category;
 
 import java.util.Objects;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @RequiredArgsConstructor
 @ToString
+@Getter
 public class Category {
   private final String categoryUrl;
   private final String categoryName;
