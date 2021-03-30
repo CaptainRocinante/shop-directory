@@ -1,7 +1,6 @@
 package com.rocinante.shops.datastore.entities;
 
 import com.neovisionaries.i18n.CountryCode;
-import com.rocinante.shops.datastore.entities.BnplProvider;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import javax.persistence.Column;

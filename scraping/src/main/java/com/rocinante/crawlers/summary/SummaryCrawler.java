@@ -108,8 +108,8 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
             .orElseThrow();
     if (priceRanges.isEmpty()) {
       return new Tuple2<>(
-          Range.singleton(highestAmount),
-          lowestAmount.isLessThan(highestAmount) ? Range.singleton(lowestAmount) : null);
+          highestAmount.isGreaterThan(lowestAmount) ? Range.singleton(highestAmount) : null,
+          Range.singleton(lowestAmount));
     } else {
       // Just picking 1 range for now, don't think there would be a product with multiple price
       // range listings
@@ -120,7 +120,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
       } else if (lowestAmount.isLessThan(priceRange.lowerEndpoint())) {
         return new Tuple2<>(priceRange, Range.singleton(lowestAmount));
       } else {
-        return new Tuple2<>(priceRange, null);
+        return new Tuple2<>(null, priceRange);
       }
     }
   }

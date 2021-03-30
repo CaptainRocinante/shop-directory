@@ -23,10 +23,6 @@ public class BnplProvider {
   @Column
   private String url;
 
-  @Column
-  @Type(type = "com.rocinante.shops.datastore.types.CountryCodeType")
-  private CountryCode countryCode;
-
   @OneToMany(fetch =  FetchType.LAZY, mappedBy = "bnplProvider")
   private Set<Merchant> merchants = new HashSet<>();
 
