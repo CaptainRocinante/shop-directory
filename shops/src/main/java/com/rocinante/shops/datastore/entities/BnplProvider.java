@@ -1,4 +1,4 @@
-package com.rocinante.shops.datastore;
+package com.rocinante.shops.datastore.entities;
 
 import com.neovisionaries.i18n.CountryCode;
 import java.time.OffsetDateTime;
@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import org.hibernate.annotations.Type;
 
@@ -18,20 +17,20 @@ public class BnplProvider {
   @Id
   private UUID uuid;
 
-  @Column(nullable = false)
+  @Column
   private String name;
 
-  @Column(nullable = false)
+  @Column
   private String url;
 
-  @Column(nullable = false)
+  @Column
   @Type(type = "com.rocinante.shops.datastore.types.CountryCodeType")
   private CountryCode countryCode;
 
   @OneToMany(fetch =  FetchType.LAZY, mappedBy = "bnplProvider")
   private Set<Merchant> merchants = new HashSet<>();
 
-  @Column(nullable = false)
+  @Column
   private OffsetDateTime createdAt;
 
   @Column

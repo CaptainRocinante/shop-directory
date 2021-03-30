@@ -1,6 +1,7 @@
-package com.rocinante.shops.datastore;
+package com.rocinante.shops.datastore.entities;
 
 import com.neovisionaries.i18n.CountryCode;
+import com.rocinante.shops.datastore.entities.BnplProvider;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -16,10 +17,10 @@ public class Merchant {
   @Id
   private UUID uuid;
 
-  @Column(nullable = false)
+  @Column
   private String name;
 
-  @Column(nullable = false)
+  @Column
   private String url;
 
   @Column(nullable = false)
@@ -33,10 +34,10 @@ public class Merchant {
   @JoinColumn(name = "bnpl_provider_uuid")
   private BnplProvider bnplProvider;
 
-  @Column(nullable = false)
+  @Column
   private OffsetDateTime createdAt;
 
-  @Column(nullable = false)
+  @Column
   private OffsetDateTime updatedAt;
 
   @Column
