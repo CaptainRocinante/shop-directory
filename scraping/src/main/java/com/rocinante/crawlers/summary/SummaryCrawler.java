@@ -6,11 +6,6 @@ import static com.rocinante.crawlers.summary.selectors.AnyPriceRangeSelector.RAN
 import static com.rocinante.crawlers.summary.selectors.AnyPriceSelector.LIST_MONEY_OBJECT_PROPERTY;
 
 import com.google.common.collect.Range;
-import com.rocinante.crawlers.summary.selectors.ImageSelector;
-import com.rocinante.crawlers.summary.selectors.TextNodeSelector;
-import com.rocinante.html.RenderedHtml;
-import com.rocinante.lcs.LongestCommonSubsequence;
-import com.rocinante.selectors.NodeProperties;
 import com.rocinante.crawlers.CrawlContext;
 import com.rocinante.crawlers.Crawler;
 import com.rocinante.crawlers.CrawlerType;
@@ -19,8 +14,13 @@ import com.rocinante.crawlers.category.CategoryScorer;
 import com.rocinante.crawlers.summary.selectors.AnyLinkWithHrefTextSelector;
 import com.rocinante.crawlers.summary.selectors.AnyPriceRangeSelector;
 import com.rocinante.crawlers.summary.selectors.AnyPriceSelector;
+import com.rocinante.crawlers.summary.selectors.ImageSelector;
+import com.rocinante.crawlers.summary.selectors.TextNodeSelector;
+import com.rocinante.html.RenderedHtml;
 import com.rocinante.html.RenderedHtmlProvider;
+import com.rocinante.lcs.LongestCommonSubsequence;
 import com.rocinante.lcs.StringLCSToken;
+import com.rocinante.selectors.NodeProperties;
 import com.rocinante.selectors.NodeSelector;
 import com.rocinante.util.HtmlUtils;
 import com.rocinante.util.MoneyUtils;

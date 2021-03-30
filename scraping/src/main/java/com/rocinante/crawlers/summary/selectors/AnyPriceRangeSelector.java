@@ -3,8 +3,8 @@ package com.rocinante.crawlers.summary.selectors;
 import static com.rocinante.crawlers.summary.selectors.AnyPriceSelector.PRICE_PATTERN;
 
 import com.google.common.collect.Range;
-import com.rocinante.selectors.NodeProperties;
 import com.rocinante.selectors.NodeNotSelected;
+import com.rocinante.selectors.NodeProperties;
 import com.rocinante.selectors.NodeSelector;
 import com.rocinante.util.ResourceUtils;
 import io.vavr.control.Either;

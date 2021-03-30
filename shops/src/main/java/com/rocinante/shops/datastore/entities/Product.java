@@ -17,9 +17,12 @@ public class Product {
   @Id
   private UUID uuid;
 
+  @Column
+  private String name;
+
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "merchant_uuid")
-  private Merchant merchant;
+  @JoinColumn(name = "merchant_inferred_category_uuid")
+  private MerchantInferredCategory merchantInferredCategory;
 
   @Column
   private String url;
