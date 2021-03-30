@@ -8,7 +8,7 @@ CREATE TABLE bnpl_provider (
   url                       VARCHAR(512) NOT NULL,
   created_at                TIMESTAMP NOT NULL,
   updated_at                TIMESTAMP NOT NULL,
-  UNIQUE (url, country_code)
+  UNIQUE (url)
 );
 
 CREATE TABLE merchant (
@@ -23,7 +23,7 @@ CREATE TABLE merchant (
   last_crawled_at           TIMESTAMP DEFAULT NULL,
   UNIQUE (url, country_code),
   FOREIGN KEY (bnpl_provider_uuid) REFERENCES bnpl_provider (uuid)
-)
+);
 
 CREATE TABLE product (
   uuid                        UUID PRIMARY KEY,
@@ -38,4 +38,4 @@ CREATE TABLE product (
   last_crawled_at             TIMESTAMP DEFAULT NULL,
   UNIQUE (url, merchant_uuid),
   FOREIGN KEY (merchant_uuid) REFERENCES merchant (uuid)
-)
+);
