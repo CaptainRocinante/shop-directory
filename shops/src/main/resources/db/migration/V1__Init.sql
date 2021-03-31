@@ -50,6 +50,7 @@ CREATE TABLE product (
   current_price_upper_range                     NUMERIC NOT NULL,
   original_price_lower_range                    NUMERIC DEFAULT NULL,
   original_price_upper_range                    NUMERIC DEFAULT NULL,
+  main_image_url                                VARCHAR(2048) NOT NULL,
   created_at                                    TIMESTAMP WITH TIME ZONE NOT NULL,
   updated_at                                    TIMESTAMP WITH TIME ZONE NOT NULL,
   last_crawled_at                               TIMESTAMP WITH TIME ZONE DEFAULT NULL,

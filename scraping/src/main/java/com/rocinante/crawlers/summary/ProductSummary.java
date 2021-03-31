@@ -46,4 +46,7 @@ public class ProductSummary {
     return BigDecimal.valueOf(originalPrice.upperEndpoint().getNumber().doubleValue());
   }
 
+  public String mainProductImage() {
+    return productImages.get(0);
+  }
 }

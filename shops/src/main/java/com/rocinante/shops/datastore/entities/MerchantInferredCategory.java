@@ -71,4 +71,10 @@ public class MerchantInferredCategory {
         null
     );
   }
+
+  public void updateFromLatestCrawl(Merchant merchant, Category category) {
+    this.name = category.getCategoryName();
+    this.merchant = merchant;
+    this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
+  }
 }

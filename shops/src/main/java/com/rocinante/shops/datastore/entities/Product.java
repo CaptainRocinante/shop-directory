@@ -61,6 +61,10 @@ public class Product {
   private BigDecimal originalPriceUpperRange;
 
   @Column
+  @Type(type = "com.rocinante.shops.datastore.types.UrlType")
+  private URL mainImageUrl;
+
+  @Column
   private OffsetDateTime createdAt;
 
   @Column
@@ -82,9 +86,23 @@ public class Product {
         productSummary.currentPriceUpperRange(),
         productSummary.originalPriceLowerRange(),
         productSummary.originalPriceLowerRange(),
+        new URL(productSummary.mainProductImage()),
         Instant.now().atOffset(ZoneOffset.UTC),
         Instant.now().atOffset(ZoneOffset.UTC),
         null
     );
+  }
+
+  public void updateFromLatestCrawl(ProductSummary productSummary,
+      MerchantInferredCategory merchantInferredCategory) throws MalformedURLException {
+    this.name = productSummary.getInferredDescription();
+    this.merchantInferredCategory = merchantInferredCategory;
+    this.currencyCode = CurrencyCode.getByCode(productSummary.getCurrency());
+    this.currentPriceLowerRange = productSummary.currentPriceLowerRange();
+    this.currentPriceUpperRange = productSummary.currentPriceUpperRange();
+    this.originalPriceLowerRange = productSummary.originalPriceLowerRange();
+    this.originalPriceUpperRange = productSummary.originalPriceUpperRange();
+    this.mainImageUrl = new URL(productSummary.mainProductImage());
+    this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
   }
 }

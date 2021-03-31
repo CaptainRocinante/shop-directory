@@ -53,8 +53,7 @@ public class AsyncCrawlingService {
       if (existingCategoryOpt.isPresent()) {
         final MerchantInferredCategory existingCategory = existingCategoryOpt.get();
         log.info("Existing category found {}", existingCategory.getUuid());
-        existingCategory.setName(category.getCategoryName());
-        existingCategory.setUpdatedAt(Instant.now().atOffset(ZoneOffset.UTC));
+        existingCategory.updateFromLatestCrawl(merchant, category);
         merchantInferredCategoryDao.save(existingCategory);
       } else {
         final MerchantInferredCategory newCategory;
@@ -86,13 +85,7 @@ public class AsyncCrawlingService {
       if (existingProductOpt.isPresent()) {
         final Product existingProduct = existingProductOpt.get();
         log.info("Existing product found {}", existingProduct.getUuid());
-        existingProduct.setName(product.getInferredDescription());
-        existingProduct.setMerchantInferredCategory(merchantInferredCategory);
-        existingProduct.setCurrentPriceLowerRange(product.currentPriceLowerRange());
-        existingProduct.setCurrentPriceUpperRange(product.currentPriceUpperRange());
-        existingProduct.setOriginalPriceLowerRange(product.originalPriceLowerRange());
-        existingProduct.setOriginalPriceUpperRange(product.originalPriceUpperRange());
-        existingProduct.setUpdatedAt(Instant.now().atOffset(ZoneOffset.UTC));
+        existingProduct.updateFromLatestCrawl(product, merchantInferredCategory);
         productDao.save(existingProduct);
       } else {
         final Product newProduct;
