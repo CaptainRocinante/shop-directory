@@ -1,8 +1,9 @@
 package com.rocinante.shops.datastore.entities;
 
 import com.rocinante.crawlers.category.Category;
-import java.time.Clock;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -56,7 +57,7 @@ public class MerchantInferredCategory {
         true,
         merchant,
         new HashSet<>(),
-        OffsetDateTime.now(Clock.systemUTC()),
+        Instant.now().atOffset(ZoneOffset.UTC),
         null
     );
   }

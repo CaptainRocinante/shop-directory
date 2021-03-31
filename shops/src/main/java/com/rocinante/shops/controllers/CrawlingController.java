@@ -9,8 +9,8 @@ import com.rocinante.shops.datastore.dao.MerchantDao;
 import com.rocinante.shops.datastore.dao.MerchantInferredCategoryDao;
 import com.rocinante.shops.datastore.entities.Merchant;
 import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
-import java.time.Clock;
-import java.time.OffsetDateTime;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -63,7 +63,7 @@ public class CrawlingController {
         log.info("New category saved {}", result.getUuid());
       }
     }
-    merchant.setLastCrawledAt(OffsetDateTime.now(Clock.systemUTC()));
+    merchant.setLastCrawledAt(Instant.now().atOffset(ZoneOffset.UTC));
     merchantDao.save(merchant);
     log.info("End Category Crawl for merchant {}", merchantDto.getUuid());
   }
