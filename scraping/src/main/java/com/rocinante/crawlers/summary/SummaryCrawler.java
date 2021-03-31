@@ -251,7 +251,9 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     productRoots.forEach(
         productRoot ->
             results.addAll(
-                productRoot.getChildrenWithAllSelectors().stream()
+                productRoot
+                    .getChildrenWithAllSelectors()
+                    .stream()
                     .map(SubtreeTraversalResult::getNodeSelectionResult)
                     .map(
                         esr -> {

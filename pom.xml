@@ -24,6 +24,7 @@
     <vavr.version>0.10.3</vavr.version>
     <lombok.version>1.18.18</lombok.version>
     <commons-io.version>2.8.0</commons-io.version>
+    <commons-validator.version>1.7</commons-validator.version>
     <logback-version>1.2.3</logback-version>
     <slf4j-api-version>1.7.30</slf4j-api-version>
     <jul-to-slf4j-version>1.7.30</jul-to-slf4j-version>
@@ -94,6 +95,12 @@
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j-api-version}</version>
     </dependency>
+    <dependency>
+      <groupId>commons-validator</groupId>
+      <artifactId>commons-validator</artifactId>
+      <version>${commons-validator.version}</version>
+    </dependency>
+
   </dependencies>
 
 

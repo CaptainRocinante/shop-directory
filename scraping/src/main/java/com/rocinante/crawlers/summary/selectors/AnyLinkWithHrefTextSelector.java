@@ -3,6 +3,7 @@ package com.rocinante.crawlers.summary.selectors;
 import com.rocinante.selectors.NodeNotSelected;
 import com.rocinante.selectors.NodeProperties;
 import com.rocinante.selectors.NodeSelector;
+import com.rocinante.util.HtmlUtils;
 import io.vavr.control.Either;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,9 @@ public class AnyLinkWithHrefTextSelector implements NodeSelector {
       return Either.left(NodeNotSelected.getInstance());
     }
     final Element element = (Element) node;
-    if (element.tagName().equals("a") && element.hasAttr("href")) {
+    if (element.tagName().equals("a")
+        && element.hasAttr("href")
+        && HtmlUtils.isValidUri(element.attr("abs:href"))) {
       Map<String, Object> properties = new HashMap<>();
       properties.put(URL_PROPERTY, element.attr("abs:href"));
       properties.put(TEXT_PROPERTY, element.text());
