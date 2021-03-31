@@ -1,6 +1,7 @@
 package com.rocinante.util;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,5 +17,17 @@ public class HtmlUtils {
 
   public static String normalizedUriRepresentation(URI uri) {
     return uri.getPath() + "?" + uri.getQuery() + "#" + uri.getFragment();
+  }
+
+  public static boolean isValidUri(String url) {
+    if (url.isBlank()) {
+      return false;
+    }
+    try {
+      new URI(url);
+    } catch (URISyntaxException e) {
+      return false;
+    }
+    return true;
   }
 }
