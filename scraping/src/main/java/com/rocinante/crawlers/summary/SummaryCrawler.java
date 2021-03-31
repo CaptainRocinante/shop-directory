@@ -22,12 +22,14 @@ import com.rocinante.lcs.LongestCommonSubsequence;
 import com.rocinante.lcs.StringLCSToken;
 import com.rocinante.selectors.NodeProperties;
 import com.rocinante.selectors.NodeSelector;
-import com.rocinante.util.HtmlUtils;
+import com.rocinante.util.UrlUtils;
 import com.rocinante.util.MoneyUtils;
 import com.rocinante.util.Tokenizer;
 import io.vavr.Tuple2;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,6 +40,7 @@ import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.javamoney.moneta.FastMoney;
 import org.jsoup.Jsoup;
@@ -168,6 +171,25 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
         : (maxCategoryScoreText.get() != null ? maxCategoryScoreText.get() : urlText);
   }
 
+  @Nullable
+  private int[] getUrlOrUriDimensions(String input, Map<String, int[]> imageSrcDimensionMap) {
+    try {
+      final URL url = new URL(input);
+      if (imageSrcDimensionMap.containsKey(url.toString())) {
+        return imageSrcDimensionMap.get(url.toString());
+      } else {
+        final URI uri = url.toURI();
+        final String key = UrlUtils.domainRemovedUriRepresentation(uri);
+        if (imageSrcDimensionMap.containsKey(key)) {
+          return imageSrcDimensionMap.get(key);
+        }
+      }
+    } catch (MalformedURLException | URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
+    return null;
+  }
+
   private Tuple2<List<String>, List<String>> getProductImages(
       List<NodeProperties> imageProperties, Map<String, int[]> imageSrcDimensionMap) {
     final List<String> allImages =
@@ -179,22 +201,14 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     final int largestImageSize =
         allImages.stream()
             .map(
-                i -> {
-                  final URI uri;
-                  try {
-                    uri = new URI(i);
-                  } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
+                url -> {
+                  final int[] dimensions = getUrlOrUriDimensions(url, imageSrcDimensionMap);
+                  if (dimensions == null) {
+                    return Integer.MIN_VALUE;
+                  } else {
+                    return dimensions[0] * dimensions[1];
                   }
-                  return uri;
-                })
-            .filter(
-                uri -> imageSrcDimensionMap.containsKey(HtmlUtils.normalizedUriRepresentation(uri)))
-            .map(
-                uri -> {
-                  final int[] dimensions =
-                      imageSrcDimensionMap.get(HtmlUtils.normalizedUriRepresentation(uri));
-                  return dimensions[0] * dimensions[1];
+
                 })
             .reduce(Integer::max)
             .orElseThrow();
@@ -202,31 +216,18 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     final List<String> productImages = new LinkedList<>();
     final List<String> otherImages = new LinkedList<>();
 
-    allImages.stream()
-        .map(
-            i -> {
-              final URI uri;
-              try {
-                uri = new URI(i);
-              } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-              }
-              return uri;
-            })
-        .forEach(
-            uri -> {
-              final String mapKey = HtmlUtils.normalizedUriRepresentation(uri);
-              if (imageSrcDimensionMap.containsKey(mapKey)) {
-                final int[] dimensions = imageSrcDimensionMap.get(mapKey);
-                if (dimensions[0] * dimensions[1] == largestImageSize) {
-                  productImages.add(uri.toString());
-                } else {
-                  otherImages.add(uri.toString());
-                }
-              } else {
-                otherImages.add(uri.toString());
-              }
-            });
+    allImages.forEach(
+        url -> {
+          final int[] dimensions = getUrlOrUriDimensions(url, imageSrcDimensionMap);
+          if (dimensions != null) {
+            if (dimensions[0] * dimensions[1] == largestImageSize) {
+              productImages.add(url);
+            } else {
+              otherImages.add(url);
+            }
+          }
+        });
+
     // Just selecting the first among the product Images till we figure out a way to distinguish
     // between the identical images of a srcset
     return new Tuple2<>(Collections.singletonList(productImages.get(0)), otherImages);
@@ -290,7 +291,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     //        "https://www.chubbiesshorts.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries =
         summaryCrawler.crawlUrl(
-            "https://www.aritzia.com/us/en/search?cgid=pants-highwaisted&country=us&lastViewed=121",
+            "https://www.aritzia.com/en/brands/denimforum/denim-forum-jeans-shorts",
             new MapCrawlContext(null));
     productSummaries.forEach(ps -> log.info("ProductSummary: {}", ps.toString()));
   }

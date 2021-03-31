@@ -1,12 +1,15 @@
 package com.rocinante.util;
 
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.validator.routines.UrlValidator;
 
-public class HtmlUtils {
+public class UrlUtils {
   private static final UrlValidator URL_VALIDATOR = new UrlValidator(
       new String[] {"http", "https"});
 
@@ -18,15 +21,23 @@ public class HtmlUtils {
         .collect(Collectors.toList());
   }
 
-  public static String normalizedUriRepresentation(URI uri) {
+  public static String domainRemovedUriRepresentation(URI uri) {
     return uri.getPath() + "?" + uri.getQuery() + "#" + uri.getFragment();
+  }
+
+  public static String getUrlOrUriStringRepresentation(String input) {
+    try {
+      return new URL(input).toString();
+    } catch (MalformedURLException e) {
+      try {
+        return domainRemovedUriRepresentation(new URI(input));
+      } catch (URISyntaxException ex) {
+        throw new RuntimeException(ex);
+      }
+    }
   }
 
   public static boolean isValidUri(String url) {
     return URL_VALIDATOR.isValid(url);
-  }
-
-  public static void main(String[] args) {
-    System.out.println(HtmlUtils.isValidUri("mailto:service@aritzia.com"));
   }
 }

@@ -6,7 +6,7 @@ import com.rocinante.crawlers.CrawlerType;
 import com.rocinante.crawlers.MapCrawlContext;
 import com.rocinante.html.RenderedHtml;
 import com.rocinante.html.RenderedHtmlProvider;
-import com.rocinante.util.HtmlUtils;
+import com.rocinante.util.UrlUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -54,7 +54,7 @@ public class CategoryCrawler implements Crawler<List<Category>> {
             current
                 .getLinks()
                 .stream()
-                .filter(e -> HtmlUtils.isValidUri(e.attr("abs:href")))
+                .filter(e -> UrlUtils.isValidUri(e.attr("abs:href")))
                 .map(element -> new Category(element.attr("abs:href"), element.text()))
                 .collect(Collectors.toList()));
       }

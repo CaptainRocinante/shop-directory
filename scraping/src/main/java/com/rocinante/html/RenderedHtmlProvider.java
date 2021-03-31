@@ -1,9 +1,7 @@
 package com.rocinante.html;
 
-import com.rocinante.util.HtmlUtils;
+import com.rocinante.util.UrlUtils;
 import com.rocinante.util.UserAgentProvider;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,24 +104,14 @@ public class RenderedHtmlProvider {
           final String srcSet = webElement.getAttribute("srcset");
           final String src = webElement.getAttribute("src");
           if (srcSet != null && !srcSet.isBlank()) {
-            HtmlUtils.extractImageUrlsFromSrcSet(srcSet).stream()
-                .map(
-                    s -> {
-                      try {
-                        return new URI(s);
-                      } catch (URISyntaxException e) {
-                        throw new RuntimeException(e);
-                      }
-                    })
-                .forEach(uri -> result.put(HtmlUtils.normalizedUriRepresentation(uri), dimensions));
+            UrlUtils
+                .extractImageUrlsFromSrcSet(srcSet)
+                .stream()
+                .map(UrlUtils::getUrlOrUriStringRepresentation)
+                .forEach(uriString -> result.put(uriString, dimensions));
           }
           if (src != null && !src.isBlank()) {
-            try {
-              final URI uri = new URI(src);
-              result.put(HtmlUtils.normalizedUriRepresentation(uri), dimensions);
-            } catch (URISyntaxException e) {
-              throw new RuntimeException(e);
-            }
+              result.put(UrlUtils.getUrlOrUriStringRepresentation(src), dimensions);
           }
         });
     return result;

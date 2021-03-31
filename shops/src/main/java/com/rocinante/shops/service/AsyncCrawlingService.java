@@ -70,7 +70,8 @@ public class AsyncCrawlingService {
   @Async
   public void crawlAndSaveProductsForCategory(MerchantInferredCategory merchantInferredCategory)
       throws MalformedURLException {
-    log.info("Begin Product Crawl for category {}", merchantInferredCategory.getUuid());
+    log.info("Begin Product Crawl for category {} {}", merchantInferredCategory.getUuid(),
+        merchantInferredCategory.getUrl());
     final List<ProductSummary> productSummaries =
         summaryCrawler.crawlUrl(merchantInferredCategory.getUrl().toString(),
             new MapCrawlContext(null));

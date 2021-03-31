@@ -3,7 +3,7 @@ package com.rocinante.crawlers.summary.selectors;
 import com.rocinante.selectors.NodeNotSelected;
 import com.rocinante.selectors.NodeProperties;
 import com.rocinante.selectors.NodeSelector;
-import com.rocinante.util.HtmlUtils;
+import com.rocinante.util.UrlUtils;
 import io.vavr.control.Either;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -31,7 +31,7 @@ public class ImageSelector implements NodeSelector {
         imageUrls.add(src);
       }
       if (!srcSet.isBlank()) {
-        imageUrls.add(HtmlUtils.extractImageUrlsFromSrcSet(srcSet).get(0));
+        imageUrls.add(UrlUtils.extractImageUrlsFromSrcSet(srcSet).get(0));
       }
       properties.put(IMAGE_SRC_URLS, imageUrls);
       return Either.right(new NodeProperties(element, properties));
