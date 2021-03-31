@@ -37,7 +37,7 @@ public class RenderedHtmlProvider {
             "--ignore-certificate-errors",
             "--silent",
             "--enable-javascript",
-//        "--proxy-server=http://127.0.0.1:8888",
+            "--proxy-server=http://127.0.0.1:8888",
             String.format("--user-agent=%s", userAgentProvider.getRandomUserAgent()));
         return new ChromeDriver(options);
       }

@@ -48,6 +48,9 @@ public class MerchantInferredCategory {
   private OffsetDateTime createdAt;
 
   @Column
+  private OffsetDateTime updatedAt;
+
+  @Column
   private OffsetDateTime lastCrawledAt;
 
   public MerchantInferredCategory(Merchant merchant, Category category) {
@@ -57,6 +60,7 @@ public class MerchantInferredCategory {
         true,
         merchant,
         new HashSet<>(),
+        Instant.now().atOffset(ZoneOffset.UTC),
         Instant.now().atOffset(ZoneOffset.UTC),
         null
     );
