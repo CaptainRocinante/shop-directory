@@ -3,6 +3,8 @@ package com.rocinante.shops.datastore.entities;
 import com.neovisionaries.i18n.CurrencyCode;
 import com.rocinante.crawlers.summary.ProductSummary;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -17,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import org.hibernate.annotations.Type;
 
 @NoArgsConstructor
@@ -36,7 +39,8 @@ public class Product {
   private MerchantInferredCategory merchantInferredCategory;
 
   @Column
-  private String url;
+  @Type(type = "com.rocinante.shops.datastore.types.UrlType")
+  private URL url;
 
   @Column
   private boolean enabled;
@@ -65,12 +69,13 @@ public class Product {
   @Column
   private OffsetDateTime lastCrawledAt;
 
-  public Product(ProductSummary productSummary, MerchantInferredCategory merchantInferredCategory) {
+  public Product(ProductSummary productSummary, MerchantInferredCategory merchantInferredCategory)
+      throws MalformedURLException {
     this(
         UUID.randomUUID(),
         productSummary.getInferredDescription(),
         merchantInferredCategory,
-        productSummary.getUrl(),
+        new URL(productSummary.getUrl()),
         true,
         CurrencyCode.getByCode(productSummary.getCurrency()),
         productSummary.currentPriceLowerRange(),

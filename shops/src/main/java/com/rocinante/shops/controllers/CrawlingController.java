@@ -5,6 +5,7 @@ import com.rocinante.shops.datastore.dao.MerchantInferredCategoryDao;
 import com.rocinante.shops.datastore.entities.Merchant;
 import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
 import com.rocinante.shops.service.AsyncCrawlingService;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -24,12 +25,14 @@ public class CrawlingController {
   private final MerchantInferredCategoryDao merchantInferredCategoryDao;
 
   @PostMapping("/categories")
-  public void crawlCategoriesForMerchant(@RequestBody MerchantDto merchantDto) {
+  public void crawlCategoriesForMerchant(@RequestBody MerchantDto merchantDto)
+      throws MalformedURLException {
     asyncCrawlingService.crawlAndSaveCategoriesForMerchant(UUID.fromString(merchantDto.getUuid()));
   }
 
   @PostMapping("/products")
-  public void crawlProductsForMerchant(@RequestBody MerchantDto merchantDto) {
+  public void crawlProductsForMerchant(@RequestBody MerchantDto merchantDto)
+      throws MalformedURLException {
     log.info("Begin Product Crawl for merchant {}", merchantDto.getUuid());
     final List<MerchantInferredCategory> merchantCategories =
         merchantInferredCategoryDao.findTop3ByMerchantUuid(UUID.fromString(merchantDto.getUuid()));

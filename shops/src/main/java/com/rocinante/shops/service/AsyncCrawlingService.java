@@ -11,6 +11,8 @@ import com.rocinante.shops.datastore.dao.ProductDao;
 import com.rocinante.shops.datastore.entities.Merchant;
 import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
 import com.rocinante.shops.datastore.entities.Product;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -32,13 +34,13 @@ public class AsyncCrawlingService {
   private final SummaryCrawler summaryCrawler;
 
   @Async
-  public void crawlAndSaveCategoriesForMerchant(UUID merchantUuid) {
+  public void crawlAndSaveCategoriesForMerchant(UUID merchantUuid) throws MalformedURLException {
     log.info("Begin Category Crawl for merchant {}", merchantUuid);
     final Merchant merchant = merchantDao
         .findById(merchantUuid)
         .orElseThrow();
     log.info("Merchant found {} with website {}", merchant.getName(), merchant.getUrl());
-    final List<Category> categories = categoryCrawler.crawlUrl(merchant.getUrl(),
+    final List<Category> categories = categoryCrawler.crawlUrl(merchant.getUrl().toString(),
         new MapCrawlContext(null));
 
     log.info("Category Count: {}", categories.size());
@@ -46,7 +48,7 @@ public class AsyncCrawlingService {
       log.info("Handling {}", category.toString());
 
       final Optional<MerchantInferredCategory> existingCategoryOpt = merchantInferredCategoryDao
-          .findByMerchantUuidAndUrl(merchant.getUuid(), category.getCategoryUrl());
+          .findByMerchantUuidAndUrl(merchant.getUuid(), new URL(category.getCategoryUrl()));
 
       if (existingCategoryOpt.isPresent()) {
         final MerchantInferredCategory existingCategory = existingCategoryOpt.get();
@@ -55,8 +57,8 @@ public class AsyncCrawlingService {
         existingCategory.setUpdatedAt(Instant.now().atOffset(ZoneOffset.UTC));
         merchantInferredCategoryDao.save(existingCategory);
       } else {
-        final MerchantInferredCategory newCategory =
-            new MerchantInferredCategory(merchant, category);
+        final MerchantInferredCategory newCategory;
+        newCategory = new MerchantInferredCategory(merchant, category);
         var result = merchantInferredCategoryDao.save(newCategory);
         log.info("New category saved {}", result.getUuid());
       }
@@ -67,10 +69,11 @@ public class AsyncCrawlingService {
   }
 
   @Async
-  public void crawlAndSaveProductsForCategory(MerchantInferredCategory merchantInferredCategory) {
+  public void crawlAndSaveProductsForCategory(MerchantInferredCategory merchantInferredCategory)
+      throws MalformedURLException {
     log.info("Begin Product Crawl for category {}", merchantInferredCategory.getUuid());
     final List<ProductSummary> productSummaries =
-        summaryCrawler.crawlUrl(merchantInferredCategory.getUrl(),
+        summaryCrawler.crawlUrl(merchantInferredCategory.getUrl().toString(),
             new MapCrawlContext(null));
 
     log.info("Product Count: {}", productSummaries.size());
@@ -78,7 +81,7 @@ public class AsyncCrawlingService {
     for (final ProductSummary product: productSummaries) {
       log.info("Handling {}", product.toString());
 
-      final Optional<Product> existingProductOpt = productDao.findByUrl(product.getUrl());
+      final Optional<Product> existingProductOpt = productDao.findByUrl(new URL(product.getUrl()));
 
       if (existingProductOpt.isPresent()) {
         final Product existingProduct = existingProductOpt.get();
@@ -92,7 +95,8 @@ public class AsyncCrawlingService {
         existingProduct.setUpdatedAt(Instant.now().atOffset(ZoneOffset.UTC));
         productDao.save(existingProduct);
       } else {
-        final Product newProduct = new Product(product, merchantInferredCategory);
+        final Product newProduct;
+        newProduct = new Product(product, merchantInferredCategory);
         var result = productDao.save(newProduct);
         log.info("New Product saved {}", result.getUuid());
       }

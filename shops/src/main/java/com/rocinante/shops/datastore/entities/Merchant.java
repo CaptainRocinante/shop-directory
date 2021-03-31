@@ -1,6 +1,7 @@
 package com.rocinante.shops.datastore.entities;
 
 import com.neovisionaries.i18n.CountryCode;
+import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,8 +32,10 @@ public class Merchant {
   private String name;
 
   @Column
-  private String url;
+  @Type(type = "com.rocinante.shops.datastore.types.UrlType")
+  private URL url;
 
+  @Column
   @Type(type = "com.rocinante.shops.datastore.types.CountryCodeType")
   private CountryCode countryCode;
 

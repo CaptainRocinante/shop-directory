@@ -1,6 +1,8 @@
 package com.rocinante.shops.datastore.entities;
 
 import com.rocinante.crawlers.category.Category;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -18,6 +20,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.SneakyThrows;
+import org.hibernate.annotations.Type;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,7 +36,8 @@ public class MerchantInferredCategory {
   private String name;
 
   @Column
-  private String url;
+  @Type(type = "com.rocinante.shops.datastore.types.UrlType")
+  private URL url;
 
   @Column
   private boolean enabled;
@@ -53,10 +58,11 @@ public class MerchantInferredCategory {
   @Column
   private OffsetDateTime lastCrawledAt;
 
-  public MerchantInferredCategory(Merchant merchant, Category category) {
+  public MerchantInferredCategory(Merchant merchant, Category category)
+      throws MalformedURLException {
     this(UUID.randomUUID(),
         category.getCategoryName(),
-        category.getCategoryUrl(),
+        new URL(category.getCategoryUrl()),
         true,
         merchant,
         new HashSet<>(),
