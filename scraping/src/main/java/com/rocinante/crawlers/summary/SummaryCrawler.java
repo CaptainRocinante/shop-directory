@@ -290,7 +290,8 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     //        "https://www.chubbiesshorts.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries =
         summaryCrawler.crawlUrl(
-            "https://www.dsw.com/en/us/brands/steve-madden/N-1z141c7", new MapCrawlContext(null));
+            "https://www.aritzia.com/us/en/search?cgid=pants-highwaisted&country=us&lastViewed=121",
+            new MapCrawlContext(null));
     productSummaries.forEach(ps -> log.info("ProductSummary: {}", ps.toString()));
   }
 }

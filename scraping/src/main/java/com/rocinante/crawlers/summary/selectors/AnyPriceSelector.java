@@ -21,10 +21,10 @@ import org.jsoup.nodes.Node;
 
 public class AnyPriceSelector implements NodeSelector {
   public static final String LIST_MONEY_OBJECT_PROPERTY = "list_money";
-  public static final Pattern PRICE_PATTERN =
-      Pattern.compile(
-          "(USD|\\$)\\s*(\\d{1,3}(?:["
-              + ".,]\\d{3})*(?:[.,]\\d{2})?)|(\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})?)\\s*?(USD|\\$)");
+  private static final Pattern CURRENCY_FIRST_PATTERN =
+      Pattern.compile("\\s*(USD|\\$)\\s*(\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})?)\\s*");
+  private static final Pattern AMOUNT_FIRST_PATTERN =
+      Pattern.compile("\\s*(\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})?)\\s*(USD|\\$)\\s*");
 
   @Override
   public Either<NodeNotSelected, NodeProperties> select(Node node) {
@@ -32,11 +32,17 @@ public class AnyPriceSelector implements NodeSelector {
       return Either.left(NodeNotSelected.getInstance());
     }
     final Element element = (Element) node;
-    final Matcher priceMatcher = PRICE_PATTERN.matcher(element.text());
-    final List<MatchResult> matchResults = priceMatcher.results().collect(Collectors.toList());
-    if (matchResults.size() == 0) {
+    final Matcher currencyFirstMatcher = CURRENCY_FIRST_PATTERN.matcher(element.text());
+    final Matcher amountFirstMatcher = AMOUNT_FIRST_PATTERN.matcher(element.text());
+    final List<MatchResult> currencyFirstMatchResults =
+        currencyFirstMatcher.results().collect(Collectors.toList());
+    final List<MatchResult> amountFirstMatchResults =
+        amountFirstMatcher.results().collect(Collectors.toList());
+    if (currencyFirstMatchResults.isEmpty() && amountFirstMatchResults.isEmpty()) {
       return Either.left(NodeNotSelected.getInstance());
     } else {
+      final List<MatchResult> matchResults = currencyFirstMatchResults.isEmpty() ?
+          amountFirstMatchResults : currencyFirstMatchResults;
       final Map<String, Object> properties = new HashMap<>();
       final List<FastMoney> allMoney = new ArrayList<>();
 
@@ -45,7 +51,7 @@ public class AnyPriceSelector implements NodeSelector {
             final String amount = result.group(2) != null ? result.group(2) : result.group(3);
             final MonetaryAmount monetaryAmount =
                 Monetary.getDefaultAmountFactory()
-                    .setCurrency("USD")
+                    .setCurrency("USD") // TODO: Hardcoded for now
                     .setNumber(Double.parseDouble(amount.replace(",", "")))
                     .create();
             allMoney.add(FastMoney.from(monetaryAmount));
@@ -66,6 +72,5 @@ public class AnyPriceSelector implements NodeSelector {
   }
 
   public static void main(String[] args) {
-    AnyPriceSelector selector = new AnyPriceSelector();
   }
 }

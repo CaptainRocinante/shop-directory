@@ -1,7 +1,5 @@
 package com.rocinante.crawlers.summary.selectors;
 
-import static com.rocinante.crawlers.summary.selectors.AnyPriceSelector.PRICE_PATTERN;
-
 import com.google.common.collect.Range;
 import com.rocinante.selectors.NodeNotSelected;
 import com.rocinante.selectors.NodeProperties;
@@ -22,6 +20,10 @@ import org.jsoup.nodes.Node;
 
 public class AnyPriceRangeSelector implements NodeSelector {
   public static final String RANGE_MONEY_OBJECT_PROPERTY = "range_money";
+  private static final Pattern PRICE_PATTERN =
+      Pattern.compile(
+          "\\s*(USD|\\$)\\s*(\\d{1,3}(?:["
+              + ".,]\\d{3})*(?:[.,]\\d{2})?)\\s*|\\s*(\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})?)\\s*(USD|\\$)\\s*");
   private static final Pattern PRICE_RANGE_PATTERN =
       Pattern.compile(
           String.format(
