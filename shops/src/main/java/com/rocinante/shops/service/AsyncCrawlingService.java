@@ -3,6 +3,7 @@ package com.rocinante.shops.service;
 import com.rocinante.crawlers.MapCrawlContext;
 import com.rocinante.crawlers.category.Category;
 import com.rocinante.crawlers.category.CategoryCrawler;
+import com.rocinante.crawlers.summary.ProductSummary;
 import com.rocinante.crawlers.summary.SummaryCrawler;
 import com.rocinante.shops.datastore.dao.MerchantDao;
 import com.rocinante.shops.datastore.dao.MerchantInferredCategoryDao;
@@ -61,4 +62,17 @@ public class AsyncCrawlingService {
     log.info("End Category Crawl for merchant {}", merchantUuid);
   }
 
+  @Async
+  public void crawlAndSaveProductsForCategory(MerchantInferredCategory merchantInferredCategory) {
+    log.info("Begin Product Crawl for category {}", merchantInferredCategory.getUuid());
+    final List<ProductSummary> productSummaries =
+        summaryCrawler.crawlUrl(merchantInferredCategory.getUrl(),
+            new MapCrawlContext(null));
+
+    log.info("Product Count: {}", productSummaries.size());
+
+    for (final ProductSummary product: productSummaries) {
+      log.info("Handling {}", product.toString());
+    }
+  }
 }

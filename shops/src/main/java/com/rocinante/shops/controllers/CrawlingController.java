@@ -1,7 +1,11 @@
 package com.rocinante.shops.controllers;
 
 import com.rocinante.shops.api.MerchantDto;
+import com.rocinante.shops.datastore.dao.MerchantInferredCategoryDao;
+import com.rocinante.shops.datastore.entities.Merchant;
+import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
 import com.rocinante.shops.service.AsyncCrawlingService;
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +21,23 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class CrawlingController {
   private final AsyncCrawlingService asyncCrawlingService;
+  private final MerchantInferredCategoryDao merchantInferredCategoryDao;
 
   @PostMapping("/categories")
-  public void crawlCategories(@RequestBody MerchantDto merchantDto) {
+  public void crawlCategoriesForMerchant(@RequestBody MerchantDto merchantDto) {
     asyncCrawlingService.crawlAndSaveCategoriesForMerchant(UUID.fromString(merchantDto.getUuid()));
+  }
+
+  @PostMapping("/products")
+  public void crawlProductsForMerchant(@RequestBody MerchantDto merchantDto) {
+    log.info("Begin Product Crawl for merchant {}", merchantDto.getUuid());
+    final List<MerchantInferredCategory> merchantCategories =
+        merchantInferredCategoryDao.findTop3ByMerchantUuid(UUID.fromString(merchantDto.getUuid()));
+    log.info("Categories Discovered Count: {}", merchantCategories.size());
+
+    for (final MerchantInferredCategory inferredCategory: merchantCategories) {
+      log.info("Handling {} {}", inferredCategory.getName(), inferredCategory.getUrl());
+      asyncCrawlingService.crawlAndSaveProductsForCategory(inferredCategory);
+    }
   }
 }

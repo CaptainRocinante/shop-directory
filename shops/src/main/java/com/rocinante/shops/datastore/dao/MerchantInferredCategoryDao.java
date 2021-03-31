@@ -1,6 +1,7 @@
 package com.rocinante.shops.datastore.dao;
 
 import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,4 +10,6 @@ public interface MerchantInferredCategoryDao extends JpaRepository<MerchantInfer
     UUID> {
   Optional<MerchantInferredCategory> findByMerchantUuidAndUrl(UUID merchantUuid,
       String url);
+
+  List<MerchantInferredCategory> findTop3ByMerchantUuid(UUID merchantUuid);
 }
