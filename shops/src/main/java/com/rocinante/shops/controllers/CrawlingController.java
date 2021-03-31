@@ -4,6 +4,7 @@ import com.rocinante.crawlers.MapCrawlContext;
 import com.rocinante.crawlers.category.Category;
 import com.rocinante.crawlers.category.CategoryCrawler;
 import com.rocinante.crawlers.summary.SummaryCrawler;
+import com.rocinante.shops.api.CategoryDto;
 import com.rocinante.shops.api.MerchantDto;
 import com.rocinante.shops.datastore.dao.MerchantDao;
 import com.rocinante.shops.datastore.dao.MerchantInferredCategoryDao;
@@ -35,7 +36,7 @@ public class CrawlingController {
 
   @PostMapping("/categories")
   @Async
-  public void crawlMerchantCategories(@RequestBody MerchantDto merchantDto) {
+  public void crawlCategories(@RequestBody MerchantDto merchantDto) {
     log.info("Begin Category Crawl for merchant {}", merchantDto.getUuid());
     final Merchant merchant = merchantDao
         .findById(UUID.fromString(merchantDto.getUuid()))

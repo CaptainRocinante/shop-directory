@@ -16,26 +16,49 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 @Slf4j
+/*
+  This class stores and uses an instance of the Chrome driver from the ThreadLocal, so it should
+  be used from a smaller dedicated thread-pool.
+ */
 public class RenderedHtmlProvider {
+  private final ThreadLocal<WebDriver> webDriverThreadLocal;
   private final UserAgentProvider userAgentProvider;
-
-  private WebDriver initWebDriver() {
-    String chromeDriverPath = "/usr/local/bin/chromedriver";
-    System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-    ChromeOptions options = new ChromeOptions();
-    options.addArguments(
-        "--headless",
-        "--window-size=1920,1080",
-        "--ignore-certificate-errors",
-        "--silent",
-        "--enable-javascript",
-//        "--proxy-server=http://127.0.0.1:8888",
-        String.format("--user-agent=%s", userAgentProvider.getRandomUserAgent()));
-    return new ChromeDriver(options);
-  }
 
   public RenderedHtmlProvider() {
     this.userAgentProvider = new UserAgentProvider();
+    this.webDriverThreadLocal = new ThreadLocal<>() {
+      private WebDriver initWebDriver() {
+        String chromeDriverPath = "/usr/local/bin/chromedriver";
+        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments(
+            "--headless",
+            "--window-size=1920,1080",
+            "--ignore-certificate-errors",
+            "--silent",
+            "--enable-javascript",
+//        "--proxy-server=http://127.0.0.1:8888",
+            String.format("--user-agent=%s", userAgentProvider.getRandomUserAgent()));
+        return new ChromeDriver(options);
+      }
+
+      @Override
+      protected WebDriver initialValue() {
+        return initWebDriver();
+      }
+
+      @Override
+      public void remove() {
+        WebDriver driver = get();
+        if (driver != null) driver.quit();
+        super.remove();
+      }
+
+      @Override
+      public void set(WebDriver value) {
+        throw new UnsupportedOperationException();
+      }
+    };
   }
 
   private void scrollToBottom(WebDriver webDriver) throws InterruptedException {
@@ -107,7 +130,8 @@ public class RenderedHtmlProvider {
   }
 
   public RenderedHtml downloadHtml(String url) {
-    final WebDriver webDriver = initWebDriver();
+    log.info("Downloading html content from {}", url);
+    final WebDriver webDriver = webDriverThreadLocal.get();
     webDriver.get(url);
     try {
       Thread.sleep(2000L); // Wait for any init JS to execute
@@ -119,7 +143,7 @@ public class RenderedHtmlProvider {
     final RenderedHtml renderedHtml =
         new RenderedHtml(webDriver.getPageSource(), imageDimensionsMap);
     webDriver.close();
-    webDriver.quit();
+    log.info("Finished downloading html content from {}", url);
     return renderedHtml;
   }
 }

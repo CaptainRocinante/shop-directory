@@ -25,8 +25,9 @@ public class ShopDirectoryApplication {
   public TaskExecutor executorAsync() {
     ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
     executor.setCorePoolSize(10);
-    // Capping max pool size to 1/4th size of the tomcat pool (200)
-    executor.setMaxPoolSize(50);
+    // Capping max pool size to 1/10th size of the tomcat pool (200), each pool thread will
+    // maintain a headless chromium instance, so need to be careful with max pool size
+    executor.setMaxPoolSize(20);
     // Large queue capacity as these tasks will take time
     executor.setQueueCapacity(1000);
     executor.setThreadNamePrefix("async-");
