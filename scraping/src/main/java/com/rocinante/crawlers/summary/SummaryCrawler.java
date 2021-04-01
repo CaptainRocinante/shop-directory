@@ -151,7 +151,13 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
                   maxLcsScore.set(lcsScore);
                   maxLcsScoreText.set(text);
                 } else if (lcsScore == maxLcsScore.get()) {
-                  maxLcsScoreText.set(maxLcsScoreText.get() + " " + text);
+                  final List<StringLCSToken> existingMaxTokens =
+                      Tokenizer.alphaNumericLcsTokens(maxLcsScoreText.get());
+                  final int lcsScoreAmongDescriptionCandidates = LongestCommonSubsequence
+                      .computeLcsStringTokensOnly(textTokens, existingMaxTokens);
+                  if (lcsScoreAmongDescriptionCandidates <= 2) {
+                    maxLcsScoreText.set(maxLcsScoreText.get() + " " + text);
+                  }
                 }
               }
               if (categoryScore != 0) {
@@ -302,7 +308,8 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     //        "https://www.chubbiesshorts.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries =
         summaryCrawler.crawlUrl(
-            "https://www.aritzia.com/en/clothing/womens-workout-clothes/womens-bike-shorts",
+//            "https://www.aritzia.com/en/clothing/womens-workout-clothes/womens-bike-shorts",
+                "https://www.dsw.com/en/us/brands/steve-madden/N-1z141c7",
             new MapCrawlContext(null));
     productSummaries.forEach(ps -> log.info("ProductSummary: {}", ps.toString()));
   }

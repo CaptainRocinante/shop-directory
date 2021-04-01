@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class UserAgentProvider {
   private static final ImmutableSet<String> USER_AGENT_FILES =
-      new ImmutableSet.Builder<String>().add("user-agents/chrome.txt").build();
+      new ImmutableSet.Builder<String>().add("user-agents/chrome-single.txt").build();
 
   private final List<String> userAgents;
   private final Random random;
