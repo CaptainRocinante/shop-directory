@@ -250,39 +250,41 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
 
     final List<ProductSummary> results = new ArrayList<>();
     productRoots.forEach(
-        productRoot ->
-            results.addAll(
-                productRoot
-                    .getChildrenWithAllSelectors()
-                    .stream()
-                    .map(SubtreeTraversalResult::getNodeSelectionResult)
-                    .map(
-                        esr -> {
-                          final NodeProperties urlProperties =
-                              esr.getSelectedProperties(ANY_LINK_WITH_HREF_SELECTOR).get(0);
-                          final Tuple2<Range<FastMoney>, Range<FastMoney>> priceProperties =
-                              getOriginalAndSalePrice(
-                                  esr.getSelectedProperties(ANY_PRICE_SELECTOR),
-                                  esr.getSelectedProperties(ANY_PRICE_RANGE_SELECTOR));
-                          final Tuple2<List<String>, List<String>> imageUrls =
-                              getProductImages(
-                                  esr.getSelectedProperties(IMAGE_SELECTOR),
-                                  html.getImageSrcDimensionMap());
-                          final List<NodeProperties> textNodeProperties =
-                              esr.getSelectedProperties(TEXT_NODE_SELECTOR);
-                          final String productTitle =
-                              getProductTitle(textNodeProperties, urlProperties);
-                          return new ProductSummary(
-                              (String) urlProperties.getProperty(URL_PROPERTY),
-                              productTitle,
-                              imageUrls._1(),
-                              imageUrls._2(),
-                              priceProperties._1(),
-                              priceProperties._2());
-                        })
-                    .collect(Collectors.toList())));
-    // To prevent false positives, don't return if page contains less than 3 products
-    return results.size() >= 3 ? results : Collections.emptyList();
+        productRoot -> {
+            var innerResults = productRoot
+                .getChildrenWithAllSelectors()
+                .stream()
+                .map(SubtreeTraversalResult::getNodeSelectionResult)
+                .map(
+                    esr -> {
+                      final NodeProperties urlProperties =
+                          esr.getSelectedProperties(ANY_LINK_WITH_HREF_SELECTOR).get(0);
+                      final Tuple2<Range<FastMoney>, Range<FastMoney>> priceProperties =
+                          getOriginalAndSalePrice(
+                              esr.getSelectedProperties(ANY_PRICE_SELECTOR),
+                              esr.getSelectedProperties(ANY_PRICE_RANGE_SELECTOR));
+                      final Tuple2<List<String>, List<String>> imageUrls =
+                          getProductImages(
+                              esr.getSelectedProperties(IMAGE_SELECTOR),
+                              html.getImageSrcDimensionMap());
+                      final List<NodeProperties> textNodeProperties =
+                          esr.getSelectedProperties(TEXT_NODE_SELECTOR);
+                      final String productTitle =
+                          getProductTitle(textNodeProperties, urlProperties);
+                      return new ProductSummary(
+                          (String) urlProperties.getProperty(URL_PROPERTY),
+                          productTitle,
+                          imageUrls._1(),
+                          imageUrls._2(),
+                          priceProperties._1(),
+                          priceProperties._2());
+                    })
+                .collect(Collectors.toList());
+            if (innerResults.size() > 2) {
+              results.addAll(innerResults);
+            }
+        });
+    return results;
   }
 
   public static void main(String[] args) {
@@ -292,7 +294,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     //        "https://www.chubbiesshorts.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries =
         summaryCrawler.crawlUrl(
-            "https://www.aritzia.com/en/brands/denimforum/denim-forum-jeans-shorts",
+            "https://www.aritzia.com/en/clothing/womens-workout-clothes/womens-bike-shorts",
             new MapCrawlContext(null));
     productSummaries.forEach(ps -> log.info("ProductSummary: {}", ps.toString()));
   }
