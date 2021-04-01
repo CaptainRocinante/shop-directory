@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS product_inferred_category_mapping;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS merchant_inferred_category;
 DROP TABLE IF EXISTS merchant;
@@ -42,7 +43,6 @@ CREATE TABLE merchant_inferred_category (
 CREATE TABLE product (
   uuid                                          UUID PRIMARY KEY,
   name                      					          VARCHAR(128) NOT NULL,
-  merchant_inferred_category_uuid               UUID NOT NULL,
   url                                           VARCHAR(2048) NOT NULL,
   enabled                                       BOOLEAN NOT NULL,
   currency_code                                 VARCHAR(10) NOT NULL,
@@ -54,6 +54,13 @@ CREATE TABLE product (
   created_at                                    TIMESTAMP WITH TIME ZONE NOT NULL,
   updated_at                                    TIMESTAMP WITH TIME ZONE NOT NULL,
   last_crawled_at                               TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-  UNIQUE (url),
+  UNIQUE (url)
+);
+
+CREATE TABLE product_inferred_category_mapping (
+  product_uuid                                UUID NOT NULL,
+  merchant_inferred_category_uuid             UUID NOT NULL,
+  PRIMARY KEY (product_uuid, merchant_inferred_category_uuid),
+  FOREIGN KEY (product_uuid) REFERENCES product (uuid),
   FOREIGN KEY (merchant_inferred_category_uuid) REFERENCES merchant_inferred_category (uuid)
 );

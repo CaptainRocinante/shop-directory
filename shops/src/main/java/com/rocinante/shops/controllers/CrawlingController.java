@@ -34,7 +34,7 @@ public class CrawlingController {
       throws MalformedURLException {
     log.info("Begin Product Crawl for merchant {}", merchantDto.getUuid());
     final List<MerchantInferredCategory> merchantCategories =
-        merchantInferredCategoryDao.findTop30ByMerchantUuid(UUID.fromString(merchantDto.getUuid()));
+        merchantInferredCategoryDao.findTop3ByMerchantUuid(UUID.fromString(merchantDto.getUuid()));
     log.info("Categories Discovered Count: {}", merchantCategories.size());
 
     for (final MerchantInferredCategory inferredCategory: merchantCategories) {

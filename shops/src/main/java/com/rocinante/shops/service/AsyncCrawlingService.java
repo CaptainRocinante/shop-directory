@@ -86,18 +86,17 @@ public class AsyncCrawlingService {
       if (existingProductOpt.isPresent()) {
         final Product existingProduct = existingProductOpt.get();
         log.info("Existing product found {}", existingProduct.getUuid());
-        if (!existingProduct.isSameAsLastCrawl(product)) {
+        if (!existingProduct.isSameAsLastCrawl(product, merchantInferredCategory)) {
           existingProduct.updateFromLatestCrawl(product, merchantInferredCategory);
-          productDao.save(existingProduct);
           log.info("Existing product updated {}", existingProduct.getUuid());
         } else {
           log.info("Existing product has no changes in latest crawl {}", existingProduct.getUuid());
         }
+        merchantInferredCategory.addProduct(existingProduct);
       } else {
         final Product newProduct;
         newProduct = new Product(product, merchantInferredCategory);
-        var result = productDao.save(newProduct);
-        log.info("New Product saved {}", result.getUuid());
+        merchantInferredCategory.addProduct(newProduct);
       }
     }
     merchantInferredCategory.setLastCrawledAt(Instant.now().atOffset(ZoneOffset.UTC));

@@ -9,13 +9,15 @@ import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,9 +37,8 @@ public class Product {
   @Column
   private String name;
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "merchant_inferred_category_uuid")
-  private MerchantInferredCategory merchantInferredCategory;
+  @ManyToMany(fetch = FetchType.EAGER, mappedBy = "products")
+  private Set<MerchantInferredCategory> merchantInferredCategories = new HashSet<>();
 
   @Column
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
@@ -74,7 +75,45 @@ public class Product {
   @Column
   private OffsetDateTime lastCrawledAt;
 
-  public boolean isSameAsLastCrawl(ProductSummary productSummary) throws MalformedURLException {
+  @Override
+  public int hashCode() {
+    return Objects.hash(url);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Product)) {
+      return false;
+    }
+    Product other = (Product) obj;
+    return this.url.equals(other.url);
+  }
+
+  private Product(UUID uuid, String name,
+      MerchantInferredCategory merchantInferredCategory, URL url, boolean enabled,
+      CurrencyCode currencyCode, BigDecimal currentPriceLowerRange,
+      BigDecimal currentPriceUpperRange, BigDecimal originalPriceLowerRange,
+      BigDecimal originalPriceUpperRange, URL mainImageUrl, OffsetDateTime createdAt,
+      OffsetDateTime updatedAt, OffsetDateTime lastCrawledAt) {
+    this.uuid = uuid;
+    this.name = name;
+    this.merchantInferredCategories.add(merchantInferredCategory);
+    this.url = url;
+    this.enabled = enabled;
+    this.currencyCode = currencyCode;
+    this.currentPriceLowerRange = currentPriceLowerRange;
+    this.currentPriceUpperRange = currentPriceUpperRange;
+    this.originalPriceLowerRange = originalPriceLowerRange;
+    this.originalPriceUpperRange = originalPriceUpperRange;
+    this.mainImageUrl = mainImageUrl;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.lastCrawledAt = lastCrawledAt;
+  }
+
+  public boolean isSameAsLastCrawl(
+      ProductSummary productSummary,
+      MerchantInferredCategory merchantInferredCategory) throws MalformedURLException {
     return StringUtils.left(productSummary.getInferredDescription(), 128).equals(name) &&
         NullabilityUtils.equals(CurrencyCode.getByCode(productSummary.getCurrency()), currencyCode) &&
         NullabilityUtils.equals(productSummary.currentPriceLowerRange(), currentPriceLowerRange) &&
@@ -83,7 +122,8 @@ public class Product {
             originalPriceLowerRange) &&
         NullabilityUtils.equals(productSummary.originalPriceUpperRange(),
             originalPriceUpperRange) &&
-        NullabilityUtils.equals(new URL(productSummary.mainProductImage()), mainImageUrl);
+        NullabilityUtils.equals(new URL(productSummary.mainProductImage()), mainImageUrl) &&
+        merchantInferredCategories.contains(merchantInferredCategory);
   }
 
   public Product(ProductSummary productSummary, MerchantInferredCategory merchantInferredCategory)
@@ -109,7 +149,7 @@ public class Product {
   public void updateFromLatestCrawl(ProductSummary productSummary,
       MerchantInferredCategory merchantInferredCategory) throws MalformedURLException {
     this.name = StringUtils.left(productSummary.getInferredDescription(), 128);
-    this.merchantInferredCategory = merchantInferredCategory;
+    this.merchantInferredCategories.add(merchantInferredCategory);
     this.currencyCode = CurrencyCode.getByCode(productSummary.getCurrency());
     this.currentPriceLowerRange = productSummary.currentPriceLowerRange();
     this.currentPriceUpperRange = productSummary.currentPriceUpperRange();

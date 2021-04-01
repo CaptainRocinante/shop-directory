@@ -7,15 +7,18 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +49,12 @@ public class MerchantInferredCategory {
   @JoinColumn(name = "merchant_uuid")
   private Merchant merchant;
 
-  @OneToMany(fetch =  FetchType.LAZY, mappedBy = "merchantInferredCategory")
+  @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+  @JoinTable(
+      name = "product_inferred_category_mapping",
+      joinColumns = { @JoinColumn(name = "merchant_inferred_category_uuid") },
+      inverseJoinColumns = { @JoinColumn(name = "product_uuid") }
+  )
   private Set<Product> products = new HashSet<>();
 
   @Column
@@ -57,6 +65,20 @@ public class MerchantInferredCategory {
 
   @Column
   private OffsetDateTime lastCrawledAt;
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(uuid, url);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof MerchantInferredCategory)) {
+      return false;
+    }
+    MerchantInferredCategory other = (MerchantInferredCategory) obj;
+    return this.uuid.equals(other.uuid) && this.url.equals(other.url);
+  }
 
   public MerchantInferredCategory(Merchant merchant, Category category)
       throws MalformedURLException {
@@ -76,5 +98,9 @@ public class MerchantInferredCategory {
     this.name = StringUtils.left(category.getCategoryName(), 128);
     this.merchant = merchant;
     this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
+  }
+
+  public void addProduct(Product product) {
+    this.products.add(product);
   }
 }
