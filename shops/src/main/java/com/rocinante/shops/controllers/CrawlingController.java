@@ -36,7 +36,8 @@ public class CrawlingController {
     final OffsetDateTime lastCrawlDateCutoff =
         Instant.now().atOffset(ZoneOffset.UTC).minusDays(merchantCrawlDto.getDays());
     final Optional<Merchant> merchantOpt = merchantDao
-        .findByUuidAndLastCrawledAtBeforeOrLastCrawledAtIsNull(UUID.fromString(merchantCrawlDto.getUuid()),
+        .findByUuidAndLastCrawledAtBeforeOrNull(
+            UUID.fromString(merchantCrawlDto.getUuid()),
             lastCrawlDateCutoff);
     if (merchantOpt.isPresent()) {
       log.info("Begin Category Crawl for merchant {}", merchantCrawlDto.getUuid());
@@ -56,7 +57,7 @@ public class CrawlingController {
         Instant.now().atOffset(ZoneOffset.UTC).minusDays(merchantCrawlDto.getDays());
 
     final List<MerchantInferredCategory> merchantCategories =
-        merchantInferredCategoryDao.findByMerchantUuidAndLastCrawledAtBeforeOrLastCrawledAtIsNull(
+        merchantInferredCategoryDao.findByMerchantUuidAndLastCrawledAtBeforeOrNull(
             UUID.fromString(merchantCrawlDto.getUuid()),
             lastCrawlDateCutoff);
     log.info("Categories to crawl count: {}", merchantCategories.size());
