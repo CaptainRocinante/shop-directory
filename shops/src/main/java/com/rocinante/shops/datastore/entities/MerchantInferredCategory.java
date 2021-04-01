@@ -49,10 +49,7 @@ public class MerchantInferredCategory {
   @JoinColumn(name = "merchant_uuid")
   private Merchant merchant;
 
-  @ManyToMany(cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE
-  }, fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "product_inferred_category_mapping",
       joinColumns = { @JoinColumn(name = "merchant_inferred_category_uuid") },

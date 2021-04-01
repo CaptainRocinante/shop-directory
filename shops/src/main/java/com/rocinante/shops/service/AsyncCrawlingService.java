@@ -80,7 +80,24 @@ public class AsyncCrawlingService {
 
     for (final ProductSummary productSummary: productSummaries) {
       log.info("Handling {}", productSummary.toString());
-      final Product product = new Product(productSummary);
+
+      final Product product;
+      final Optional<Product> existingProduct  =
+          productDao.findByUrl(new URL(productSummary.getUrl()));
+
+      if (existingProduct.isPresent()) {
+        product = existingProduct.get();
+        log.info("Existing product found {} {}", product.getUuid(), product.getUrl());
+        boolean isUpdated = product.applyUpdatesIfNeeded(productSummary);
+        if (isUpdated) {
+          log.info("Updates for product detected, saving to DB {} {}", product.getUuid(),
+              product.getUrl());
+          productDao.save(product);
+        }
+      } else {
+        product = productDao.save(new Product(productSummary));
+        log.info("New product created, saved to DB {} {}", product.getUuid(), product.getUrl());
+      }
       merchantInferredCategory.addProduct(product);
     }
     merchantInferredCategory.setLastCrawledAt(Instant.now().atOffset(ZoneOffset.UTC));

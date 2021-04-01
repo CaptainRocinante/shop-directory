@@ -2,6 +2,7 @@ package com.rocinante.shops.datastore.entities;
 
 import com.neovisionaries.i18n.CurrencyCode;
 import com.rocinante.crawlers.summary.ProductSummary;
+import com.rocinante.shops.utils.NullabilityUtils;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -102,5 +103,43 @@ public class Product {
     this.createdAt = Instant.now().atOffset(ZoneOffset.UTC);
     this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
     this.lastCrawledAt = null;
+  }
+
+  public boolean applyUpdatesIfNeeded(ProductSummary productSummary) {
+    boolean updated = false;
+    if (!NullabilityUtils.areObjectsEqual(this.name,
+        StringUtils.left(productSummary.getInferredDescription(), 128))) {
+      updated = true;
+      this.name = StringUtils.left(productSummary.getInferredDescription(), 128);
+    }
+    if (!NullabilityUtils.areObjectsEqual(this.currencyCode,
+        CurrencyCode.getByCode(productSummary.getCurrency()))) {
+      updated = true;
+      this.currencyCode = CurrencyCode.getByCode(productSummary.getCurrency());
+    }
+    if (!NullabilityUtils.areObjectsEqual(this.currentPriceLowerRange,
+        productSummary.currentPriceLowerRange())) {
+      updated = true;
+      this.currentPriceLowerRange = productSummary.currentPriceLowerRange();
+    }
+    if (!NullabilityUtils.areObjectsEqual(this.currentPriceUpperRange,
+        productSummary.currentPriceUpperRange())) {
+      updated = true;
+      this.currentPriceUpperRange = productSummary.currentPriceUpperRange();
+    }
+    if (!NullabilityUtils.areObjectsEqual(this.originalPriceLowerRange,
+        productSummary.originalPriceLowerRange())) {
+      updated = true;
+      this.originalPriceLowerRange = productSummary.originalPriceLowerRange();
+    }
+    if (!NullabilityUtils.areObjectsEqual(this.originalPriceUpperRange,
+        productSummary.originalPriceUpperRange())) {
+      updated = true;
+      this.originalPriceUpperRange = productSummary.originalPriceUpperRange();
+    }
+    if (updated) {
+      this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
+    }
+    return updated;
   }
 }
