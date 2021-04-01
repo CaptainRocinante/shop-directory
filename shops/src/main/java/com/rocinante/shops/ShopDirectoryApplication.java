@@ -1,6 +1,7 @@
 package com.rocinante.shops;
 
 import com.rocinante.configuration.ScrapingSpringConfiguration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,13 +23,13 @@ public class ShopDirectoryApplication {
   }
 
   @Bean(name = ASYNC_TASK_EXECUTOR)
-  public TaskExecutor executorAsync() {
-    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-    // Capping max pool size to 1/20th size of the tomcat pool (200), each pool thread will
-    // maintain a headless chromium instance, so need to be careful with max pool size
-    executor.setCorePoolSize(10);
-    // Large queue capacity as these tasks will take time
-    executor.setQueueCapacity(10000);
+  public TaskExecutor executorAsync(
+      @Value("${async.pool.size}") int poolSize,
+      @Value("${async.pool.queue.capacity}") int queueCapacity) {
+    final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+    executor.setCorePoolSize(poolSize);
+    executor.setMaxPoolSize(poolSize);
+    executor.setQueueCapacity(queueCapacity);
     executor.setThreadNamePrefix("async-");
     executor.initialize();
     return executor;
