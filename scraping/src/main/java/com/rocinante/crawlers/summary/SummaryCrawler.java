@@ -129,10 +129,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   }
 
   private String getProductTitle(
-      List<NodeProperties> allTextNodesSelected, NodeProperties urlProperties) {
-    final String url = (String) urlProperties.getProperty(URL_PROPERTY);
-    final String urlText = (String) urlProperties.getProperty(TEXT_PROPERTY);
-
+      List<NodeProperties> allTextNodesSelected, String url, String urlText) {
     final List<StringLCSToken> urlTokens = Tokenizer.alphaNumericLcsTokens(url);
 
     final AtomicInteger maxLcsScore = new AtomicInteger(Integer.MIN_VALUE);
@@ -233,9 +230,21 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     return new Tuple2<>(Collections.singletonList(productImages.get(0)), otherImages);
   }
 
+  // Select the longest link found in the product grid
+  private Tuple2<String, String> identifyProductLinkWithText(
+      List<NodeProperties> nodePropertiesList) {
+    return nodePropertiesList
+        .stream()
+        .map(np -> new Tuple2<>((String) np.getProperty(URL_PROPERTY),
+            (String) np.getProperty(TEXT_PROPERTY)))
+        .reduce((t1, t2) -> t1._1().trim().length() > t2._1().trim().length() ? t1 : t2)
+        .orElseThrow();
+  }
+
   @Override
   public List<ProductSummary> crawlHtml(
       RenderedHtml html, String baseUrl, CrawlContext crawlContext) {
+    log.info(html.getHtml());
     final PriorityQueue<SubtreeTraversalResult> highestLcsScoreHeap =
         new PriorityQueue<>((r1, r2) -> r2.getChildrenLCSScore() - r1.getChildrenLCSScore());
     final List<SubtreeTraversalResult> productRoots = new LinkedList<>();
@@ -257,8 +266,9 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
                 .map(SubtreeTraversalResult::getNodeSelectionResult)
                 .map(
                     esr -> {
-                      final NodeProperties urlProperties =
-                          esr.getSelectedProperties(ANY_LINK_WITH_HREF_SELECTOR).get(0);
+                      final Tuple2<String, String> urlAndText =
+                          identifyProductLinkWithText(
+                              esr.getSelectedProperties(ANY_LINK_WITH_HREF_SELECTOR));
                       final Tuple2<Range<FastMoney>, Range<FastMoney>> priceProperties =
                           getOriginalAndSalePrice(
                               esr.getSelectedProperties(ANY_PRICE_SELECTOR),
@@ -270,9 +280,9 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
                       final List<NodeProperties> textNodeProperties =
                           esr.getSelectedProperties(TEXT_NODE_SELECTOR);
                       final String productTitle =
-                          getProductTitle(textNodeProperties, urlProperties);
+                          getProductTitle(textNodeProperties, urlAndText._1(), urlAndText._2());
                       return new ProductSummary(
-                          (String) urlProperties.getProperty(URL_PROPERTY),
+                          urlAndText._1(),
                           productTitle,
                           imageUrls._1(),
                           imageUrls._2(),
@@ -280,9 +290,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
                           priceProperties._2());
                     })
                 .collect(Collectors.toList());
-            if (innerResults.size() > 2) {
-              results.addAll(innerResults);
-            }
+          results.addAll(innerResults);
         });
     return results;
   }
