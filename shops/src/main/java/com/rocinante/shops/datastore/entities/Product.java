@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.flywaydb.core.internal.util.StringUtils;
 import org.hibernate.annotations.Type;
 
 @NoArgsConstructor
@@ -77,7 +78,7 @@ public class Product {
       throws MalformedURLException {
     this(
         UUID.randomUUID(),
-        productSummary.getInferredDescription(),
+        StringUtils.left(productSummary.getInferredDescription(), 128),
         merchantInferredCategory,
         new URL(productSummary.getUrl()),
         true,
@@ -95,7 +96,7 @@ public class Product {
 
   public void updateFromLatestCrawl(ProductSummary productSummary,
       MerchantInferredCategory merchantInferredCategory) throws MalformedURLException {
-    this.name = productSummary.getInferredDescription();
+    this.name = StringUtils.left(productSummary.getInferredDescription(), 128);
     this.merchantInferredCategory = merchantInferredCategory;
     this.currencyCode = CurrencyCode.getByCode(productSummary.getCurrency());
     this.currentPriceLowerRange = productSummary.currentPriceLowerRange();
