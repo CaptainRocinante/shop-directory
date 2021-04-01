@@ -103,15 +103,19 @@ public class RenderedHtmlProvider {
           final int[] dimensions = new int[] {height, width};
           final String srcSet = webElement.getAttribute("srcset");
           final String src = webElement.getAttribute("src");
-          if (srcSet != null && !srcSet.isBlank()) {
-            UrlUtils
-                .extractImageUrlsFromSrcSet(srcSet)
-                .stream()
-                .map(UrlUtils::getUrlOrUriStringRepresentation)
-                .forEach(uriString -> result.put(uriString, dimensions));
-          }
-          if (src != null && !src.isBlank()) {
+          try {
+            if (srcSet != null && !srcSet.isBlank()) {
+              UrlUtils
+                  .extractImageUrlsFromSrcSet(srcSet)
+                  .stream()
+                  .map(UrlUtils::getUrlOrUriStringRepresentation)
+                  .forEach(uriString -> result.put(uriString, dimensions));
+            }
+            if (src != null && !src.isBlank()) {
               result.put(UrlUtils.getUrlOrUriStringRepresentation(src), dimensions);
+            }
+          } catch (RuntimeException ex) {
+            log.error("Skipping element due to {}", ex.getMessage());
           }
         });
     return result;
