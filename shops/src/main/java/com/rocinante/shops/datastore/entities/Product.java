@@ -37,7 +37,7 @@ public class Product {
   @Column
   private String name;
 
-  @ManyToMany(mappedBy = "products", fetch = FetchType.EAGER)
+  @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
   private Set<MerchantInferredCategory> merchantInferredCategories = new HashSet<>();
 
   @Column

@@ -13,6 +13,7 @@ public interface MerchantInferredCategoryDao extends JpaRepository<MerchantInfer
   Optional<MerchantInferredCategory> findByMerchantUuidAndUrl(UUID merchantUuid,
       URL url);
 
-  List<MerchantInferredCategory> findByMerchantUuidAndLastCrawledAtBefore(UUID merchantUuid,
+  List<MerchantInferredCategory> findByMerchantUuidAndLastCrawledAtBeforeOrLastCrawledAtIsNull(
+      UUID merchantUuid,
       OffsetDateTime lastCrawledAt);
 }

@@ -17,12 +17,15 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 @AllArgsConstructor
 @Slf4j
 public class AsyncCrawlingService {
@@ -33,7 +36,9 @@ public class AsyncCrawlingService {
   private final SummaryCrawler summaryCrawler;
 
   @Async
-  public void crawlAndSaveCategoriesForMerchant(Merchant merchant) throws MalformedURLException {
+  @Transactional
+  public void crawlAndSaveCategoriesForMerchant(UUID merchantUuid) throws MalformedURLException {
+    final Merchant merchant = merchantDao.getOne(merchantUuid);
     log.info("Begin Category Crawl for merchant {} {}", merchant.getName(), merchant.getUrl());
     final List<Category> categories = categoryCrawler.crawlUrl(merchant.getUrl().toString(),
         new MapCrawlContext(null));
@@ -67,8 +72,11 @@ public class AsyncCrawlingService {
   }
 
   @Async
-  public void crawlAndSaveProductsForCategory(MerchantInferredCategory merchantInferredCategory)
+  @Transactional
+  public void crawlAndSaveProductsForCategory(UUID merchantInferredCategoryUuid)
       throws MalformedURLException {
+    final MerchantInferredCategory merchantInferredCategory =
+        merchantInferredCategoryDao.getOne(merchantInferredCategoryUuid);
     log.info("Begin Product Crawl for category {} {}", merchantInferredCategory.getUuid(),
         merchantInferredCategory.getUrl());
     final List<ProductSummary> productSummaries =

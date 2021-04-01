@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.flywaydb.core.internal.util.StringUtils;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Type;
 
 @NoArgsConstructor
@@ -49,7 +50,7 @@ public class MerchantInferredCategory {
   @JoinColumn(name = "merchant_uuid")
   private Merchant merchant;
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
       name = "product_inferred_category_mapping",
       joinColumns = { @JoinColumn(name = "merchant_inferred_category_uuid") },

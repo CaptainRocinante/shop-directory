@@ -10,9 +10,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableAutoConfiguration
+@EnableTransactionManagement
 @EnableAsync
 @Import(ScrapingSpringConfiguration.class)
 public class ShopDirectoryApplication {

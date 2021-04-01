@@ -40,7 +40,7 @@ public class CrawlingController {
             lastCrawlDateCutoff);
     if (merchantOpt.isPresent()) {
       log.info("Begin Category Crawl for merchant {}", merchantCrawlDto.getUuid());
-      asyncCrawlingService.crawlAndSaveCategoriesForMerchant(merchantOpt.get());
+      asyncCrawlingService.crawlAndSaveCategoriesForMerchant(merchantOpt.get().getUuid());
     } else {
       log.info("No merchant to crawl found with uuid {} and cutoff {}",
           merchantCrawlDto.getUuid(), merchantCrawlDto.getDays());
@@ -56,14 +56,14 @@ public class CrawlingController {
         Instant.now().atOffset(ZoneOffset.UTC).minusDays(merchantCrawlDto.getDays());
 
     final List<MerchantInferredCategory> merchantCategories =
-        merchantInferredCategoryDao.findByMerchantUuidAndLastCrawledAtBefore(
+        merchantInferredCategoryDao.findByMerchantUuidAndLastCrawledAtBeforeOrLastCrawledAtIsNull(
             UUID.fromString(merchantCrawlDto.getUuid()),
             lastCrawlDateCutoff);
     log.info("Categories to crawl count: {}", merchantCategories.size());
 
     for (final MerchantInferredCategory inferredCategory: merchantCategories) {
       log.info("Handling {} {}", inferredCategory.getName(), inferredCategory.getUrl());
-      asyncCrawlingService.crawlAndSaveProductsForCategory(inferredCategory);
+      asyncCrawlingService.crawlAndSaveProductsForCategory(inferredCategory.getUuid());
     }
   }
 }
