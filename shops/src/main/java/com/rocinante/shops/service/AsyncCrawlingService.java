@@ -78,30 +78,14 @@ public class AsyncCrawlingService {
 
     log.info("Product Count: {}", productSummaries.size());
 
-    for (final ProductSummary product: productSummaries) {
-      log.info("Handling {}", product.toString());
-
-      final Optional<Product> existingProductOpt = productDao.findByUrl(new URL(product.getUrl()));
-
-      if (existingProductOpt.isPresent()) {
-        final Product existingProduct = existingProductOpt.get();
-        log.info("Existing product found {}", existingProduct.getUuid());
-        if (!existingProduct.isSameAsLastCrawl(product, merchantInferredCategory)) {
-          existingProduct.updateFromLatestCrawl(product, merchantInferredCategory);
-          log.info("Existing product updated {}", existingProduct.getUuid());
-        } else {
-          log.info("Existing product has no changes in latest crawl {}", existingProduct.getUuid());
-        }
-        merchantInferredCategory.addProduct(existingProduct);
-      } else {
-        final Product newProduct;
-        newProduct = new Product(product, merchantInferredCategory);
-        log.info("New product created {}", newProduct.getUrl());
-        merchantInferredCategory.addProduct(newProduct);
-      }
+    for (final ProductSummary productSummary: productSummaries) {
+      log.info("Handling {}", productSummary.toString());
+      final Product product = new Product(productSummary);
+      merchantInferredCategory.addProduct(product);
     }
     merchantInferredCategory.setLastCrawledAt(Instant.now().atOffset(ZoneOffset.UTC));
     merchantInferredCategoryDao.save(merchantInferredCategory);
-    log.info("End Product Crawl for category {}", merchantInferredCategory.getUuid());
+    log.info("End Product Crawl for category {} {}", merchantInferredCategory.getUuid(),
+        merchantInferredCategory.getUrl());
   }
 }
