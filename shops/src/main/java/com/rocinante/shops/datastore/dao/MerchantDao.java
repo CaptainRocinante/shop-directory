@@ -7,5 +7,6 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MerchantDao extends JpaRepository<Merchant, UUID> {
-  Optional<Merchant> findByUuidAndLastCrawledAtBefore(UUID uuid, OffsetDateTime lastCrawledAt);
+  Optional<Merchant> findByUuidAndLastCrawledAtBeforeOrLastCrawledAtIsNull(UUID uuid,
+      OffsetDateTime lastCrawledAt);
 }

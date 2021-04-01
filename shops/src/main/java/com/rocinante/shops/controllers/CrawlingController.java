@@ -36,7 +36,7 @@ public class CrawlingController {
     final OffsetDateTime lastCrawlDateCutoff =
         Instant.now().atOffset(ZoneOffset.UTC).minusDays(merchantCrawlDto.getDays());
     final Optional<Merchant> merchantOpt = merchantDao
-        .findByUuidAndLastCrawledAtBefore(UUID.fromString(merchantCrawlDto.getUuid()),
+        .findByUuidAndLastCrawledAtBeforeOrLastCrawledAtIsNull(UUID.fromString(merchantCrawlDto.getUuid()),
             lastCrawlDateCutoff);
     if (merchantOpt.isPresent()) {
       log.info("Begin Category Crawl for merchant {}", merchantCrawlDto.getUuid());

@@ -24,7 +24,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.flywaydb.core.internal.util.StringUtils;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.Type;
 
 @NoArgsConstructor
