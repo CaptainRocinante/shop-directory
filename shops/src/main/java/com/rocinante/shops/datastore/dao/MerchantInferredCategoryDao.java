@@ -15,7 +15,7 @@ public interface MerchantInferredCategoryDao extends JpaRepository<MerchantInfer
       URL url);
 
   @Query(value = "SELECT * FROM merchant_inferred_category WHERE merchant_uuid = ?1 AND "
-      + "(last_crawled_at < ?2 OR last_crawled_at = NULL)",
+      + "(last_crawled_at < ?2 OR last_crawled_at IS NULL)",
       nativeQuery = true)
   List<MerchantInferredCategory> findByMerchantUuidAndLastCrawledAtBeforeOrNull(
       UUID merchantUuid,
