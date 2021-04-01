@@ -96,6 +96,7 @@ public class AsyncCrawlingService {
       } else {
         final Product newProduct;
         newProduct = new Product(product, merchantInferredCategory);
+        log.info("New product created {}", newProduct.getUrl());
         merchantInferredCategory.addProduct(newProduct);
       }
     }
