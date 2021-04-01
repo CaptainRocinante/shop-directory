@@ -17,7 +17,6 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -34,12 +33,8 @@ public class AsyncCrawlingService {
   private final SummaryCrawler summaryCrawler;
 
   @Async
-  public void crawlAndSaveCategoriesForMerchant(UUID merchantUuid) throws MalformedURLException {
-    log.info("Begin Category Crawl for merchant {}", merchantUuid);
-    final Merchant merchant = merchantDao
-        .findById(merchantUuid)
-        .orElseThrow();
-    log.info("Merchant found {} with website {}", merchant.getName(), merchant.getUrl());
+  public void crawlAndSaveCategoriesForMerchant(Merchant merchant) throws MalformedURLException {
+    log.info("Begin Category Crawl for merchant {} {}", merchant.getName(), merchant.getUrl());
     final List<Category> categories = categoryCrawler.crawlUrl(merchant.getUrl().toString(),
         new MapCrawlContext(null));
 
@@ -52,19 +47,23 @@ public class AsyncCrawlingService {
 
       if (existingCategoryOpt.isPresent()) {
         final MerchantInferredCategory existingCategory = existingCategoryOpt.get();
-        log.info("Existing category found {}", existingCategory.getUuid());
-        existingCategory.updateFromLatestCrawl(merchant, category);
-        merchantInferredCategoryDao.save(existingCategory);
+        log.info("Existing category found {} {}", existingCategory.getUuid(),
+            existingCategory.getUrl());
+        if (existingCategory.applyUpdatesIfNeeded(category)) {
+          log.info("Updates for category detected, saving to DB {} {}", existingCategory.getUuid(),
+              existingCategory.getUrl());
+          merchantInferredCategoryDao.save(existingCategory);
+        }
       } else {
         final MerchantInferredCategory newCategory;
         newCategory = new MerchantInferredCategory(merchant, category);
         var result = merchantInferredCategoryDao.save(newCategory);
-        log.info("New category saved {}", result.getUuid());
+        log.info("New category saved {} {}", result.getUuid(), result.getUrl());
       }
     }
     merchant.setLastCrawledAt(Instant.now().atOffset(ZoneOffset.UTC));
     merchantDao.save(merchant);
-    log.info("End Category Crawl for merchant {}", merchantUuid);
+    log.info("End Category Crawl for merchant {} {}", merchant.getUuid(), merchant.getUrl());
   }
 
   @Async

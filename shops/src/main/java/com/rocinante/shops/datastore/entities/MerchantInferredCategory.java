@@ -1,6 +1,7 @@
 package com.rocinante.shops.datastore.entities;
 
 import com.rocinante.crawlers.category.Category;
+import com.rocinante.shops.utils.NullabilityUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
@@ -10,7 +11,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,7 +45,7 @@ public class MerchantInferredCategory {
   @Column
   private boolean enabled;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "merchant_uuid")
   private Merchant merchant;
 
@@ -94,10 +94,17 @@ public class MerchantInferredCategory {
     );
   }
 
-  public void updateFromLatestCrawl(Merchant merchant, Category category) {
-    this.name = StringUtils.left(category.getCategoryName(), 128);
-    this.merchant = merchant;
-    this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
+  public boolean applyUpdatesIfNeeded(Category category) {
+    boolean updated = false;
+    if (!NullabilityUtils.areObjectsEqual(this.name, StringUtils.left(category.getCategoryName(),
+        128))) {
+      updated = true;
+      this.name = StringUtils.left(category.getCategoryName(), 128);
+    }
+    if (updated) {
+      this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
+    }
+    return updated;
   }
 
   public void addProduct(Product product) {

@@ -2,6 +2,7 @@ package com.rocinante.shops.datastore.dao;
 
 import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,5 +13,6 @@ public interface MerchantInferredCategoryDao extends JpaRepository<MerchantInfer
   Optional<MerchantInferredCategory> findByMerchantUuidAndUrl(UUID merchantUuid,
       URL url);
 
-  List<MerchantInferredCategory> findByMerchantUuid(UUID merchantUuid);
+  List<MerchantInferredCategory> findByMerchantUuidAndLastCrawledAtBefore(UUID merchantUuid,
+      OffsetDateTime lastCrawledAt);
 }

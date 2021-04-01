@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,8 +46,9 @@ public class Merchant {
   @JoinColumn(name = "bnpl_provider_uuid")
   private BnplProvider bnplProvider;
 
-  @OneToMany(fetch =  FetchType.LAZY, mappedBy = "merchant")
-  private Set<MerchantInferredCategory> products = new HashSet<>();
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch =  FetchType.LAZY, mappedBy =
+      "merchant")
+  private Set<MerchantInferredCategory> merchantInferredCategories = new HashSet<>();
 
   @Column
   private OffsetDateTime createdAt;
