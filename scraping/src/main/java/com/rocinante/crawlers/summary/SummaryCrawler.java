@@ -281,7 +281,8 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
                               priceProperties._2());
                         })
                     .collect(Collectors.toList())));
-    return results;
+    // To prevent false positives, don't return if page contains less than 3 products
+    return results.size() >= 3 ? results : Collections.emptyList();
   }
 
   public static void main(String[] args) {

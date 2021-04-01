@@ -130,7 +130,6 @@ public class RenderedHtmlProvider {
     final Map<String, int[]> imageDimensionsMap = getImagePathsToRenderedDimensionsMap(webDriver);
     final RenderedHtml renderedHtml =
         new RenderedHtml(webDriver.getPageSource(), imageDimensionsMap);
-    webDriver.close();
     log.info("Finished downloading html content from {}", url);
     return renderedHtml;
   }

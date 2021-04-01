@@ -2,6 +2,7 @@ package com.rocinante.shops.datastore.entities;
 
 import com.neovisionaries.i18n.CurrencyCode;
 import com.rocinante.crawlers.summary.ProductSummary;
+import com.rocinante.shops.utils.NullabilityUtils;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -19,7 +20,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import org.flywaydb.core.internal.util.StringUtils;
 import org.hibernate.annotations.Type;
 
@@ -73,6 +73,18 @@ public class Product {
 
   @Column
   private OffsetDateTime lastCrawledAt;
+
+  public boolean isSameAsLastCrawl(ProductSummary productSummary) throws MalformedURLException {
+    return StringUtils.left(productSummary.getInferredDescription(), 128).equals(name) &&
+        NullabilityUtils.equals(CurrencyCode.getByCode(productSummary.getCurrency()), currencyCode) &&
+        NullabilityUtils.equals(productSummary.currentPriceLowerRange(), currentPriceLowerRange) &&
+        NullabilityUtils.equals(productSummary.currentPriceUpperRange(), currentPriceUpperRange) &&
+        NullabilityUtils.equals(productSummary.originalPriceLowerRange(),
+            originalPriceLowerRange) &&
+        NullabilityUtils.equals(productSummary.originalPriceUpperRange(),
+            originalPriceUpperRange) &&
+        NullabilityUtils.equals(new URL(productSummary.mainProductImage()), mainImageUrl);
+  }
 
   public Product(ProductSummary productSummary, MerchantInferredCategory merchantInferredCategory)
       throws MalformedURLException {
