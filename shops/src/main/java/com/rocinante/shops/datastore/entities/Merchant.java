@@ -41,7 +41,7 @@ public class Merchant {
   private boolean enabled;
 
   @ManyToMany(mappedBy = "merchants", fetch = FetchType.LAZY)
-  private Set<BnplProvider> bnplProviders;
+  private Set<BnplProvider> bnplProviders = new HashSet<>();
 
   @OneToMany(
       cascade = CascadeType.ALL,
