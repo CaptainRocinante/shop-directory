@@ -29,7 +29,8 @@ class CategorySiblings {
 
   public void printAllLinks() {
     if (getLinks().size() != 0) {
-      log.info("\n-------------------\nPrinting a set of Sibling "
+      log.info(
+          "\n-------------------\nPrinting a set of Sibling "
               + "links\n-------------------\nScore = "
               + "{}\n",
           categoryScore());

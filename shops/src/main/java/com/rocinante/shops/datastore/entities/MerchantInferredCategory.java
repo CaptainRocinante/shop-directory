@@ -32,18 +32,15 @@ import org.hibernate.annotations.Type;
 @Getter
 @Setter
 public class MerchantInferredCategory {
-  @Id
-  private UUID uuid;
+  @Id private UUID uuid;
 
-  @Column
-  private String name;
+  @Column private String name;
 
   @Column
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
   private URL url;
 
-  @Column
-  private boolean enabled;
+  @Column private boolean enabled;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "merchant_uuid")
@@ -52,19 +49,15 @@ public class MerchantInferredCategory {
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
       name = "product_inferred_category_mapping",
-      joinColumns = { @JoinColumn(name = "merchant_inferred_category_uuid") },
-      inverseJoinColumns = { @JoinColumn(name = "product_uuid") }
-  )
+      joinColumns = {@JoinColumn(name = "merchant_inferred_category_uuid")},
+      inverseJoinColumns = {@JoinColumn(name = "product_uuid")})
   private Set<Product> products = new HashSet<>();
 
-  @Column
-  private OffsetDateTime createdAt;
+  @Column private OffsetDateTime createdAt;
 
-  @Column
-  private OffsetDateTime updatedAt;
+  @Column private OffsetDateTime updatedAt;
 
-  @Column
-  private OffsetDateTime lastCrawledAt;
+  @Column private OffsetDateTime lastCrawledAt;
 
   @Override
   public int hashCode() {
@@ -82,7 +75,8 @@ public class MerchantInferredCategory {
 
   public MerchantInferredCategory(Merchant merchant, Category category)
       throws MalformedURLException {
-    this(UUID.randomUUID(),
+    this(
+        UUID.randomUUID(),
         StringUtils.left(category.getCategoryName(), 128),
         new URL(category.getCategoryUrl()),
         true,
@@ -90,14 +84,13 @@ public class MerchantInferredCategory {
         new HashSet<>(),
         Instant.now().atOffset(ZoneOffset.UTC),
         Instant.now().atOffset(ZoneOffset.UTC),
-        null
-    );
+        null);
   }
 
   public boolean applyUpdatesIfNeeded(Category category) {
     boolean updated = false;
-    if (!NullabilityUtils.areObjectsEqual(this.name, StringUtils.left(category.getCategoryName(),
-        128))) {
+    if (!NullabilityUtils.areObjectsEqual(
+        this.name, StringUtils.left(category.getCategoryName(), 128))) {
       updated = true;
       this.name = StringUtils.left(category.getCategoryName(), 128);
     }

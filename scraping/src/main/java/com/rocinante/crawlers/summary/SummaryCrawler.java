@@ -155,8 +155,9 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
                 } else if (lcsScore == maxLcsScore.get()) {
                   final List<StringLCSToken> existingMaxTokens =
                       Tokenizer.alphaNumericLcsTokens(maxLcsScoreText.get());
-                  final int lcsScoreAmongDescriptionCandidates = LongestCommonSubsequence
-                      .computeLcsStringTokensOnly(textTokens, existingMaxTokens);
+                  final int lcsScoreAmongDescriptionCandidates =
+                      LongestCommonSubsequence.computeLcsStringTokensOnly(
+                          textTokens, existingMaxTokens);
                   if (lcsScoreAmongDescriptionCandidates <= 2) {
                     maxLcsScoreText.set(maxLcsScoreText.get() + " " + text);
                   }
@@ -220,7 +221,6 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
                   } else {
                     return dimensions[0] * dimensions[1];
                   }
-
                 })
             .reduce(Integer::max)
             .orElseThrow();
@@ -248,10 +248,11 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   // Select the longest link found in the product grid
   private Tuple2<String, String> identifyProductLinkWithText(
       List<NodeProperties> nodePropertiesList) {
-    return nodePropertiesList
-        .stream()
-        .map(np -> new Tuple2<>((String) np.getProperty(URL_PROPERTY),
-            (String) np.getProperty(TEXT_PROPERTY)))
+    return nodePropertiesList.stream()
+        .map(
+            np ->
+                new Tuple2<>(
+                    (String) np.getProperty(URL_PROPERTY), (String) np.getProperty(TEXT_PROPERTY)))
         .reduce((t1, t2) -> t1._1().trim().length() > t2._1().trim().length() ? t1 : t2)
         .orElseThrow();
   }
@@ -259,7 +260,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   @Override
   public List<ProductSummary> crawlHtml(
       RenderedHtml html, String baseUrl, CrawlContext crawlContext) {
-//    log.info(html.getHtml());
+    //    log.info(html.getHtml());
     final PriorityQueue<SubtreeTraversalResult> highestLcsScoreHeap =
         new PriorityQueue<>((r1, r2) -> r2.getChildrenLCSScore() - r1.getChildrenLCSScore());
     final List<SubtreeTraversalResult> productRoots = new LinkedList<>();
@@ -275,36 +276,35 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     final List<ProductSummary> results = new ArrayList<>();
     productRoots.forEach(
         productRoot -> {
-            var innerResults = productRoot
-                .getChildrenWithAllSelectors()
-                .stream()
-                .map(SubtreeTraversalResult::getNodeSelectionResult)
-                .map(
-                    esr -> {
-                      final Tuple2<String, String> urlAndText =
-                          identifyProductLinkWithText(
-                              esr.getSelectedProperties(ANY_LINK_WITH_HREF_SELECTOR));
-                      final Tuple2<Range<FastMoney>, Range<FastMoney>> priceProperties =
-                          getOriginalAndSalePrice(
-                              esr.getSelectedProperties(ANY_PRICE_SELECTOR),
-                              esr.getSelectedProperties(ANY_PRICE_RANGE_SELECTOR));
-                      final Tuple2<List<String>, List<String>> imageUrls =
-                          getProductImages(
-                              esr.getSelectedProperties(IMAGE_SELECTOR),
-                              html.getImageSrcDimensionMap());
-                      final List<NodeProperties> textNodeProperties =
-                          esr.getSelectedProperties(TEXT_NODE_SELECTOR);
-                      final String productTitle =
-                          getProductTitle(textNodeProperties, urlAndText._1(), urlAndText._2());
-                      return new ProductSummary(
-                          urlAndText._1(),
-                          productTitle,
-                          imageUrls._1(),
-                          imageUrls._2(),
-                          priceProperties._1(),
-                          priceProperties._2());
-                    })
-                .collect(Collectors.toList());
+          var innerResults =
+              productRoot.getChildrenWithAllSelectors().stream()
+                  .map(SubtreeTraversalResult::getNodeSelectionResult)
+                  .map(
+                      esr -> {
+                        final Tuple2<String, String> urlAndText =
+                            identifyProductLinkWithText(
+                                esr.getSelectedProperties(ANY_LINK_WITH_HREF_SELECTOR));
+                        final Tuple2<Range<FastMoney>, Range<FastMoney>> priceProperties =
+                            getOriginalAndSalePrice(
+                                esr.getSelectedProperties(ANY_PRICE_SELECTOR),
+                                esr.getSelectedProperties(ANY_PRICE_RANGE_SELECTOR));
+                        final Tuple2<List<String>, List<String>> imageUrls =
+                            getProductImages(
+                                esr.getSelectedProperties(IMAGE_SELECTOR),
+                                html.getImageSrcDimensionMap());
+                        final List<NodeProperties> textNodeProperties =
+                            esr.getSelectedProperties(TEXT_NODE_SELECTOR);
+                        final String productTitle =
+                            getProductTitle(textNodeProperties, urlAndText._1(), urlAndText._2());
+                        return new ProductSummary(
+                            urlAndText._1(),
+                            productTitle,
+                            imageUrls._1(),
+                            imageUrls._2(),
+                            priceProperties._1(),
+                            priceProperties._2());
+                      })
+                  .collect(Collectors.toList());
           results.addAll(innerResults);
         });
     return results;
@@ -317,9 +317,9 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     //        "https://www.chubbiesshorts.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries =
         summaryCrawler.crawlUrl(
-//            "https://www.aritzia.com/en/clothing/womens-workout-clothes/womens-bike-shorts",
-                "https://www.dsw.com/en/us/brands/steve-madden/N-1z141c7",
-            new MapCrawlContext(null));
+            //
+            // "https://www.aritzia.com/en/clothing/womens-workout-clothes/womens-bike-shorts",
+            "https://www.dsw.com/en/us/brands/steve-madden/N-1z141c7", new MapCrawlContext(null));
     productSummaries.forEach(ps -> log.info("ProductSummary: {}", ps.toString()));
   }
 }

@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface MerchantDao extends JpaRepository<Merchant, UUID> {
-  @Query(value = "SELECT * FROM merchant WHERE uuid = ?1 AND (last_crawled_at < ?2 OR "
-      + "last_crawled_at IS NULL)",
+  @Query(
+      value =
+          "SELECT * FROM merchant WHERE uuid = ?1 AND (last_crawled_at < ?2 OR "
+              + "last_crawled_at IS NULL)",
       nativeQuery = true)
-  Optional<Merchant> findByUuidAndLastCrawledAtBeforeOrNull(UUID uuid,
-      OffsetDateTime lastCrawledAt);
+  Optional<Merchant> findByUuidAndLastCrawledAtBeforeOrNull(
+      UUID uuid, OffsetDateTime lastCrawledAt);
 }

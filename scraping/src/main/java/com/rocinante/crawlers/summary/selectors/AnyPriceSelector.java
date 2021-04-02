@@ -41,8 +41,8 @@ public class AnyPriceSelector implements NodeSelector {
     if (currencyFirstMatchResults.isEmpty() && amountFirstMatchResults.isEmpty()) {
       return Either.left(NodeNotSelected.getInstance());
     } else {
-      final List<MatchResult> matchResults = currencyFirstMatchResults.isEmpty() ?
-          amountFirstMatchResults : currencyFirstMatchResults;
+      final List<MatchResult> matchResults =
+          currencyFirstMatchResults.isEmpty() ? amountFirstMatchResults : currencyFirstMatchResults;
       final Map<String, Object> properties = new HashMap<>();
       final List<FastMoney> allMoney = new ArrayList<>();
 
@@ -71,6 +71,5 @@ public class AnyPriceSelector implements NodeSelector {
     return obj instanceof AnyPriceSelector;
   }
 
-  public static void main(String[] args) {
-  }
+  public static void main(String[] args) {}
 }

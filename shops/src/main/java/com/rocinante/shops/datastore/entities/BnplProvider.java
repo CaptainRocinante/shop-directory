@@ -3,6 +3,7 @@ package com.rocinante.shops.datastore.entities;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -20,11 +21,9 @@ import org.hibernate.annotations.Type;
 @AllArgsConstructor
 @Entity
 public class BnplProvider {
-  @Id
-  private UUID uuid;
+  @Id private UUID uuid;
 
-  @Column
-  private String name;
+  @Column private String name;
 
   @Column
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
@@ -33,14 +32,25 @@ public class BnplProvider {
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
       name = "bnpl_provider_merchant_mapping",
-      joinColumns = { @JoinColumn(name = "bnpl_provider_uuid") },
-      inverseJoinColumns = { @JoinColumn(name = "merchant_uuid") }
-  )
+      joinColumns = {@JoinColumn(name = "bnpl_provider_uuid")},
+      inverseJoinColumns = {@JoinColumn(name = "merchant_uuid")})
   private Set<Merchant> merchants = new HashSet<>();
 
-  @Column
-  private OffsetDateTime createdAt;
+  @Column private OffsetDateTime createdAt;
 
-  @Column
-  private OffsetDateTime updatedAt;
+  @Column private OffsetDateTime updatedAt;
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(url);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof BnplProvider)) {
+      return false;
+    }
+    BnplProvider other = (BnplProvider) obj;
+    return this.url.equals(other.url);
+  }
 }

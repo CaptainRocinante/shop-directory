@@ -4,6 +4,7 @@ import com.neovisionaries.i18n.CountryCode;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CascadeType;
@@ -11,9 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,11 +26,9 @@ import org.hibernate.annotations.Type;
 @Setter
 @Getter
 public class Merchant {
-  @Id
-  private UUID uuid;
+  @Id private UUID uuid;
 
-  @Column
-  private String name;
+  @Column private String name;
 
   @Column
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
@@ -46,16 +43,30 @@ public class Merchant {
   @ManyToMany(mappedBy = "merchants", fetch = FetchType.LAZY)
   private Set<BnplProvider> bnplProviders;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch =  FetchType.LAZY, mappedBy =
-      "merchant")
+  @OneToMany(
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.LAZY,
+      mappedBy = "merchant")
   private Set<MerchantInferredCategory> merchantInferredCategories = new HashSet<>();
 
-  @Column
-  private OffsetDateTime createdAt;
+  @Column private OffsetDateTime createdAt;
 
-  @Column
-  private OffsetDateTime updatedAt;
+  @Column private OffsetDateTime updatedAt;
 
-  @Column
-  private OffsetDateTime lastCrawledAt;
+  @Column private OffsetDateTime lastCrawledAt;
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(url, countryCode);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Merchant)) {
+      return false;
+    }
+    Merchant other = (Merchant) obj;
+    return this.url.equals(other.url) && this.countryCode.equals(other.countryCode);
+  }
 }

@@ -35,16 +35,17 @@ public class CrawlingController {
       throws MalformedURLException {
     final OffsetDateTime lastCrawlDateCutoff =
         Instant.now().atOffset(ZoneOffset.UTC).minusDays(merchantCrawlDto.getDays());
-    final Optional<Merchant> merchantOpt = merchantDao
-        .findByUuidAndLastCrawledAtBeforeOrNull(
-            UUID.fromString(merchantCrawlDto.getUuid()),
-            lastCrawlDateCutoff);
+    final Optional<Merchant> merchantOpt =
+        merchantDao.findByUuidAndLastCrawledAtBeforeOrNull(
+            UUID.fromString(merchantCrawlDto.getUuid()), lastCrawlDateCutoff);
     if (merchantOpt.isPresent()) {
       log.info("Begin Category Crawl for merchant {}", merchantCrawlDto.getUuid());
       asyncCrawlingService.crawlAndSaveCategoriesForMerchant(merchantOpt.get().getUuid());
     } else {
-      log.info("No merchant to crawl found with uuid {} and cutoff {}",
-          merchantCrawlDto.getUuid(), merchantCrawlDto.getDays());
+      log.info(
+          "No merchant to crawl found with uuid {} and cutoff {}",
+          merchantCrawlDto.getUuid(),
+          merchantCrawlDto.getDays());
     }
   }
 
@@ -58,11 +59,10 @@ public class CrawlingController {
 
     final List<MerchantInferredCategory> merchantCategories =
         merchantInferredCategoryDao.findByMerchantUuidAndLastCrawledAtBeforeOrNull(
-            UUID.fromString(merchantCrawlDto.getUuid()),
-            lastCrawlDateCutoff);
+            UUID.fromString(merchantCrawlDto.getUuid()), lastCrawlDateCutoff);
     log.info("Categories to crawl count: {}", merchantCategories.size());
 
-    for (final MerchantInferredCategory inferredCategory: merchantCategories) {
+    for (final MerchantInferredCategory inferredCategory : merchantCategories) {
       log.info("Handling {} {}", inferredCategory.getName(), inferredCategory.getUrl());
       asyncCrawlingService.crawlAndSaveProductsForCategory(inferredCategory.getUuid());
     }

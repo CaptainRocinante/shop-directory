@@ -13,7 +13,6 @@ public class UrlJavaTypeDescriptor extends AbstractTypeDescriptor<URL> {
     super(URL.class, ImmutableMutabilityPlan.INSTANCE);
   }
 
-
   @Override
   public URL fromString(String s) {
     try {

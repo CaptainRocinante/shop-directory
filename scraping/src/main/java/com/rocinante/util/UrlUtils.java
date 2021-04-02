@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.validator.routines.UrlValidator;
 
 public class UrlUtils {
-  private static final UrlValidator URL_VALIDATOR = new UrlValidator(
-      new String[] {"http", "https"});
+  private static final UrlValidator URL_VALIDATOR =
+      new UrlValidator(new String[] {"http", "https"});
 
   public static List<String> extractImageUrlsFromSrcSet(String srcSet) {
     final String[] allSources = srcSet.split(",");

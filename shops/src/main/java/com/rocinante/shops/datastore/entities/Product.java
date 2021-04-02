@@ -33,11 +33,9 @@ import org.hibernate.annotations.Type;
 @Setter
 @Slf4j
 public class Product {
-  @Id
-  private UUID uuid;
+  @Id private UUID uuid;
 
-  @Column
-  private String name;
+  @Column private String name;
 
   @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
   private Set<MerchantInferredCategory> merchantInferredCategories = new HashSet<>();
@@ -46,36 +44,28 @@ public class Product {
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
   private URL url;
 
-  @Column
-  private boolean enabled;
+  @Column private boolean enabled;
 
   @Type(type = "com.rocinante.shops.datastore.types.CurrencyCodeType")
   private CurrencyCode currencyCode;
 
-  @Column
-  private BigDecimal currentPriceLowerRange;
+  @Column private BigDecimal currentPriceLowerRange;
 
-  @Column
-  private BigDecimal currentPriceUpperRange;
+  @Column private BigDecimal currentPriceUpperRange;
 
-  @Column
-  private BigDecimal originalPriceLowerRange;
+  @Column private BigDecimal originalPriceLowerRange;
 
-  @Column
-  private BigDecimal originalPriceUpperRange;
+  @Column private BigDecimal originalPriceUpperRange;
 
   @Column
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
   private URL mainImageUrl;
 
-  @Column
-  private OffsetDateTime createdAt;
+  @Column private OffsetDateTime createdAt;
 
-  @Column
-  private OffsetDateTime updatedAt;
+  @Column private OffsetDateTime updatedAt;
 
-  @Column
-  private OffsetDateTime lastCrawledAt;
+  @Column private OffsetDateTime lastCrawledAt;
 
   @Override
   public int hashCode() {
@@ -109,44 +99,44 @@ public class Product {
 
   public boolean applyUpdatesIfNeeded(ProductSummary productSummary) throws MalformedURLException {
     boolean updated = false;
-    if (!NullabilityUtils.areObjectsEqual(this.name,
-        StringUtils.left(productSummary.getInferredDescription(), 128))) {
+    if (!NullabilityUtils.areObjectsEqual(
+        this.name, StringUtils.left(productSummary.getInferredDescription(), 128))) {
       log.info("Name has change for {} {}", this.uuid, this.url);
       updated = true;
       this.name = StringUtils.left(productSummary.getInferredDescription(), 128);
     }
-    if (!NullabilityUtils.areObjectsEqual(this.currencyCode,
-        CurrencyCode.getByCode(productSummary.getCurrency()))) {
+    if (!NullabilityUtils.areObjectsEqual(
+        this.currencyCode, CurrencyCode.getByCode(productSummary.getCurrency()))) {
       log.info("CurrencyCode has change for {} {}", this.uuid, this.url);
       updated = true;
       this.currencyCode = CurrencyCode.getByCode(productSummary.getCurrency());
     }
-    if (!NullabilityUtils.areObjectsEqual(this.currentPriceLowerRange,
-        productSummary.currentPriceLowerRange())) {
+    if (!NullabilityUtils.areObjectsEqual(
+        this.currentPriceLowerRange, productSummary.currentPriceLowerRange())) {
       log.info("CurrentPriceLowerRange has change for {} {}", this.uuid, this.url);
       updated = true;
       this.currentPriceLowerRange = productSummary.currentPriceLowerRange();
     }
-    if (!NullabilityUtils.areObjectsEqual(this.currentPriceUpperRange,
-        productSummary.currentPriceUpperRange())) {
+    if (!NullabilityUtils.areObjectsEqual(
+        this.currentPriceUpperRange, productSummary.currentPriceUpperRange())) {
       log.info("CurrentPriceUpperRange has change for {} {}", this.uuid, this.url);
       updated = true;
       this.currentPriceUpperRange = productSummary.currentPriceUpperRange();
     }
-    if (!NullabilityUtils.areObjectsEqual(this.originalPriceLowerRange,
-        productSummary.originalPriceLowerRange())) {
+    if (!NullabilityUtils.areObjectsEqual(
+        this.originalPriceLowerRange, productSummary.originalPriceLowerRange())) {
       log.info("OriginalPriceLowerRange has change for {} {}", this.uuid, this.url);
       updated = true;
       this.originalPriceLowerRange = productSummary.originalPriceLowerRange();
     }
-    if (!NullabilityUtils.areObjectsEqual(this.originalPriceUpperRange,
-        productSummary.originalPriceUpperRange())) {
+    if (!NullabilityUtils.areObjectsEqual(
+        this.originalPriceUpperRange, productSummary.originalPriceUpperRange())) {
       log.info("OriginalPriceUpperRange has change for {} {}", this.uuid, this.url);
       updated = true;
       this.originalPriceUpperRange = productSummary.originalPriceUpperRange();
     }
-    if (!NullabilityUtils.areObjectsEqual(this.mainImageUrl.toString(),
-        productSummary.mainProductImage())) {
+    if (!NullabilityUtils.areObjectsEqual(
+        this.mainImageUrl.toString(), productSummary.mainProductImage())) {
       log.info("MainImage has change for {} {}", this.uuid, this.url);
       updated = true;
       this.mainImageUrl = new URL(productSummary.mainProductImage());

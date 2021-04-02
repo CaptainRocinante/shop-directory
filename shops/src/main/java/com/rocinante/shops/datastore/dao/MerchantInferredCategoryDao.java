@@ -9,15 +9,14 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface MerchantInferredCategoryDao extends JpaRepository<MerchantInferredCategory,
-    UUID> {
-  Optional<MerchantInferredCategory> findByMerchantUuidAndUrl(UUID merchantUuid,
-      URL url);
+public interface MerchantInferredCategoryDao extends JpaRepository<MerchantInferredCategory, UUID> {
+  Optional<MerchantInferredCategory> findByMerchantUuidAndUrl(UUID merchantUuid, URL url);
 
-  @Query(value = "SELECT * FROM merchant_inferred_category WHERE merchant_uuid = ?1 AND "
-      + "(last_crawled_at < ?2 OR last_crawled_at IS NULL)",
+  @Query(
+      value =
+          "SELECT * FROM merchant_inferred_category WHERE merchant_uuid = ?1 AND "
+              + "(last_crawled_at < ?2 OR last_crawled_at IS NULL)",
       nativeQuery = true)
   List<MerchantInferredCategory> findByMerchantUuidAndLastCrawledAtBeforeOrNull(
-      UUID merchantUuid,
-      OffsetDateTime lastCrawledAt);
+      UUID merchantUuid, OffsetDateTime lastCrawledAt);
 }

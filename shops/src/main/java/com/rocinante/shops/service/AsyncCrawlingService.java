@@ -39,22 +39,25 @@ public class AsyncCrawlingService {
   public void crawlAndSaveCategoriesForMerchant(UUID merchantUuid) throws MalformedURLException {
     final Merchant merchant = merchantDao.getOne(merchantUuid);
     log.info("Begin Category Crawl for merchant {} {}", merchant.getName(), merchant.getUrl());
-    final List<Category> categories = categoryCrawler.crawlUrl(merchant.getUrl().toString(),
-        new MapCrawlContext(null));
+    final List<Category> categories =
+        categoryCrawler.crawlUrl(merchant.getUrl().toString(), new MapCrawlContext(null));
 
     log.info("Category Count: {}", categories.size());
-    for (final Category category: categories) {
+    for (final Category category : categories) {
       log.info("Handling {}", category.toString());
 
-      final Optional<MerchantInferredCategory> existingCategoryOpt = merchantInferredCategoryDao
-          .findByMerchantUuidAndUrl(merchant.getUuid(), new URL(category.getCategoryUrl()));
+      final Optional<MerchantInferredCategory> existingCategoryOpt =
+          merchantInferredCategoryDao.findByMerchantUuidAndUrl(
+              merchant.getUuid(), new URL(category.getCategoryUrl()));
 
       if (existingCategoryOpt.isPresent()) {
         final MerchantInferredCategory existingCategory = existingCategoryOpt.get();
-        log.info("Existing category found {} {}", existingCategory.getUuid(),
-            existingCategory.getUrl());
+        log.info(
+            "Existing category found {} {}", existingCategory.getUuid(), existingCategory.getUrl());
         if (existingCategory.applyUpdatesIfNeeded(category)) {
-          log.info("Updates for category detected, saving to DB {} {}", existingCategory.getUuid(),
+          log.info(
+              "Updates for category detected, saving to DB {} {}",
+              existingCategory.getUuid(),
               existingCategory.getUrl());
           merchantInferredCategoryDao.save(existingCategory);
         }
@@ -76,19 +79,21 @@ public class AsyncCrawlingService {
       throws MalformedURLException {
     final MerchantInferredCategory merchantInferredCategory =
         merchantInferredCategoryDao.getOne(merchantInferredCategoryUuid);
-    log.info("Begin Product Crawl for category {} {}", merchantInferredCategory.getUuid(),
+    log.info(
+        "Begin Product Crawl for category {} {}",
+        merchantInferredCategory.getUuid(),
         merchantInferredCategory.getUrl());
     final List<ProductSummary> productSummaries =
-        summaryCrawler.crawlUrl(merchantInferredCategory.getUrl().toString(),
-            new MapCrawlContext(null));
+        summaryCrawler.crawlUrl(
+            merchantInferredCategory.getUrl().toString(), new MapCrawlContext(null));
 
     log.info("Product Count: {}", productSummaries.size());
 
-    for (final ProductSummary productSummary: productSummaries) {
+    for (final ProductSummary productSummary : productSummaries) {
       log.info("Handling {}", productSummary.toString());
 
       final Product product;
-      final Optional<Product> existingProduct  =
+      final Optional<Product> existingProduct =
           productDao.findByUrl(new URL(productSummary.getUrl()));
 
       if (existingProduct.isPresent()) {
@@ -96,7 +101,9 @@ public class AsyncCrawlingService {
         log.info("Existing product found {} {}", product.getUuid(), product.getUrl());
         boolean isUpdated = product.applyUpdatesIfNeeded(productSummary);
         if (isUpdated) {
-          log.info("Updates for product detected, saving to DB {} {}", product.getUuid(),
+          log.info(
+              "Updates for product detected, saving to DB {} {}",
+              product.getUuid(),
               product.getUrl());
           productDao.save(product);
         }
@@ -108,7 +115,9 @@ public class AsyncCrawlingService {
     }
     merchantInferredCategory.setLastCrawledAt(Instant.now().atOffset(ZoneOffset.UTC));
     merchantInferredCategoryDao.save(merchantInferredCategory);
-    log.info("End Product Crawl for category {} {}", merchantInferredCategory.getUuid(),
+    log.info(
+        "End Product Crawl for category {} {}",
+        merchantInferredCategory.getUuid(),
         merchantInferredCategory.getUrl());
   }
 }

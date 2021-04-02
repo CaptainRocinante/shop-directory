@@ -51,14 +51,12 @@ public class CategoryCrawler implements Crawler<List<Category>> {
       CategorySiblings current = categorySiblingsCategoryScorePriorityQueue.poll();
       if (current.categoryScore() > 3) {
         allCategories.addAll(
-            current
-                .getLinks()
-                .stream()
+            current.getLinks().stream()
                 .filter(e -> UrlUtils.isValidUri(e.attr("abs:href")))
                 .map(element -> new Category(element.attr("abs:href"), element.text()))
                 .collect(Collectors.toList()));
       }
-//      current.printAllLinks();
+      //      current.printAllLinks();
     }
     return new ArrayList<>(allCategories);
   }
