@@ -32,7 +32,7 @@ public class UrlUtils {
       try {
         return domainRemovedUriRepresentation(new URI(input));
       } catch (URISyntaxException ex) {
-        throw new RuntimeException(ex);
+        return input;
       }
     }
   }

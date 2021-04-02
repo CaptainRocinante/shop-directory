@@ -36,7 +36,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.PriorityQueue;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -185,6 +187,13 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
         final String key = UrlUtils.domainRemovedUriRepresentation(uri);
         if (imageSrcDimensionMap.containsKey(key)) {
           return imageSrcDimensionMap.get(key);
+        } else {
+          final Set<String> allKeys = imageSrcDimensionMap.keySet();
+          final Optional<String> keyContainedInUrl =
+              allKeys.stream().filter(input::contains).findFirst();
+          if (keyContainedInUrl.isPresent()) {
+            return imageSrcDimensionMap.get(keyContainedInUrl.get());
+          }
         }
       }
     } catch (MalformedURLException | URISyntaxException e) {
