@@ -9,7 +9,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
@@ -28,7 +30,12 @@ public class BnplProvider {
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
   private URL url;
 
-  @OneToMany(fetch =  FetchType.LAZY, mappedBy = "bnplProvider")
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+      name = "bnpl_provider_merchant_mapping",
+      joinColumns = { @JoinColumn(name = "bnpl_provider_uuid") },
+      inverseJoinColumns = { @JoinColumn(name = "merchant_uuid") }
+  )
   private Set<Merchant> merchants = new HashSet<>();
 
   @Column

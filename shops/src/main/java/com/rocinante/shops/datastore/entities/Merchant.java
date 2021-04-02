@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -42,9 +43,8 @@ public class Merchant {
 
   private boolean enabled;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "bnpl_provider_uuid")
-  private BnplProvider bnplProvider;
+  @ManyToMany(mappedBy = "merchants", fetch = FetchType.LAZY)
+  private Set<BnplProvider> bnplProviders;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch =  FetchType.LAZY, mappedBy =
       "merchant")

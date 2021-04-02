@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS product_inferred_category_mapping;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS merchant_inferred_category;
+DROP TABLE IF EXISTS bnpl_provider_merchant_mapping;
 DROP TABLE IF EXISTS merchant;
 DROP TABLE IF EXISTS bnpl_provider;
 
@@ -19,12 +20,18 @@ CREATE TABLE merchant (
   url                       VARCHAR(2048) NOT NULL,
   country_code              VARCHAR(10) NOT NULL,
   enabled                   BOOLEAN NOT NULL,
-  bnpl_provider_uuid        UUID DEFAULT NULL,
   created_at                TIMESTAMP WITH TIME ZONE NOT NULL,
   updated_at                TIMESTAMP WITH TIME ZONE NOT NULL,
   last_crawled_at           TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-  UNIQUE (url, country_code),
-  FOREIGN KEY (bnpl_provider_uuid) REFERENCES bnpl_provider (uuid)
+  UNIQUE (url, country_code)
+);
+
+CREATE TABLE bnpl_provider_merchant_mapping (
+  bnpl_provider_uuid        UUID NOT NULL,
+  merchant_uuid             UUID NOT NULL,
+  PRIMARY KEY (bnpl_provider_uuid, merchant_uuid),
+  FOREIGN KEY (bnpl_provider_uuid) REFERENCES bnpl_provider (uuid),
+  FOREIGN KEY (merchant_uuid) REFERENCES merchant (uuid)
 );
 
 CREATE TABLE merchant_inferred_category (
