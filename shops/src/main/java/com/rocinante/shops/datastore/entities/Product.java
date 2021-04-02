@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.internal.util.StringUtils;
 import org.hibernate.annotations.Type;
 
@@ -30,6 +31,7 @@ import org.hibernate.annotations.Type;
 @Entity
 @Getter
 @Setter
+@Slf4j
 public class Product {
   @Id
   private UUID uuid;
@@ -105,37 +107,49 @@ public class Product {
     this.lastCrawledAt = null;
   }
 
-  public boolean applyUpdatesIfNeeded(ProductSummary productSummary) {
+  public boolean applyUpdatesIfNeeded(ProductSummary productSummary) throws MalformedURLException {
     boolean updated = false;
     if (!NullabilityUtils.areObjectsEqual(this.name,
         StringUtils.left(productSummary.getInferredDescription(), 128))) {
+      log.info("Name has change for {} {}", this.uuid, this.url);
       updated = true;
       this.name = StringUtils.left(productSummary.getInferredDescription(), 128);
     }
     if (!NullabilityUtils.areObjectsEqual(this.currencyCode,
         CurrencyCode.getByCode(productSummary.getCurrency()))) {
+      log.info("CurrencyCode has change for {} {}", this.uuid, this.url);
       updated = true;
       this.currencyCode = CurrencyCode.getByCode(productSummary.getCurrency());
     }
     if (!NullabilityUtils.areObjectsEqual(this.currentPriceLowerRange,
         productSummary.currentPriceLowerRange())) {
+      log.info("CurrentPriceLowerRange has change for {} {}", this.uuid, this.url);
       updated = true;
       this.currentPriceLowerRange = productSummary.currentPriceLowerRange();
     }
     if (!NullabilityUtils.areObjectsEqual(this.currentPriceUpperRange,
         productSummary.currentPriceUpperRange())) {
+      log.info("CurrentPriceUpperRange has change for {} {}", this.uuid, this.url);
       updated = true;
       this.currentPriceUpperRange = productSummary.currentPriceUpperRange();
     }
     if (!NullabilityUtils.areObjectsEqual(this.originalPriceLowerRange,
         productSummary.originalPriceLowerRange())) {
+      log.info("OriginalPriceLowerRange has change for {} {}", this.uuid, this.url);
       updated = true;
       this.originalPriceLowerRange = productSummary.originalPriceLowerRange();
     }
     if (!NullabilityUtils.areObjectsEqual(this.originalPriceUpperRange,
         productSummary.originalPriceUpperRange())) {
+      log.info("OriginalPriceUpperRange has change for {} {}", this.uuid, this.url);
       updated = true;
       this.originalPriceUpperRange = productSummary.originalPriceUpperRange();
+    }
+    if (!NullabilityUtils.areObjectsEqual(this.mainImageUrl.toString(),
+        productSummary.mainProductImage())) {
+      log.info("MainImage has change for {} {}", this.uuid, this.url);
+      updated = true;
+      this.mainImageUrl = new URL(productSummary.mainProductImage());
     }
     if (updated) {
       this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
