@@ -78,6 +78,7 @@ public class Merchant {
     boolean updated = false;
 
     if (!NullabilityUtils.areObjectsEqual(this.name, merchantCsvUploadDto.getMerchantName())) {
+      updated = true;
       log.info("Name change detected for merchant {} {}", this.uuid, this.getUrl());
       this.name = merchantCsvUploadDto.getMerchantName();
     }
