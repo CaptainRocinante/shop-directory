@@ -17,7 +17,7 @@
     <i18n.version>1.28</i18n.version>
     <opencsv.version>5.4</opencsv.version>
     <hibernate.version>5.4.28.Final</hibernate.version>
-    <elasticsearch.version>7.10.0</elasticsearch.version>
+    <elasticsearch.version>7.9.0</elasticsearch.version>
     <hibernate-search.version>6.0.2.Final</hibernate-search.version>
   </properties>
 
