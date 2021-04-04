@@ -1,8 +1,13 @@
 package com.rocinante.shops.datastore.entities;
 
 import com.neovisionaries.i18n.CountryCode;
+import com.rocinante.shops.api.MerchantCsvUploadDto;
+import com.rocinante.shops.utils.NullabilityUtils;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -18,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Type;
 
 @NoArgsConstructor
@@ -25,6 +31,7 @@ import org.hibernate.annotations.Type;
 @Entity
 @Setter
 @Getter
+@Slf4j
 public class Merchant {
   @Id private UUID uuid;
 
@@ -55,6 +62,31 @@ public class Merchant {
   @Column private OffsetDateTime updatedAt;
 
   @Column private OffsetDateTime lastCrawledAt;
+
+  public Merchant(MerchantCsvUploadDto merchantCsvUploadDto) throws MalformedURLException {
+    this.uuid = UUID.randomUUID();
+    this.name = merchantCsvUploadDto.getMerchantName();
+    this.url = new URL(merchantCsvUploadDto.getMerchantWebsite());
+    this.countryCode =  CountryCode.US; // TODO: Remove hardcoded value
+    this.enabled = true;
+    this.createdAt = Instant.now().atOffset(ZoneOffset.UTC);
+    this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
+    this.lastCrawledAt = null;
+  }
+
+  public boolean applyUpdatesIfNeeded(MerchantCsvUploadDto merchantCsvUploadDto) {
+    boolean updated = false;
+
+    if (!NullabilityUtils.areObjectsEqual(this.name, merchantCsvUploadDto.getMerchantName())) {
+      log.info("Name change detected for merchant {} {}", this.uuid, this.getUrl());
+      this.name = merchantCsvUploadDto.getMerchantName();
+    }
+
+    if (updated) {
+      this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
+    }
+    return updated;
+  }
 
   @Override
   public int hashCode() {

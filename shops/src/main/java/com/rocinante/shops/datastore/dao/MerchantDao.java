@@ -1,6 +1,7 @@
 package com.rocinante.shops.datastore.dao;
 
 import com.rocinante.shops.datastore.entities.Merchant;
+import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,4 +16,6 @@ public interface MerchantDao extends JpaRepository<Merchant, UUID> {
       nativeQuery = true)
   Optional<Merchant> findByUuidAndLastCrawledAtBeforeOrNull(
       UUID uuid, OffsetDateTime lastCrawledAt);
+
+  Optional<Merchant> findByUrl(URL url);
 }
