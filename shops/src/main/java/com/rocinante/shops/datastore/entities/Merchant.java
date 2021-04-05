@@ -25,6 +25,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,7 +38,9 @@ import org.hibernate.annotations.Type;
 public class Merchant {
   @Id private UUID uuid;
 
-  @Column private String name;
+  @Column
+  @FullTextField
+  private String name;
 
   @Column
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
@@ -45,9 +50,12 @@ public class Merchant {
   @Type(type = "com.rocinante.shops.datastore.types.CountryCodeType")
   private CountryCode countryCode;
 
+  @Column
+  @GenericField
   private boolean enabled;
 
   @ManyToMany(mappedBy = "merchants", fetch = FetchType.LAZY)
+  @IndexedEmbedded
   private Set<BnplProvider> bnplProviders = new HashSet<>();
 
   @OneToMany(
@@ -91,7 +99,7 @@ public class Merchant {
 
   @Override
   public int hashCode() {
-    return Objects.hash(url, countryCode);
+    return Objects.hash(url.toString(), countryCode);
   }
 
   @Override
@@ -100,6 +108,7 @@ public class Merchant {
       return false;
     }
     Merchant other = (Merchant) obj;
-    return this.url.equals(other.url) && this.countryCode.equals(other.countryCode);
+    return this.url.toString().equals(other.url.toString()) &&
+        this.countryCode.equals(other.countryCode);
   }
 }

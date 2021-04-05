@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,7 +33,9 @@ import org.hibernate.annotations.Type;
 public class BnplProvider {
   @Id private UUID uuid;
 
-  @Column private String name;
+  @Column
+  @FullTextField
+  private String name;
 
   @Column
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
@@ -72,7 +75,7 @@ public class BnplProvider {
 
   @Override
   public int hashCode() {
-    return Objects.hash(url);
+    return Objects.hash(url.toString());
   }
 
   @Override
@@ -81,10 +84,13 @@ public class BnplProvider {
       return false;
     }
     BnplProvider other = (BnplProvider) obj;
-    return this.url.equals(other.url);
+    return this.url.toString().equals(other.url.toString());
   }
 
   public void addMerchant(Merchant merchant) {
+    if (this.merchants.contains(merchant)) {
+      int x = 5;
+    }
     this.merchants.add(merchant);
   }
 

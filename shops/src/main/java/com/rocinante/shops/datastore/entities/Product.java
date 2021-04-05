@@ -25,6 +25,10 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.internal.util.StringUtils;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,19 +36,25 @@ import org.hibernate.annotations.Type;
 @Getter
 @Setter
 @Slf4j
+@Indexed
 public class Product {
   @Id private UUID uuid;
 
-  @Column private String name;
+  @Column
+  @FullTextField
+  private String name;
 
   @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
+  @IndexedEmbedded
   private Set<MerchantInferredCategory> merchantInferredCategories = new HashSet<>();
 
   @Column
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
   private URL url;
 
-  @Column private boolean enabled;
+  @Column
+  @GenericField
+  private boolean enabled;
 
   @Type(type = "com.rocinante.shops.datastore.types.CurrencyCodeType")
   private CurrencyCode currencyCode;
@@ -69,7 +79,7 @@ public class Product {
 
   @Override
   public int hashCode() {
-    return Objects.hash(url);
+    return Objects.hash(url.toString());
   }
 
   @Override
@@ -78,7 +88,7 @@ public class Product {
       return false;
     }
     Product other = (Product) obj;
-    return this.url.equals(other.url);
+    return this.url.toString().equals(other.url.toString());
   }
 
   public Product(ProductSummary productSummary) throws MalformedURLException {

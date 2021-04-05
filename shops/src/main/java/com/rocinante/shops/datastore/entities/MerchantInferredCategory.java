@@ -25,6 +25,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.flywaydb.core.internal.util.StringUtils;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,7 +36,9 @@ import org.hibernate.annotations.Type;
 public class MerchantInferredCategory {
   @Id private UUID uuid;
 
-  @Column private String name;
+  @Column
+  @FullTextField
+  private String name;
 
   @Column
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
@@ -44,6 +48,7 @@ public class MerchantInferredCategory {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "merchant_uuid")
+  @IndexedEmbedded
   private Merchant merchant;
 
   @ManyToMany(fetch = FetchType.LAZY)
@@ -61,7 +66,7 @@ public class MerchantInferredCategory {
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, url);
+    return Objects.hash(uuid, url.toString());
   }
 
   @Override
@@ -70,7 +75,7 @@ public class MerchantInferredCategory {
       return false;
     }
     MerchantInferredCategory other = (MerchantInferredCategory) obj;
-    return this.uuid.equals(other.uuid) && this.url.equals(other.url);
+    return this.uuid.equals(other.uuid) && this.url.toString().equals(other.url.toString());
   }
 
   public MerchantInferredCategory(Merchant merchant, Category category)

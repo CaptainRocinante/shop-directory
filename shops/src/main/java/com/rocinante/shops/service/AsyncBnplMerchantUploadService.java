@@ -53,10 +53,9 @@ public class AsyncBnplMerchantUploadService {
           if (updated) {
             log.info("Update detected for Bnpl Provider, saving to DB {} {}",
                 bnplProvider.getUuid(), bnplProvider.getUrl());
-            bnplDao.save(bnplProvider);
           }
         } else {
-          bnplProvider = bnplDao.save(new BnplProvider(bnplDto));
+          bnplProvider = new BnplProvider(bnplDto);
           log.info("New Bnpl Provider created in DB {} {}", bnplProvider.getUuid(),
               bnplProvider.getUrl());
         }
