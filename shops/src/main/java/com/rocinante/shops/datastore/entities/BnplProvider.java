@@ -88,9 +88,6 @@ public class BnplProvider {
   }
 
   public void addMerchant(Merchant merchant) {
-    if (this.merchants.contains(merchant)) {
-      int x = 5;
-    }
     this.merchants.add(merchant);
   }
 
