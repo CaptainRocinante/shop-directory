@@ -76,14 +76,14 @@ public class RenderedHtmlProvider {
       long currentScrollTo = initScrollTo + scrollInterval;
       do {
         log.info("Scrolling to {}", currentScrollTo);
-        Thread.sleep(1000L);
+        Thread.sleep(2000L);
         js.executeScript(String.format("window.scrollTo(0, %s);", currentScrollTo));
         currentScrollTo = currentScrollTo + scrollInterval;
       } while (currentScrollTo < scrollTo && scrollInterval > 0);
 
       initScrollTo = scrollTo;
       scrollTo = (long) js.executeScript("return document.body.scrollHeight;");
-      Thread.sleep(2000L);
+      Thread.sleep(3000L);
       ++currentScrollCount;
 
       if (scrollTo != initScrollTo) {
@@ -121,7 +121,7 @@ public class RenderedHtmlProvider {
     final WebDriver webDriver = webDriverThreadLocal.get();
     webDriver.get(url);
     try {
-      Thread.sleep(2000L); // Wait for any init JS to execute
+      Thread.sleep(3000L); // Wait for any init JS to execute
       scrollToBottom(webDriver);
     } catch (InterruptedException e) {
       throw new RuntimeException(e);

@@ -260,7 +260,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   @Override
   public List<ProductSummary> crawlHtml(
       RenderedHtml html, String baseUrl, CrawlContext crawlContext) {
-    //    log.info(html.getHtml());
+//    log.info(html.getHtml());
     final PriorityQueue<SubtreeTraversalResult> highestLcsScoreHeap =
         new PriorityQueue<>((r1, r2) -> r2.getChildrenLCSScore() - r1.getChildrenLCSScore());
     final List<SubtreeTraversalResult> productRoots = new LinkedList<>();
@@ -319,7 +319,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
         summaryCrawler.crawlUrl(
             //
             // "https://www.aritzia.com/en/clothing/womens-workout-clothes/womens-bike-shorts",
-            "https://www.dsw.com/en/us/brands/steve-madden/N-1z141c7", new MapCrawlContext(null));
+            "https://www.freepeople.com/tops/", new MapCrawlContext(null));
     productSummaries.forEach(ps -> log.info("ProductSummary: {}", ps.toString()));
   }
 }
