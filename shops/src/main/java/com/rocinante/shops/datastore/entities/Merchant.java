@@ -36,7 +36,9 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmb
 @Getter
 @Slf4j
 public class Merchant {
-  @Id private UUID uuid;
+  @Id
+  @GenericField
+  private UUID uuid;
 
   @Column
   @FullTextField

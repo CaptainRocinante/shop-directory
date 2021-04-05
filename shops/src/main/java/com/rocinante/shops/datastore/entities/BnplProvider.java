@@ -24,6 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,7 +32,9 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextFi
 @Getter
 @Slf4j
 public class BnplProvider {
-  @Id private UUID uuid;
+  @Id
+  @GenericField
+  private UUID uuid;
 
   @Column
   @FullTextField

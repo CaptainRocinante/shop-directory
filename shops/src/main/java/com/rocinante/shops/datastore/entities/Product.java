@@ -59,7 +59,9 @@ public class Product {
   @Type(type = "com.rocinante.shops.datastore.types.CurrencyCodeType")
   private CurrencyCode currencyCode;
 
-  @Column private BigDecimal currentPriceLowerRange;
+  @Column
+  @GenericField
+  private BigDecimal currentPriceLowerRange;
 
   @Column private BigDecimal currentPriceUpperRange;
 
