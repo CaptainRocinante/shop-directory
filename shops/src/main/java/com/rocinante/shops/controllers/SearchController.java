@@ -1,6 +1,7 @@
 package com.rocinante.shops.controllers;
 
 import com.rocinante.shops.api.ProductDto;
+import com.rocinante.shops.api.SearchResponse;
 import com.rocinante.shops.datastore.entities.Product;
 import com.rocinante.shops.service.SearchService;
 import com.rocinante.shops.service.async.AsyncIndexingService;
@@ -27,11 +28,12 @@ public class SearchController {
   }
 
   @GetMapping
-  public List<ProductDto> search(@RequestParam final String query) {
-    return searchService
+  public SearchResponse search(@RequestParam final String query) {
+    final List<ProductDto> productDtoList = searchService
         .search(query)
         .stream()
         .map(Product::toProductDto)
         .collect(Collectors.toList());
+    return new SearchResponse(productDtoList);
   }
 }
