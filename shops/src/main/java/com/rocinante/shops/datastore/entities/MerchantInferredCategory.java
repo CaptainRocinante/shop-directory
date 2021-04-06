@@ -25,9 +25,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.flywaydb.core.internal.util.StringUtils;
 import org.hibernate.annotations.Type;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,11 +33,9 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmb
 @Setter
 public class MerchantInferredCategory {
   @Id
-  @GenericField
   private UUID uuid;
 
   @Column
-  @FullTextField
   private String name;
 
   @Column
@@ -48,12 +43,10 @@ public class MerchantInferredCategory {
   private URL url;
 
   @Column
-  @GenericField
   private boolean enabled;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "merchant_uuid")
-  @IndexedEmbedded
   private Merchant merchant;
 
   @ManyToMany(fetch = FetchType.LAZY)

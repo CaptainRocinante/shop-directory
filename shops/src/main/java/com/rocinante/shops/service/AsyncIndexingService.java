@@ -16,7 +16,7 @@ public class AsyncIndexingService {
   private final EntityManager entityManager;
 
   @Async
-  @Transactional
+  @Transactional(readOnly = true)
   public void reindexAllProducts() throws InterruptedException {
     final SearchSession searchSession = Search.session(entityManager);
     final MassIndexer massIndexer =

@@ -25,9 +25,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Type;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,11 +34,9 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmb
 @Slf4j
 public class Merchant {
   @Id
-  @GenericField
   private UUID uuid;
 
   @Column
-  @FullTextField
   private String name;
 
   @Column
@@ -53,11 +48,9 @@ public class Merchant {
   private CountryCode countryCode;
 
   @Column
-  @GenericField
   private boolean enabled;
 
   @ManyToMany(mappedBy = "merchants", fetch = FetchType.LAZY)
-  @IndexedEmbedded
   private Set<BnplProvider> bnplProviders = new HashSet<>();
 
   @OneToMany(

@@ -9,15 +9,20 @@ import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +33,10 @@ import org.hibernate.annotations.Type;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.ObjectPath;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.PropertyValue;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -45,7 +53,6 @@ public class Product {
   private String name;
 
   @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
-  @IndexedEmbedded
   private Set<MerchantInferredCategory> merchantInferredCategories = new HashSet<>();
 
   @Column
@@ -78,6 +85,87 @@ public class Product {
   @Column private OffsetDateTime updatedAt;
 
   @Column private OffsetDateTime lastCrawledAt;
+
+  @KeywordField
+  @Transient
+  @IndexingDependency(derivedFrom = @ObjectPath(
+      @PropertyValue(propertyName = "merchantInferredCategories")))
+  public Set<UUID> getMerchantInferredCategoryUuids() {
+    return merchantInferredCategories
+        .stream()
+        .map(MerchantInferredCategory::getUuid).collect(Collectors.toSet());
+  }
+
+  @FullTextField
+  @Transient
+  @IndexingDependency(derivedFrom = @ObjectPath(
+      @PropertyValue(propertyName = "merchantInferredCategories")))
+  public String getMerchantInferredCategoryText() {
+    return merchantInferredCategories.stream()
+        .map(MerchantInferredCategory::getName)
+        .filter(Predicate.not(String::isBlank))
+        .map(cat -> Arrays.stream(cat.split(" ")))
+        .flatMap(Function.identity())
+        .distinct()
+        .collect(Collectors.joining(" "));
+  }
+
+  @KeywordField
+  @Transient
+  @IndexingDependency(derivedFrom = @ObjectPath(
+      @PropertyValue(propertyName = "merchantInferredCategories")))
+  public Set<UUID> getMerchantUuids() {
+    return merchantInferredCategories
+        .stream()
+        .map(MerchantInferredCategory::getMerchant)
+        .map(Merchant::getUuid)
+        .collect(Collectors.toSet());
+  }
+
+  @FullTextField
+  @Transient
+  @IndexingDependency(derivedFrom = @ObjectPath(
+      @PropertyValue(propertyName = "merchantInferredCategories")))
+  public String getMerchantNameText() {
+    return merchantInferredCategories
+        .stream()
+        .map(MerchantInferredCategory::getMerchant)
+        .map(Merchant::getName)
+        .distinct()
+        .collect(Collectors.joining(" "));
+  }
+
+
+  @KeywordField
+  @Transient
+  @IndexingDependency(derivedFrom = @ObjectPath(
+      @PropertyValue(propertyName = "merchantInferredCategories")))
+  public Set<UUID> getBnplUuids() {
+    return merchantInferredCategories
+        .stream()
+        .map(MerchantInferredCategory::getMerchant)
+        .map(Merchant::getBnplProviders)
+        .map(Set::stream)
+        .flatMap(Function.identity())
+        .map(BnplProvider::getUuid)
+        .collect(Collectors.toSet());
+  }
+
+  @FullTextField
+  @Transient
+  @IndexingDependency(derivedFrom = @ObjectPath(
+      @PropertyValue(propertyName = "merchantInferredCategories")))
+  public String getBnplNameText() {
+    return merchantInferredCategories
+        .stream()
+        .map(MerchantInferredCategory::getMerchant)
+        .map(Merchant::getBnplProviders)
+        .map(Set::stream)
+        .flatMap(Function.identity())
+        .map(BnplProvider::getName)
+        .distinct()
+        .collect(Collectors.joining(" "));
+  }
 
   @Override
   public int hashCode() {
