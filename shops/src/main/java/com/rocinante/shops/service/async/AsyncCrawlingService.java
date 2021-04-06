@@ -1,4 +1,4 @@
-package com.rocinante.shops.service;
+package com.rocinante.shops.service.async;
 
 import com.rocinante.crawlers.MapCrawlContext;
 import com.rocinante.crawlers.category.Category;

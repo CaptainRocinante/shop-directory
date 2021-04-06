@@ -2,6 +2,7 @@ package com.rocinante.shops.datastore.entities;
 
 import com.neovisionaries.i18n.CurrencyCode;
 import com.rocinante.crawlers.summary.ProductSummary;
+import com.rocinante.shops.api.ProductDto;
 import com.rocinante.shops.utils.NullabilityUtils;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -245,5 +246,19 @@ public class Product {
       this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
     }
     return updated;
+  }
+
+  public ProductDto toProductDto() {
+    return new ProductDto(
+        this.uuid.toString(),
+        this.name,
+        this.url.toString(),
+        this.currencyCode.toString(),
+        this.currentPriceLowerRange.toString(),
+        this.currentPriceUpperRange.toString(),
+        this.originalPriceLowerRange != null ? this.originalPriceLowerRange.toString() : null,
+        this.originalPriceUpperRange != null ? this.originalPriceUpperRange.toString() : null,
+        this.mainImageUrl.toString()
+    );
   }
 }

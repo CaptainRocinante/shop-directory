@@ -1,4 +1,4 @@
-package com.rocinante.shops.service;
+package com.rocinante.shops.service.async;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.rocinante.shops.api.BnplCsvUploadDto;

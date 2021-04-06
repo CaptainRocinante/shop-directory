@@ -5,7 +5,7 @@ import com.rocinante.shops.datastore.dao.MerchantDao;
 import com.rocinante.shops.datastore.dao.MerchantInferredCategoryDao;
 import com.rocinante.shops.datastore.entities.Merchant;
 import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
-import com.rocinante.shops.service.AsyncCrawlingService;
+import com.rocinante.shops.service.async.AsyncCrawlingService;
 import java.net.MalformedURLException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
