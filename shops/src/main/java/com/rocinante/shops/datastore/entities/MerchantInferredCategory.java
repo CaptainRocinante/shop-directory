@@ -112,15 +112,11 @@ public class MerchantInferredCategory {
 
   public void addProduct(Product product) {
     this.products.add(product);
-    // Following line commented out for efficiency, we'll let the category handle updates to the
-    // mapping table instead of the product
-    // product.getMerchantInferredCategories().add(this);
+    product.getMerchantInferredCategories().add(this);
   }
 
   public void removeProduct(Product product) {
     this.products.remove(product);
-    // Following line commented out for efficiency, we'll let the category handle updates to the
-    // mapping table instead of the product
-    // product.getMerchantInferredCategories().remove(this);
+    product.getMerchantInferredCategories().remove(this);
   }
 }
