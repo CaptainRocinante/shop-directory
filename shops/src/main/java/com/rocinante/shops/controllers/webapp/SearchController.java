@@ -23,7 +23,7 @@ public class SearchController {
             .map(Product::toProductDto)
             .collect(Collectors.toList());
 
-    model.addAttribute("product", productDtoList.get(0));
-    return "turboFragments/product";
+    model.addAttribute("products", productDtoList);
+    return "turboFragments/products";
   }
 }

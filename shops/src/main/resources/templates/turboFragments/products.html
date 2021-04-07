@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/html-head :: html-head">
+</head>
+<body>
+<h1>Products</h1>
+<turbo-frame id="products_frame">
+  <form action="/search">
+    <label for="query">Search</label><br>
+    <input type="text" id="query" name="query"><br>
+    <input type="submit" value="Submit">
+  </form>
+  <table>
+    <thead>
+      <tr>
+        <th> Id </th>
+        <th> Name </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:if="${products.empty}">
+        <td colspan="2"> No Products Found </td>
+      </tr>
+      <tr th:each="product : ${products}">
+        <td><span th:text="${product.uuid}"> Id </span></td>
+        <td><span th:text="${product.name}"> Name </span></td>
+      </tr>
+    </tbody>
+  </table>
+</turbo-frame>
+</body>
+</html>
