@@ -102,17 +102,35 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   </header>
 
   <!-- Image header -->
-<!--  <div class="w3-display-container w3-container">-->
-<!--    <img src="/w3images/jeans.jpg" alt="Jeans" style="width:100%">-->
-<!--    <div class="w3-display-topleft w3-text-white" style="padding:24px 48px">-->
-<!--      <h1 class="w3-jumbo w3-hide-small">New arrivals</h1>-->
-<!--      <h1 class="w3-hide-large w3-hide-medium">New arrivals</h1>-->
-<!--      <h1 class="w3-hide-small">COLLECTION 2016</h1>-->
-<!--      <p><a href="#jeans" class="w3-button w3-black w3-padding-large w3-large">SHOP NOW</a></p>-->
-<!--    </div>-->
-<!--  </div>-->
+  <!--  <div class="w3-display-container w3-container">-->
+  <!--    <img src="/w3images/jeans.jpg" alt="Jeans" style="width:100%">-->
+  <!--    <div class="w3-display-topleft w3-text-white" style="padding:24px 48px">-->
+  <!--      <h1 class="w3-jumbo w3-hide-small">New arrivals</h1>-->
+  <!--      <h1 class="w3-hide-large w3-hide-medium">New arrivals</h1>-->
+  <!--      <h1 class="w3-hide-small">COLLECTION 2016</h1>-->
+  <!--      <p><a href="#jeans" class="w3-button w3-black w3-padding-large w3-large">SHOP NOW</a></p>-->
+  <!--    </div>-->
+  <!--  </div>-->
 
   <!-- Search and Product grid -->
+    <!--  <table>-->
+    <!--    <thead>-->
+    <!--      <tr>-->
+    <!--        <th> Id </th>-->
+    <!--        <th> Name </th>-->
+    <!--      </tr>-->
+    <!--    </thead>-->
+    <!--    <tbody>-->
+    <!--      <tr th:if="${products.empty}">-->
+    <!--        <td colspan="2"> No Products Found </td>-->
+    <!--      </tr>-->
+    <!--      <tr th:each="product : ${products}">-->
+    <!--        <td><span th:text="${product.uuid}"> Id </span></td>-->
+    <!--        <td><span th:text="${product.name}"> Name </span></td>-->
+    <!--      </tr>-->
+    <!--    </tbody>-->
+    <!--  </table>-->
+
   <div class="w3-container w3-padding-64 w3-margin">
     <form action="/search" class="search">
       <input type="text" class="searchTerm" placeholder="What are you looking for?"
@@ -121,6 +139,47 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
         <i class="fa fa-search"></i>
       </button>
     </form>
+    <div class="w3-container w3-text-grey" id="jeans">
+      <p><span th:text="${products.size()}">8</span> items</p>
+    </div>
+    <div class="w3-row w3-grayscale">
+      <div class="w3-col l3 s6">
+        <div th:each="index : ${#numbers.sequence(0, products.size(), 4)}"
+             th:if="${index < products.size()}" class="w3-container">
+          <img th:src="${products.get(index).mainImageUrl}" style="width:100%">
+          <p><span th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br><span
+              th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}">
+      <b>$24.99</b></span></p>
+        </div>
+      </div>
+      <div class="w3-col l3 s6">
+        <div th:each="index : ${#numbers.sequence(1, products.size(), 4)}"
+             th:if="${index < products.size()}" class="w3-container">
+          <img th:src="${products.get(index).mainImageUrl}" style="width:100%">
+          <p><span th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br><span
+              th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}">
+      <b>$24.99</b></span></p>
+        </div>
+      </div>
+      <div class="w3-col l3 s6">
+        <div th:each="index : ${#numbers.sequence(2, products.size(), 4)}"
+             th:if="${index < products.size()}" class="w3-container">
+          <img th:src="${products.get(index).mainImageUrl}" style="width:100%">
+          <p><span th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br><span
+              th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}">
+      <b>$24.99</b></span></p>
+        </div>
+      </div>
+      <div class="w3-col l3 s6">
+        <div th:each="index : ${#numbers.sequence(3, products.size(), 4)}"
+             th:if="${index < products.size()}" class="w3-container">
+          <img th:src="${products.get(index).mainImageUrl}" style="width:100%">
+          <p><span th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br><span
+              th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}">
+      <b>$24.99</b></span></p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Subscribe section -->

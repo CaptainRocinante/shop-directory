@@ -27,6 +27,6 @@ public class SearchController {
     productDtoList.forEach(p -> log.info(p.toString()));
 
     model.addAttribute("products", productDtoList);
-    return "turboFragments/products";
+    return "searchResults";
   }
 }
