@@ -40,8 +40,8 @@
         <div th:each="index : ${#numbers.sequence(0, products.size(), 4)}"
              th:if="${index < products.size()}" class="w3-container">
           <img th:src="${products.get(index).mainImageUrl}" style="width:100%">
-          <p th:text="${products.get(index).name}">Ripped Skinny Jeans<br><span
-              th:text="${products.get(index).currentPriceLowerRange}">
+          <p><span th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br><span
+              th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}">
         <b>$24.99</b></span></p>
         </div>
       </div>
@@ -49,8 +49,8 @@
         <div th:each="index : ${#numbers.sequence(1, products.size(), 4)}"
              th:if="${index < products.size()}" class="w3-container">
           <img th:src="${products.get(index).mainImageUrl}" style="width:100%">
-          <p th:text="${products.get(index).name}">Ripped Skinny Jeans<br><span
-              th:text="${products.get(index).currentPriceLowerRange}">
+          <p><span th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br><span
+              th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}">
         <b>$24.99</b></span></p>
         </div>
       </div>
@@ -58,8 +58,8 @@
         <div th:each="index : ${#numbers.sequence(2, products.size(), 4)}"
              th:if="${index < products.size()}" class="w3-container">
           <img th:src="${products.get(index).mainImageUrl}" style="width:100%">
-          <p th:text="${products.get(index).name}">Ripped Skinny Jeans<br><span
-              th:text="${products.get(index).currentPriceLowerRange}">
+          <p><span th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br><span
+              th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}">
         <b>$24.99</b></span></p>
         </div>
       </div>
@@ -67,8 +67,8 @@
         <div th:each="index : ${#numbers.sequence(3, products.size(), 4)}"
              th:if="${index < products.size()}" class="w3-container">
           <img th:src="${products.get(index).mainImageUrl}" style="width:100%">
-          <p th:text="${products.get(index).name}">Ripped Skinny Jeans<br><span
-              th:text="${products.get(index).currentPriceLowerRange}">
+          <p><span th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br><span
+              th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}">
         <b>$24.99</b></span></p>
         </div>
       </div>

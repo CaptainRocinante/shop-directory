@@ -3,6 +3,7 @@ package com.rocinante.shops.datastore.entities;
 import com.neovisionaries.i18n.CurrencyCode;
 import com.rocinante.crawlers.summary.ProductSummary;
 import com.rocinante.shops.api.ProductDto;
+import com.rocinante.shops.utils.MoneyUtils;
 import com.rocinante.shops.utils.NullabilityUtils;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -243,10 +244,12 @@ public class Product {
         this.name,
         this.url.toString(),
         this.currencyCode.toString(),
-        this.currentPriceLowerRange.toString(),
-        this.currentPriceUpperRange.toString(),
-        this.originalPriceLowerRange != null ? this.originalPriceLowerRange.toString() : null,
-        this.originalPriceUpperRange != null ? this.originalPriceUpperRange.toString() : null,
+        MoneyUtils.getFormattedAmount(currencyCode, this.currentPriceLowerRange),
+        MoneyUtils.getFormattedAmount(currencyCode, this.currentPriceUpperRange),
+        this.originalPriceLowerRange != null ? MoneyUtils.getFormattedAmount(currencyCode,
+            this.originalPriceLowerRange) : null,
+        this.originalPriceUpperRange != null ? MoneyUtils.getFormattedAmount(currencyCode,
+            this.originalPriceUpperRange) : null,
         this.mainImageUrl.toString());
   }
 }
