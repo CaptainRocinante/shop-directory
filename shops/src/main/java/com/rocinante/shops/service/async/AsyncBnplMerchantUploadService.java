@@ -33,37 +33,44 @@ public class AsyncBnplMerchantUploadService {
   public void setupBnplsAndUploadMerchantsIdempotent() throws FileNotFoundException {
     final List<BnplCsvUploadDto> bnpls =
         new CsvToBeanBuilder<BnplCsvUploadDto>(
-            new FileReader(ResourceUtils.getFileAtPath(BNPL_FILE_PATH)))
+                new FileReader(ResourceUtils.getFileAtPath(BNPL_FILE_PATH)))
             .withType(BnplCsvUploadDto.class)
             .build()
             .parse();
     log.info("Count of Bnpl providers in CSV: {}", bnpls.size());
 
-    bnpls.forEach(bnplDto -> {
-      final URL url;
-      try {
-        url = new URL(bnplDto.getBnplProviderWebsite());
-        final Optional<BnplProvider> existingProvider = bnplDao.findByUrl(url);
-        final BnplProvider bnplProvider;
-        if (existingProvider.isPresent()) {
-          bnplProvider = existingProvider.get();
-          log.info("Existing Bnpl Provider found in DB {} {}", bnplProvider.getUuid(),
-              bnplProvider.getUrl());
-          boolean updated = bnplProvider.applyUpdatesIfNeeded(bnplDto);
-          if (updated) {
-            log.info("Update detected for Bnpl Provider, saving to DB {} {}",
-                bnplProvider.getUuid(), bnplProvider.getUrl());
+    bnpls.forEach(
+        bnplDto -> {
+          final URL url;
+          try {
+            url = new URL(bnplDto.getBnplProviderWebsite());
+            final Optional<BnplProvider> existingProvider = bnplDao.findByUrl(url);
+            final BnplProvider bnplProvider;
+            if (existingProvider.isPresent()) {
+              bnplProvider = existingProvider.get();
+              log.info(
+                  "Existing Bnpl Provider found in DB {} {}",
+                  bnplProvider.getUuid(),
+                  bnplProvider.getUrl());
+              boolean updated = bnplProvider.applyUpdatesIfNeeded(bnplDto);
+              if (updated) {
+                log.info(
+                    "Update detected for Bnpl Provider, saving to DB {} {}",
+                    bnplProvider.getUuid(),
+                    bnplProvider.getUrl());
+              }
+            } else {
+              bnplProvider = new BnplProvider(bnplDto);
+              log.info(
+                  "New Bnpl Provider created in DB {} {}",
+                  bnplProvider.getUuid(),
+                  bnplProvider.getUrl());
+            }
+            setupMerchantsForBnplIdempotent(bnplProvider);
+          } catch (MalformedURLException | FileNotFoundException e) {
+            throw new RuntimeException(e);
           }
-        } else {
-          bnplProvider = new BnplProvider(bnplDto);
-          log.info("New Bnpl Provider created in DB {} {}", bnplProvider.getUuid(),
-              bnplProvider.getUrl());
-        }
-        setupMerchantsForBnplIdempotent(bnplProvider);
-      } catch (MalformedURLException | FileNotFoundException e) {
-        throw new RuntimeException(e);
-      }
-    });
+        });
   }
 
   private void setupMerchantsForBnplIdempotent(BnplProvider bnplProvider)
@@ -71,13 +78,16 @@ public class AsyncBnplMerchantUploadService {
     final String merchantCsvPath = "merchants/" + bnplProvider.getName().toLowerCase() + ".csv";
     final List<MerchantCsvUploadDto> merchants =
         new CsvToBeanBuilder<MerchantCsvUploadDto>(
-            new FileReader(ResourceUtils.getFileAtPath(merchantCsvPath)))
+                new FileReader(ResourceUtils.getFileAtPath(merchantCsvPath)))
             .withType(MerchantCsvUploadDto.class)
             .build()
             .parse();
 
-    log.info("Count of merchants in CSV for BNPL {} {} is {}", bnplProvider.getUuid(),
-        bnplProvider.getUrl(), merchants.size());
+    log.info(
+        "Count of merchants in CSV for BNPL {} {} is {}",
+        bnplProvider.getUuid(),
+        bnplProvider.getUrl(),
+        merchants.size());
 
     for (final MerchantCsvUploadDto merchantCsvUploadDto : merchants) {
       final URL merchantUrl = new URL(merchantCsvUploadDto.getMerchantWebsite());
@@ -88,7 +98,9 @@ public class AsyncBnplMerchantUploadService {
         log.info("Existing Merchant found in DB {} {}", merchant.getUuid(), merchant.getUrl());
         boolean updated = merchant.applyUpdatesIfNeeded(merchantCsvUploadDto);
         if (updated) {
-          log.info("Update detected for merchant, saving to DB {} {}", merchant.getUuid(),
+          log.info(
+              "Update detected for merchant, saving to DB {} {}",
+              merchant.getUuid(),
               merchant.getUrl());
           merchantDao.save(merchant);
         }
@@ -99,7 +111,7 @@ public class AsyncBnplMerchantUploadService {
       bnplProvider.addMerchant(merchant);
     }
     bnplDao.save(bnplProvider);
-    log.info("End Merchant CSV upload for BNPL {} {}", bnplProvider.getUuid(),
-        bnplProvider.getUrl());
+    log.info(
+        "End Merchant CSV upload for BNPL {} {}", bnplProvider.getUuid(), bnplProvider.getUrl());
   }
 }

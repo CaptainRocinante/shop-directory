@@ -30,11 +30,9 @@ import org.hibernate.annotations.Type;
 @Getter
 @Slf4j
 public class BnplProvider {
-  @Id
-  private UUID uuid;
+  @Id private UUID uuid;
 
-  @Column
-  private String name;
+  @Column private String name;
 
   @Column
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")

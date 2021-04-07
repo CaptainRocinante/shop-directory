@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html th:lang="${lang}" th:with="lang=${#locale.language}"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head th:insert="fragments/html-head :: html-head">
+  <title>Home</title>
+</head>
+<body>
+<section>
+  <h1>Showcase how to replace part of a page</h1>
+  <turbo-frame id="product_frame">
+    <a href="/search?query=blue+shirt">Get some products</a>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Initial static Product</td>
+      </tr>
+    </table>
+  </turbo-frame>
+</section>
+</body>
+</html>

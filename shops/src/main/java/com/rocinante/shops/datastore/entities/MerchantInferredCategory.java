@@ -32,18 +32,15 @@ import org.hibernate.annotations.Type;
 @Getter
 @Setter
 public class MerchantInferredCategory {
-  @Id
-  private UUID uuid;
+  @Id private UUID uuid;
 
-  @Column
-  private String name;
+  @Column private String name;
 
   @Column
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
   private URL url;
 
-  @Column
-  private boolean enabled;
+  @Column private boolean enabled;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "merchant_uuid")

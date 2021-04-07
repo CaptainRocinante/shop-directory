@@ -260,7 +260,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   @Override
   public List<ProductSummary> crawlHtml(
       RenderedHtml html, String baseUrl, CrawlContext crawlContext) {
-//    log.info(html.getHtml());
+    //    log.info(html.getHtml());
     final PriorityQueue<SubtreeTraversalResult> highestLcsScoreHeap =
         new PriorityQueue<>((r1, r2) -> r2.getChildrenLCSScore() - r1.getChildrenLCSScore());
     final List<SubtreeTraversalResult> productRoots = new LinkedList<>();

@@ -33,11 +33,9 @@ import org.hibernate.annotations.Type;
 @Getter
 @Slf4j
 public class Merchant {
-  @Id
-  private UUID uuid;
+  @Id private UUID uuid;
 
-  @Column
-  private String name;
+  @Column private String name;
 
   @Column
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
@@ -47,8 +45,7 @@ public class Merchant {
   @Type(type = "com.rocinante.shops.datastore.types.CountryCodeType")
   private CountryCode countryCode;
 
-  @Column
-  private boolean enabled;
+  @Column private boolean enabled;
 
   @ManyToMany(mappedBy = "merchants", fetch = FetchType.LAZY)
   private Set<BnplProvider> bnplProviders = new HashSet<>();
@@ -70,7 +67,7 @@ public class Merchant {
     this.uuid = UUID.randomUUID();
     this.name = merchantCsvUploadDto.getMerchantName();
     this.url = new URL(merchantCsvUploadDto.getMerchantWebsite());
-    this.countryCode =  CountryCode.US; // TODO: Remove hardcoded value
+    this.countryCode = CountryCode.US; // TODO: Remove hardcoded value
     this.enabled = true;
     this.createdAt = Instant.now().atOffset(ZoneOffset.UTC);
     this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
@@ -103,7 +100,7 @@ public class Merchant {
       return false;
     }
     Merchant other = (Merchant) obj;
-    return this.url.toString().equals(other.url.toString()) &&
-        this.countryCode.equals(other.countryCode);
+    return this.url.toString().equals(other.url.toString())
+        && this.countryCode.equals(other.countryCode);
   }
 }

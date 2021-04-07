@@ -1,4 +1,4 @@
-package com.rocinante.shops.controllers;
+package com.rocinante.shops.controllers.rest;
 
 import com.rocinante.shops.api.MerchantCrawlDto;
 import com.rocinante.shops.datastore.dao.MerchantDao;

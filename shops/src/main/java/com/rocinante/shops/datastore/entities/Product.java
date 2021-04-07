@@ -49,9 +49,7 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.PropertyVa
 public class Product {
   @Id private UUID uuid;
 
-  @Column
-  @FullTextField
-  private String name;
+  @Column @FullTextField private String name;
 
   @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
   private Set<MerchantInferredCategory> merchantInferredCategories = new HashSet<>();
@@ -60,16 +58,12 @@ public class Product {
   @Type(type = "com.rocinante.shops.datastore.types.UrlType")
   private URL url;
 
-  @Column
-  @GenericField
-  private boolean enabled;
+  @Column @GenericField private boolean enabled;
 
   @Type(type = "com.rocinante.shops.datastore.types.CurrencyCodeType")
   private CurrencyCode currencyCode;
 
-  @Column
-  @GenericField
-  private BigDecimal currentPriceLowerRange;
+  @Column @GenericField private BigDecimal currentPriceLowerRange;
 
   @Column private BigDecimal currentPriceUpperRange;
 
@@ -89,18 +83,18 @@ public class Product {
 
   @KeywordField
   @Transient
-  @IndexingDependency(derivedFrom = @ObjectPath(
-      @PropertyValue(propertyName = "merchantInferredCategories")))
+  @IndexingDependency(
+      derivedFrom = @ObjectPath(@PropertyValue(propertyName = "merchantInferredCategories")))
   public Set<UUID> getMerchantInferredCategoryUuids() {
-    return merchantInferredCategories
-        .stream()
-        .map(MerchantInferredCategory::getUuid).collect(Collectors.toSet());
+    return merchantInferredCategories.stream()
+        .map(MerchantInferredCategory::getUuid)
+        .collect(Collectors.toSet());
   }
 
   @FullTextField
   @Transient
-  @IndexingDependency(derivedFrom = @ObjectPath(
-      @PropertyValue(propertyName = "merchantInferredCategories")))
+  @IndexingDependency(
+      derivedFrom = @ObjectPath(@PropertyValue(propertyName = "merchantInferredCategories")))
   public String getMerchantInferredCategoryText() {
     return merchantInferredCategories.stream()
         .map(MerchantInferredCategory::getName)
@@ -113,11 +107,10 @@ public class Product {
 
   @KeywordField
   @Transient
-  @IndexingDependency(derivedFrom = @ObjectPath(
-      @PropertyValue(propertyName = "merchantInferredCategories")))
+  @IndexingDependency(
+      derivedFrom = @ObjectPath(@PropertyValue(propertyName = "merchantInferredCategories")))
   public Set<UUID> getMerchantUuids() {
-    return merchantInferredCategories
-        .stream()
+    return merchantInferredCategories.stream()
         .map(MerchantInferredCategory::getMerchant)
         .map(Merchant::getUuid)
         .collect(Collectors.toSet());
@@ -125,25 +118,22 @@ public class Product {
 
   @FullTextField
   @Transient
-  @IndexingDependency(derivedFrom = @ObjectPath(
-      @PropertyValue(propertyName = "merchantInferredCategories")))
+  @IndexingDependency(
+      derivedFrom = @ObjectPath(@PropertyValue(propertyName = "merchantInferredCategories")))
   public String getMerchantNameText() {
-    return merchantInferredCategories
-        .stream()
+    return merchantInferredCategories.stream()
         .map(MerchantInferredCategory::getMerchant)
         .map(Merchant::getName)
         .distinct()
         .collect(Collectors.joining(" "));
   }
 
-
   @KeywordField
   @Transient
-  @IndexingDependency(derivedFrom = @ObjectPath(
-      @PropertyValue(propertyName = "merchantInferredCategories")))
+  @IndexingDependency(
+      derivedFrom = @ObjectPath(@PropertyValue(propertyName = "merchantInferredCategories")))
   public Set<UUID> getBnplUuids() {
-    return merchantInferredCategories
-        .stream()
+    return merchantInferredCategories.stream()
         .map(MerchantInferredCategory::getMerchant)
         .map(Merchant::getBnplProviders)
         .map(Set::stream)
@@ -154,11 +144,10 @@ public class Product {
 
   @FullTextField
   @Transient
-  @IndexingDependency(derivedFrom = @ObjectPath(
-      @PropertyValue(propertyName = "merchantInferredCategories")))
+  @IndexingDependency(
+      derivedFrom = @ObjectPath(@PropertyValue(propertyName = "merchantInferredCategories")))
   public String getBnplNameText() {
-    return merchantInferredCategories
-        .stream()
+    return merchantInferredCategories.stream()
         .map(MerchantInferredCategory::getMerchant)
         .map(Merchant::getBnplProviders)
         .map(Set::stream)
@@ -258,7 +247,6 @@ public class Product {
         this.currentPriceUpperRange.toString(),
         this.originalPriceLowerRange != null ? this.originalPriceLowerRange.toString() : null,
         this.originalPriceUpperRange != null ? this.originalPriceUpperRange.toString() : null,
-        this.mainImageUrl.toString()
-    );
+        this.mainImageUrl.toString());
   }
 }
