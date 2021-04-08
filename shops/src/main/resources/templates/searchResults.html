@@ -70,7 +70,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
       <div th:unless="${bnplFiltersSelected.size() == 0}">
         <p th:each="bnplFilter : ${bnplFiltersSelected}">
           <input class="w3-check" type="checkbox" name="bnplFiltersSelected"
-                 th:value="${bnplFilter.bnplUuid}" checked="true">
+                 th:value="${bnplFilter.bnplUuid}" checked>
           <label class="w3-padding-small" th:text="${bnplFilter.bnplName}">BnplName</label>
         </p>
         <button type="button" onclick="resetBnplFilters()"
@@ -80,9 +80,27 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   </div>
   <div class="w3-padding-16">
     <h4>Brands</h4>
-    <p><input class="w3-check" type="checkbox"><label class="w3-padding-small">Boohoo</label></p>
-    <p><input class="w3-check" type="checkbox"><label class="w3-padding-small">Sephora</label></p>
-    <p><input class="w3-check" type="checkbox"><label class="w3-padding-small">Aritzia</label></p>
+    <form>
+      <div th:if="${merchantFiltersSelected.size() == 0}">
+        <p th:each="merchantFilter : ${merchantFilters}">
+          <input class="w3-check" type="checkbox" name="merchantFiltersSelected"
+                 th:value="${merchantFilter.merchantUuid}">
+          <label class="w3-padding-small" th:text="${merchantFilter.merchantName}">MerchantName
+          </label>
+        </p>
+        <button type="submit" class="w3-button w3-red w3-margin-bottom">Apply</button>
+      </div>
+      <div th:unless="${merchantFiltersSelected.size() == 0}">
+        <p th:each="merchantFilter : ${merchantFiltersSelected}">
+          <input class="w3-check" type="checkbox" name="merchantFiltersSelected"
+                 th:value="${merchantFilter.merchantUuid}" checked>
+          <label class="w3-padding-small" th:text="${merchantFilter.merchantName}">MerchantName
+          </label>
+        </p>
+        <button type="button" onclick="resetMerchantFilters()"
+                class="w3-button w3-red w3-margin-bottom">Reset</button>
+      </div>
+    </form>
   </div>
   <div class="w3-padding-16">
     <h4>Price Range</h4>
@@ -296,6 +314,10 @@ function removeURLParameter(url, parameter) {
 
 function resetBnplFilters() {
   window.location.replace(removeURLParameter(document.URL, 'bnplFiltersSelected'));
+}
+
+function resetMerchantFilters() {
+  window.location.replace(removeURLParameter(document.URL, 'merchantFiltersSelected'));
 }
 </script>
 

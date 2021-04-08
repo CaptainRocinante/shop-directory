@@ -2,6 +2,7 @@ package com.rocinante.shops.datastore.entities;
 
 import com.neovisionaries.i18n.CountryCode;
 import com.rocinante.shops.api.MerchantCsvUploadDto;
+import com.rocinante.shops.api.MerchantFilterDto;
 import com.rocinante.shops.utils.NullabilityUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -87,6 +88,10 @@ public class Merchant {
       this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
     }
     return updated;
+  }
+
+  public MerchantFilterDto toMerchantFilterDto() {
+    return new MerchantFilterDto(this.uuid.toString(), this.name);
   }
 
   @Override
