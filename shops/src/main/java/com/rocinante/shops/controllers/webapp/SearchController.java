@@ -4,6 +4,7 @@ import com.rocinante.shops.api.ProductDto;
 import com.rocinante.shops.datastore.entities.Product;
 import com.rocinante.shops.service.sync.SearchService;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,9 @@ public class SearchController {
   private final SearchService searchService;
 
   @RequestMapping("/search")
-  public String search(Model model, @RequestParam final String query) {
+  public String search(Model model,
+      @RequestParam final String query,
+      @RequestParam List<String> bnplFilter) {
     final List<ProductDto> productDtoList =
         searchService.search(query).stream()
             .map(Product::toProductDto)
