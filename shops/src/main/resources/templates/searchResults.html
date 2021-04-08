@@ -73,7 +73,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
                  th:value="${bnplFilter.bnplUuid}" checked="true">
           <label class="w3-padding-small" th:text="${bnplFilter.bnplName}">BnplName</label>
         </p>
-        <button type="submit" class="w3-button w3-red w3-margin-bottom">Reset</button>
+        <button type="button" onclick="resetBnplFilters()"
+                class="w3-button w3-red w3-margin-bottom">Reset</button>
       </div>
     </form>
   </div>
@@ -270,6 +271,31 @@ function w3_open() {
 function w3_close() {
   document.getElementById("mySidebar").style.display = "none";
   document.getElementById("myOverlay").style.display = "none";
+}
+
+function removeURLParameter(url, parameter) {
+    //prefer to use l.search if you have a location/link object
+    var urlparts = url.split('?');
+    if (urlparts.length >= 2) {
+
+        var prefix = encodeURIComponent(parameter) + '=';
+        var pars = urlparts[1].split(/[&;]/g);
+
+        //reverse iteration as may be destructive
+        for (var i = pars.length; i-- > 0;) {
+            //idiom for string.startsWith
+            if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                pars.splice(i, 1);
+            }
+        }
+
+        return urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : '');
+    }
+    return url;
+}
+
+function resetBnplFilters() {
+  window.location.replace(removeURLParameter(document.URL, 'bnplFiltersSelected'));
 }
 </script>
 
