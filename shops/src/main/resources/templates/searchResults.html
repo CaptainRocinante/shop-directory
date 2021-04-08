@@ -124,7 +124,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     <div class="w3-container w3-text-grey" id="jeans">
       <p><span th:text="${products.size()}">8</span> items</p>
     </div>
-    <div class="w3-row w3-grayscale">
+    <div class="w3-row">
       <div class="w3-col l3 s6">
         <div th:each="index : ${#numbers.sequence(0, products.size(), 4)}"
              th:if="${index < products.size()}" class="w3-container">
