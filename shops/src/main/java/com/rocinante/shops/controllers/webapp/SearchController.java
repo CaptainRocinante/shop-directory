@@ -31,20 +31,25 @@ public class SearchController {
         searchService.search(query).stream()
             .map(Product::toProductDto)
             .collect(Collectors.toList());
-    final List<BnplFilterDto> bnplFilterList =
+    final List<BnplFilterDto> bnplFiltersList =
         bnplService
             .getAllBnplProviders()
             .stream()
             .map(BnplProvider::toBnplFilterDto)
             .sorted((b1, b2) -> b1.getBnplName().compareToIgnoreCase(b2.getBnplName()))
             .collect(Collectors.toList());
+    final List<BnplFilterDto> bnplFiltersSelectedList = bnplFiltersSelected == null ?
+        Collections.emptyList() :
+        bnplFiltersList
+            .stream()
+            .filter(b -> bnplFiltersSelected.contains(b.getBnplUuid()))
+            .collect(Collectors.toList());
 //    productDtoList.forEach(p -> log.info(p.toString()));
 
     model.addAttribute("query", query);
     model.addAttribute("products", productDtoList);
-    model.addAttribute("bnplFilters", bnplFilterList);
-    model.addAttribute("bnplFiltersSelected", bnplFiltersSelected != null
-        ? bnplFiltersSelected : Collections.emptyList());
+    model.addAttribute("bnplFilters", bnplFiltersList);
+    model.addAttribute("bnplFiltersSelected", bnplFiltersSelectedList);
     return "searchResults";
   }
 }

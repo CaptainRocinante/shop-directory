@@ -60,11 +60,21 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   <div class="w3-padding-16" style="margin-top:100px">
     <h4>Accepts</h4>
     <form>
-      <p th:each="bnplFilter : ${bnplFilters}">
-        <input class="w3-check" type="checkbox" name="bnplFiltersSelected" th:value="${bnplFilter.bnplUuid}">
-        <label class="w3-padding-small" th:text="${bnplFilter.bnplName}">BnplName</label>
-      </p>
-      <button type="submit" class="w3-button w3-red w3-margin-bottom">Apply</button>
+      <div th:if="${bnplFiltersSelected.size() == 0}">
+        <p th:each="bnplFilter : ${bnplFilters}">
+          <input class="w3-check" type="checkbox" name="bnplFiltersSelected" th:value="${bnplFilter.bnplUuid}">
+          <label class="w3-padding-small" th:text="${bnplFilter.bnplName}">BnplName</label>
+        </p>
+        <button type="submit" class="w3-button w3-red w3-margin-bottom">Apply</button>
+      </div>
+      <div th:unless="${bnplFiltersSelected.size() == 0}">
+        <p th:each="bnplFilter : ${bnplFiltersSelected}">
+          <input class="w3-check" type="checkbox" name="bnplFiltersSelected"
+                 th:value="${bnplFilter.bnplUuid}" checked="true">
+          <label class="w3-padding-small" th:text="${bnplFilter.bnplName}">BnplName</label>
+        </p>
+        <button type="submit" class="w3-button w3-red w3-margin-bottom">Reset</button>
+      </div>
     </form>
   </div>
   <div class="w3-padding-16">
