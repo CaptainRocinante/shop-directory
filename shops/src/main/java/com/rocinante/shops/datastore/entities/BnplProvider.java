@@ -1,6 +1,7 @@
 package com.rocinante.shops.datastore.entities;
 
 import com.rocinante.shops.api.BnplCsvUploadDto;
+import com.rocinante.shops.api.BnplFilterDto;
 import com.rocinante.shops.utils.NullabilityUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -82,6 +83,10 @@ public class BnplProvider {
     }
     BnplProvider other = (BnplProvider) obj;
     return this.url.toString().equals(other.url.toString());
+  }
+
+  public BnplFilterDto toBnplFilterDto() {
+    return new BnplFilterDto(this.uuid.toString(), this.name);
   }
 
   public void addMerchant(Merchant merchant) {

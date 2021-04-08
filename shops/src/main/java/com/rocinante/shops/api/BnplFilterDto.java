@@ -6,5 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class BnplFilterDto {
-  private final String x;
+  private final String bnplUuid;
+  private final String bnplName;
 }

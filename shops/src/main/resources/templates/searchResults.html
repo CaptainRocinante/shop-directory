@@ -60,13 +60,10 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   <div class="w3-padding-16" style="margin-top:100px">
     <h4>Accepts</h4>
     <form>
-      <p><input class="w3-check" type="checkbox" name="bnplFilter" value="AfterpayId"><label
-          class="w3-padding-small">Afterpay
-      </label></p>
-      <p><input class="w3-check" type="checkbox" name="bnplFilter" value="AffirmId"><label
-          class="w3-padding-small">Affirm</label></p>
-      <p><input class="w3-check" type="checkbox" name="bnplFilter" value="KlarnaId"><label
-          class="w3-padding-small">Klarna</label></p>
+      <p th:each="bnplFilter : ${bnplFilters}">
+        <input class="w3-check" type="checkbox" name="bnplFiltersSelected" th:value="${bnplFilter.bnplUuid}">
+        <label class="w3-padding-small" th:text="${bnplFilter.bnplName}">BnplName</label>
+      </p>
       <button type="submit" class="w3-button w3-red w3-margin-bottom">Apply</button>
     </form>
   </div>
