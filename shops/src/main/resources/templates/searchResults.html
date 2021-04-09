@@ -57,7 +57,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
     <h3 class="w3-wide"><b>LOGO</b></h3>
   </div>
-  <div class="w3-padding-16" style="margin-top:100px">
+  <div class="w3-container w3-display-container w3-padding-16" style="margin-top:100px">
     <h4>Accepts</h4>
     <form>
       <div th:if="${bnplFiltersSelected.size() == 0}">
@@ -78,7 +78,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
       </div>
     </form>
   </div>
-  <div class="w3-padding-16">
+  <div class="w3-container w3-display-container w3-padding-16">
     <h4>Brands</h4>
     <form>
       <div th:if="${merchantFiltersSelected.size() == 0}">
@@ -101,12 +101,6 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
                 class="w3-button w3-red w3-margin-bottom">Reset</button>
       </div>
     </form>
-  </div>
-  <div class="w3-padding-16">
-    <h4>Price Range</h4>
-    <p><input class="w3-check" type="checkbox"><label class="w3-padding-small">Afterpay</label></p>
-    <p><input class="w3-check" type="checkbox"><label class="w3-padding-small">Affirm</label></p>
-    <p><input class="w3-check" type="checkbox"><label class="w3-padding-small">Klarna</label></p>
   </div>
 </nav>
 
