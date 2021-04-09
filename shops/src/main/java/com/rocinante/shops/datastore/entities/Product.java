@@ -13,6 +13,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -239,6 +240,13 @@ public class Product {
   }
 
   public ProductDto toProductDto() {
+    final List<Merchant> merchants = this.merchantInferredCategories
+        .stream()
+        .map(MerchantInferredCategory::getMerchant)
+        .distinct()
+        .sorted((m1, m2) -> m1.getName().compareToIgnoreCase(m2.getName()))
+        .collect(Collectors.toList());
+
     return new ProductDto(
         this.uuid.toString(),
         this.name,
@@ -250,6 +258,17 @@ public class Product {
             this.originalPriceLowerRange) : null,
         this.originalPriceUpperRange != null ? MoneyUtils.getFormattedAmount(currencyCode,
             this.originalPriceUpperRange) : null,
-        this.mainImageUrl.toString());
+        this.mainImageUrl.toString(),
+        merchants.stream().map(Merchant::getName).collect(Collectors.toList()),
+        merchants
+            .stream()
+            .map(Merchant::getBnplProviders)
+            .map(Set::stream)
+            .flatMap(Function.identity())
+            .sorted((b1, b2) -> b1.getName().compareToIgnoreCase(b2.getName()))
+            .distinct()
+            .map(BnplProvider::getName)
+            .collect(Collectors.toList())
+        );
   }
 }

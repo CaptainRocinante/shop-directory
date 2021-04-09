@@ -1,5 +1,6 @@
 package com.rocinante.shops.api;
 
+import java.util.List;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,4 +17,6 @@ public class ProductDto {
   @Nullable private final String originalPriceLowerRange;
   @Nullable private final String originalPriceUpperRange;
   private final String mainImageUrl;
+  private final List<String> merchantNames;
+  private final List<String> bnplProviders;
 }

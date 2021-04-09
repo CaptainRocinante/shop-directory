@@ -37,7 +37,8 @@ public class SearchController {
       @RequestParam(required = false) List<String> bnplFiltersSelected,
       @RequestParam(required = false) List<String> merchantFiltersSelected) {
     final List<Product> productList = searchService
-        .search(query);
+        .search(query, bnplFiltersSelected == null ? Collections.emptyList() :
+            bnplFiltersSelected.stream().map(UUID::fromString).collect(Collectors.toList()));
     final List<ProductDto> productDtoList =
         productList
             .stream()
