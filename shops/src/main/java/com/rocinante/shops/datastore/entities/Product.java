@@ -51,7 +51,9 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.PropertyVa
 public class Product {
   @Id private UUID uuid;
 
-  @Column @FullTextField private String name;
+  @Column
+  @FullTextField(analyzer = "custom_english")
+  private String name;
 
   @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
   private Set<MerchantInferredCategory> merchantInferredCategories = new HashSet<>();
@@ -93,7 +95,7 @@ public class Product {
         .collect(Collectors.toSet());
   }
 
-  @FullTextField
+  @FullTextField(analyzer = "custom_english")
   @Transient
   @IndexingDependency(
       derivedFrom = @ObjectPath(@PropertyValue(propertyName = "merchantInferredCategories")))
@@ -118,7 +120,7 @@ public class Product {
         .collect(Collectors.toSet());
   }
 
-  @FullTextField
+  @FullTextField(analyzer = "name")
   @Transient
   @IndexingDependency(
       derivedFrom = @ObjectPath(@PropertyValue(propertyName = "merchantInferredCategories")))
@@ -144,7 +146,7 @@ public class Product {
         .collect(Collectors.toSet());
   }
 
-  @FullTextField
+  @FullTextField(analyzer = "name")
   @Transient
   @IndexingDependency(
       derivedFrom = @ObjectPath(@PropertyValue(propertyName = "merchantInferredCategories")))
