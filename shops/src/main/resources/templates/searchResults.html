@@ -65,7 +65,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
           <input class="w3-check" type="checkbox" name="bnplFiltersSelected" th:value="${bnplFilter.bnplUuid}">
           <label class="w3-padding-small" th:text="${bnplFilter.bnplName}">BnplName</label>
         </p>
-        <button type="submit" class="w3-button w3-red w3-margin-bottom">Apply</button>
+        <button type="submit" class="w3-button w3-black">Apply</button>
       </div>
       <div th:unless="${bnplFiltersSelected.size() == 0}">
         <p th:each="bnplFilter : ${bnplFiltersSelected}">
@@ -74,7 +74,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
           <label class="w3-padding-small" th:text="${bnplFilter.bnplName}">BnplName</label>
         </p>
         <button type="button" onclick="resetBnplFilters()"
-                class="w3-button w3-red w3-margin-bottom">Reset</button>
+                class="w3-button w3-black">Reset</button>
       </div>
     </form>
   </div>
@@ -88,7 +88,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
           <label class="w3-padding-small" th:text="${merchantFilter.merchantName}">MerchantName
           </label>
         </p>
-        <button type="submit" class="w3-button w3-red w3-margin-bottom">Apply</button>
+        <button type="submit" class="w3-button w3-black">Apply</button>
       </div>
       <div th:unless="${merchantFiltersSelected.size() == 0}">
         <p th:each="merchantFilter : ${merchantFiltersSelected}">
@@ -98,7 +98,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
           </label>
         </p>
         <button type="button" onclick="resetMerchantFilters()"
-                class="w3-button w3-red w3-margin-bottom">Reset</button>
+                class="w3-button w3-black">Reset</button>
       </div>
     </form>
   </div>
