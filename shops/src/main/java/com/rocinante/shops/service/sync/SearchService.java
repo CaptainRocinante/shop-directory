@@ -16,7 +16,8 @@ public class SearchService {
   private final EntityManager entityManager;
 
   @Transactional(readOnly = true)
-  public List<Product> search(final String query, final List<UUID> bnplFilters) {
+  public List<Product> search(final String query, final List<UUID> bnplFilters,
+      List<UUID> merchantFilters) {
     final SearchSession searchSession = Search.session(entityManager);
     return searchSession
         .search(Product.class)
@@ -28,11 +29,20 @@ public class SearchService {
                   .should(f.match().field("merchantNameText").matching(query))
                   .should(f.match().field("bnplNameText").matching(query));
               if (!bnplFilters.isEmpty()) {
-                var init = f.bool();
-                for (UUID bnplFilter: bnplFilters) {
-                  init = init.should(f.match().field("bnplUuids").matching(bnplFilter));
+                var bnplFilterPredicate = f.bool();
+                for (final UUID bnplFilter: bnplFilters) {
+                  bnplFilterPredicate = bnplFilterPredicate
+                      .should(f.match().field("bnplUuids").matching(bnplFilter));
                 }
-                predicate.filter(init.minimumShouldMatchNumber(1));
+                predicate.filter(bnplFilterPredicate.minimumShouldMatchNumber(1));
+              }
+              if (!merchantFilters.isEmpty()) {
+                var merchantFilterPredicate = f.bool();
+                for (final UUID merchantFilter: merchantFilters) {
+                  merchantFilterPredicate = merchantFilterPredicate
+                      .should(f.match().field("merchantUuids").matching(merchantFilter));
+                }
+                predicate.filter(merchantFilterPredicate.minimumShouldMatchNumber(1));
               }
               return predicate;
             })
