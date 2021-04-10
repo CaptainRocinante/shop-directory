@@ -58,7 +58,7 @@ public class SearchService {
               return predicate;
             })
         .totalHitCountThreshold( 1000 )
-        .fetch(zeroBasedPageNumber, pageResultCount);
+        .fetch(zeroBasedPageNumber * pageResultCount, pageResultCount);
 
     return new SearchServiceResults(productSearchResult.total().hitCountLowerBound(),
         productSearchResult.hits());

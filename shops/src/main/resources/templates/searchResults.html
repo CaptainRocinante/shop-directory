@@ -162,7 +162,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
       </button>
     </form>
     <div class="w3-container w3-text-grey" id="jeans">
-      <p><span th:text="${totalResultsCount}">8</span> items</p>
+      <p>Page <span th:text="${page}">8</span> of <span th:text="${totalPageCount}">8</span></p>
+      <p><span th:text="${totalResultsCount}">8</span> results</p>
     </div>
     <div class="w3-row">
       <div class="w3-col l3 s6">
@@ -216,16 +217,9 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     </div>
 
     <div class="w3-center w3-padding-32">
-      <a href="#" class="w3-padding-small">1</a>
-      <a href="#" class="w3-padding-small">2</a>
-      <a href="#" class="w3-padding-small">3</a>
-      <a href="#" class="w3-padding-small">4</a>
-      <a href="#" class="w3-padding-small">5</a>
-      <a href="#" class="w3-padding-small">6</a>
-      <a href="#" class="w3-padding-small">7</a>
-      <a href="#" class="w3-padding-small">8</a>
-      <a href="#" class="w3-padding-small">9</a>
-      <a href="#" class="w3-padding-small">10</a>
+      <a th:each="pageNum: ${#numbers.sequence(1, totalPageCount)}" href="javascript:void(0)"
+         th:attr="onclick=|navigateToPage(${pageNum})|"
+         class="w3-padding-small" th:text="${pageNum}">1</a>
     </div>
   </div>
 
@@ -373,6 +367,20 @@ function resetBnplFilters() {
 function resetMerchantFilters() {
   window.location.replace(removeURLParameter(document.URL, 'merchantFiltersSelected'));
 }
+
+function navigateToPage(pageNum) {
+  var url = new URL(document.URL);
+  var search_params = url.searchParams;
+  search_params.set('page', pageNum);
+
+  // change the search property of the main url
+  url.search = search_params.toString();
+
+  // the new url string
+  var new_url = url.toString();
+  window.location.replace(new_url);
+}
+
 </script>
 
 </body>
