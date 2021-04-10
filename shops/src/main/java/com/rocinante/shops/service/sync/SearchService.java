@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import javax.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.hibernate.search.engine.search.query.SearchResult;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.stereotype.Service;
@@ -13,13 +15,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @AllArgsConstructor
 public class SearchService {
+  @Data
+  public static class SearchServiceResults {
+    private final long totalResultsCount;
+    private final List<Product> currentPageResults;
+  }
+
   private final EntityManager entityManager;
 
   @Transactional(readOnly = true)
-  public List<Product> search(final String query, final List<UUID> bnplFilters,
-      List<UUID> merchantFilters) {
+  public SearchServiceResults search(final String query,
+      final List<UUID> bnplFilters,
+      final List<UUID> merchantFilters,
+      int zeroBasedPageNumber,
+      int pageResultCount) {
     final SearchSession searchSession = Search.session(entityManager);
-    return searchSession
+    final SearchResult<Product> productSearchResult = searchSession
         .search(Product.class)
         .where(
             f -> {
@@ -46,6 +57,10 @@ public class SearchService {
               }
               return predicate;
             })
-        .fetchHits(100);
+        .totalHitCountThreshold( 1000 )
+        .fetch(zeroBasedPageNumber, pageResultCount);
+
+    return new SearchServiceResults(productSearchResult.total().hitCountLowerBound(),
+        productSearchResult.hits());
   }
 }

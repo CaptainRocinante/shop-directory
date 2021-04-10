@@ -10,6 +10,7 @@ import com.rocinante.shops.datastore.entities.Product;
 import com.rocinante.shops.service.sync.BnplService;
 import com.rocinante.shops.service.sync.MerchantService;
 import com.rocinante.shops.service.sync.SearchService;
+import com.rocinante.shops.service.sync.SearchService.SearchServiceResults;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @AllArgsConstructor
 @Slf4j
 public class SearchController {
+  private final static int SINGLE_PAGE_RESULT_COUNT = 50;
+
   private final SearchService searchService;
   private final BnplService bnplService;
   private final MerchantService merchantService;
@@ -34,9 +37,13 @@ public class SearchController {
   @RequestMapping("/search")
   public String search(Model model,
       @RequestParam final String query,
+      @RequestParam(required = false) Integer page,
       @RequestParam(required = false) List<String> bnplFiltersSelected,
       @RequestParam(required = false) List<String> merchantFiltersSelected) {
-    final List<Product> productList = searchService
+    if (page == null) {
+      page = 1;
+    }
+    final SearchServiceResults searchServiceResults = searchService
         .search(query,
             bnplFiltersSelected == null ? Collections.emptyList() :
                 bnplFiltersSelected
@@ -47,10 +54,13 @@ public class SearchController {
                 merchantFiltersSelected
                     .stream()
                     .map(UUID::fromString)
-                    .collect(Collectors.toList())
+                    .collect(Collectors.toList()),
+            page - 1,
+            SINGLE_PAGE_RESULT_COUNT
         );
     final List<ProductDto> productDtoList =
-        productList
+        searchServiceResults
+            .getCurrentPageResults()
             .stream()
             .map(Product::toProductDto)
             .collect(Collectors.toList());
@@ -69,7 +79,9 @@ public class SearchController {
             .collect(Collectors.toList());
     //    productDtoList.forEach(p -> log.info(p.toString()));
     final List<MerchantFilterDto> merchantFiltersList =
-        productList.stream()
+        searchServiceResults
+            .getCurrentPageResults()
+            .stream()
             .map(Product::getMerchantInferredCategories)
             .map(Set::stream)
             .flatMap(Function.identity())
@@ -92,6 +104,9 @@ public class SearchController {
 
     model.addAttribute("query", query);
     model.addAttribute("products", productDtoList);
+    model.addAttribute("page", page);
+    model.addAttribute("totalResultsCount",
+        searchServiceResults.getTotalResultsCount());
     model.addAttribute("bnplFilters", bnplFiltersList);
     model.addAttribute("bnplFiltersSelected", bnplFiltersSelectedList);
     model.addAttribute("merchantFilters", merchantFiltersList);
