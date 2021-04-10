@@ -63,4 +63,33 @@ public class SearchService {
     return new SearchServiceResults(productSearchResult.total().hitCountLowerBound(),
         productSearchResult.hits());
   }
+
+  @Transactional(readOnly = true)
+  public SearchServiceResults searchFetchTop200(final String query, final List<UUID> bnplFilters) {
+    final SearchSession searchSession = Search.session(entityManager);
+    final SearchResult<Product> productSearchResult = searchSession
+        .search(Product.class)
+        .where(
+            f -> {
+              var predicate = f.bool()
+                  .must(f.match().field("name").matching(query).boost(5.0f))
+                  .should(f.match().field("merchantInferredCategoryText").matching(query))
+                  .should(f.match().field("merchantNameText").matching(query))
+                  .should(f.match().field("bnplNameText").matching(query));
+              if (!bnplFilters.isEmpty()) {
+                var bnplFilterPredicate = f.bool();
+                for (final UUID bnplFilter: bnplFilters) {
+                  bnplFilterPredicate = bnplFilterPredicate
+                      .should(f.match().field("bnplUuids").matching(bnplFilter));
+                }
+                predicate.filter(bnplFilterPredicate.minimumShouldMatchNumber(1));
+              }
+              return predicate;
+            })
+        .totalHitCountThreshold( 200 )
+        .fetch(200);
+
+    return new SearchServiceResults(productSearchResult.total().hitCountLowerBound(),
+        productSearchResult.hits());
+  }
 }

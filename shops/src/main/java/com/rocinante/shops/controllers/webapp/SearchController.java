@@ -43,13 +43,15 @@ public class SearchController {
     if (page == null) {
       page = 1;
     }
+    final List<UUID> bnplFilterForSearchService =
+        bnplFiltersSelected == null ? Collections.emptyList() :
+            bnplFiltersSelected
+                .stream()
+                .map(UUID::fromString)
+              .collect(Collectors.toList());
     final SearchServiceResults searchServiceResults = searchService
         .search(query,
-            bnplFiltersSelected == null ? Collections.emptyList() :
-                bnplFiltersSelected
-                    .stream()
-                    .map(UUID::fromString)
-                    .collect(Collectors.toList()),
+            bnplFilterForSearchService,
             merchantFiltersSelected == null ? Collections.emptyList() :
                 merchantFiltersSelected
                     .stream()
@@ -78,18 +80,26 @@ public class SearchController {
             .filter(b -> bnplFiltersSelected.contains(b.getBnplUuid()))
             .collect(Collectors.toList());
     //    productDtoList.forEach(p -> log.info(p.toString()));
-    final List<MerchantFilterDto> merchantFiltersList =
-        searchServiceResults
-            .getCurrentPageResults()
-            .stream()
-            .map(Product::getMerchantInferredCategories)
-            .map(Set::stream)
-            .flatMap(Function.identity())
-            .map(MerchantInferredCategory::getMerchant)
-            .distinct()
-            .sorted((m1, m2) -> m1.getName().compareToIgnoreCase(m2.getName()))
-            .map(Merchant::toMerchantFilterDto)
-            .collect(Collectors.toList());
+    final List<MerchantFilterDto> merchantFiltersList;
+    if (merchantFiltersSelected == null || merchantFiltersSelected.isEmpty())  {
+      final SearchServiceResults top200Search = searchService
+          .searchFetchTop200(query, bnplFilterForSearchService);
+      merchantFiltersList =
+          top200Search
+              .getCurrentPageResults()
+              .stream()
+              .map(Product::getMerchantInferredCategories)
+              .map(Set::stream)
+              .flatMap(Function.identity())
+              .map(MerchantInferredCategory::getMerchant)
+              .distinct()
+              .sorted((m1, m2) -> m1.getName().compareToIgnoreCase(m2.getName()))
+              .map(Merchant::toMerchantFilterDto)
+              .collect(Collectors.toList());
+    } else {
+      merchantFiltersList = Collections.emptyList();
+    }
+
     final List<MerchantFilterDto> merchantFiltersSelectedList =
         merchantFiltersSelected == null ? Collections.emptyList() :
             merchantService
