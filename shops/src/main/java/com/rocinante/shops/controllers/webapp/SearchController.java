@@ -116,7 +116,8 @@ public class SearchController {
     model.addAttribute("products", productDtoList);
     model.addAttribute("page", page);
     model.addAttribute("totalPageCount",
-        (int) Math.ceil((1.0d * searchServiceResults.getTotalResultsCount()) / SINGLE_PAGE_RESULT_COUNT));
+        Math.min(10,
+            (int) Math.ceil((1.0d * searchServiceResults.getTotalResultsCount()) / SINGLE_PAGE_RESULT_COUNT)));
     model.addAttribute("totalResultsCount",
         searchServiceResults.getTotalResultsCount());
     model.addAttribute("bnplFilters", bnplFiltersList);
