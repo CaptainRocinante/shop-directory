@@ -82,15 +82,27 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     <h4>Brands</h4>
     <form>
       <div th:if="${merchantFiltersSelected.size() == 0}">
-        <p th:each="merchantFilter : ${merchantFilters}">
-          <input class="w3-check" type="checkbox" name="merchantFiltersSelected"
-                 th:value="${merchantFilter.merchantUuid}">
-          <label class="w3-padding-small" th:text="${merchantFilter.merchantName}">MerchantName
-          </label>
-        </p>
-        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding"
-           onclick="document.getElementById('brandsFilter').style.display='block'">See All</a>
-        <button type="submit" class="w3-button w3-black">Filter</button>
+        <div th:if="${merchantFilters.size() < 5}">
+          <p th:each="merchantFilter : ${merchantFilters}">
+            <input class="w3-check" type="checkbox" name="merchantFiltersSelected"
+                   th:value="${merchantFilter.merchantUuid}">
+            <label class="w3-padding-small" th:text="${merchantFilter.merchantName}">MerchantName
+            </label>
+          </p>
+          <button type="submit" class="w3-button w3-black">Filter</button>
+        </div>
+        <div th:unless="${merchantFilters.size() < 5}">
+          <p th:each="merchantFilter, iterStat : ${merchantFilters}"
+             th:if="${iterStat.index < 5}">
+            <input class="w3-check" type="checkbox" name="merchantFiltersSelected"
+                   th:value="${merchantFilter.merchantUuid}">
+            <label class="w3-padding-small" th:text="${merchantFilter.merchantName}">MerchantName
+            </label>
+          </p>
+          <a href="javascript:void(0)" class="w3-bar-item"
+             onclick="document.getElementById('brandsFilter').style.display='block'">See All</a>
+          <button type="submit" class="w3-button w3-black">Filter</button>
+        </div>
       </div>
       <div th:unless="${merchantFiltersSelected.size() == 0}">
         <p th:each="merchantFilter : ${merchantFiltersSelected}">
