@@ -35,6 +35,7 @@ public class SearchService {
         .where(
             f -> {
               var predicate = f.bool()
+                  .must(f.match().field("enabled").matching(true))
                   .must(f.match().field("name").matching(query).boost(5.0f))
                   .should(f.match().field("merchantInferredCategoryText").matching(query))
                   .should(f.match().field("merchantNameText").matching(query))
@@ -72,6 +73,7 @@ public class SearchService {
         .where(
             f -> {
               var predicate = f.bool()
+                  .must(f.match().field("enabled").matching(true))
                   .must(f.match().field("name").matching(query).boost(5.0f))
                   .should(f.match().field("merchantInferredCategoryText").matching(query))
                   .should(f.match().field("merchantNameText").matching(query))
