@@ -180,7 +180,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
       <div class="w3-col l3 s6 w3-padding-32">
         <div th:each="index : ${#numbers.sequence(0, products.size(), 4)}"
              th:if="${index < products.size()}" class="w3-container w3-padding-16">
-          <a target="_blank" th:href="${products.get(index).url}" style="text-decoration:none">
+          <a target="_blank" th:href="${products.get(index).url}" style="text-decoration:none"
+             th:data-product-id="${products.get(index).uuid}">
             <img th:src="${products.get(index).mainImageUrl}" class="zoom" style="width:100%">
             <p>
             <span style="font-size:large;font-weight:bolder;"
@@ -199,7 +200,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
       <div class="w3-col l3 s6 w3-padding-32">
         <div th:each="index : ${#numbers.sequence(1, products.size(), 4)}"
              th:if="${index < products.size()}" class="w3-container w3-padding-16">
-          <a target="_blank" th:href="${products.get(index).url}" style="text-decoration:none">
+          <a target="_blank" th:href="${products.get(index).url}" style="text-decoration:none"
+             th:data-product-id="${products.get(index).uuid}">
             <img th:src="${products.get(index).mainImageUrl}" class="zoom" style="width:100%">
             <p>
             <span style="font-size:large;font-weight:bolder;"
@@ -217,7 +219,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
       <div class="w3-col l3 s6 w3-padding-32">
         <div th:each="index : ${#numbers.sequence(2, products.size(), 4)}"
              th:if="${index < products.size()}" class="w3-container w3-padding-16">
-          <a target="_blank" th:href="${products.get(index).url}" style="text-decoration:none">
+          <a target="_blank" th:href="${products.get(index).url}" style="text-decoration:none"
+             th:data-product-id="${products.get(index).uuid}">
             <img th:src="${products.get(index).mainImageUrl}" class="zoom" style="width:100%">
             <p>
             <span style="font-size:large;font-weight:bolder;"
@@ -235,7 +238,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
       <div class="w3-col l3 s6 w3-padding-32">
         <div th:each="index : ${#numbers.sequence(3, products.size(), 4)}"
              th:if="${index < products.size()}" class="w3-container w3-padding-16">
-          <a target="_blank" th:href="${products.get(index).url}" style="text-decoration:none">
+          <a target="_blank" th:href="${products.get(index).url}" style="text-decoration:none"
+             th:data-product-id="${products.get(index).uuid}">
             <img th:src="${products.get(index).mainImageUrl}" class="zoom" style="width:100%">
             <p>
             <span style="font-size:large;font-weight:bolder;"
