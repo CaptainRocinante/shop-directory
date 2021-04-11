@@ -59,7 +59,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   </div>
   <div class="w3-container w3-display-container w3-padding-16" style="margin-top:100px">
     <h4>Accepts</h4>
-    <form>
+    <form onsubmit="removePageNum()">
       <div th:if="${bnplFiltersSelected.size() == 0}">
         <p th:each="bnplFilter : ${bnplFilters}">
           <input class="w3-check" type="checkbox" name="bnplFiltersSelected" th:value="${bnplFilter.bnplUuid}">
@@ -80,7 +80,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   </div>
   <div class="w3-container w3-display-container w3-padding-16">
     <h4>Brands</h4>
-    <form>
+    <form onsubmit="removePageNum()">
       <div th:if="${merchantFiltersSelected.size() == 0}">
         <div th:if="${merchantFilters.size() < 5}">
           <p th:each="merchantFilter : ${merchantFilters}">
@@ -89,7 +89,6 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
             <label class="w3-padding-small" th:text="${merchantFilter.merchantName}">MerchantName
             </label>
           </p>
-          <button type="submit" class="w3-button w3-black">Filter</button>
         </div>
         <div th:unless="${merchantFilters.size() < 5}">
           <p th:each="merchantFilter, iterStat : ${merchantFilters}"
@@ -101,8 +100,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
           </p>
           <a href="javascript:void(0)" class="w3-bar-item"
              onclick="document.getElementById('brandsFilter').style.display='block'">See All</a>
-          <button type="submit" class="w3-button w3-black">Filter</button>
         </div>
+        <button type="submit" class="w3-button w3-black">Filter</button>
       </div>
       <div th:unless="${merchantFiltersSelected.size() == 0}">
         <p th:each="merchantFilter : ${merchantFiltersSelected}">
@@ -367,12 +366,21 @@ function removeURLParameter(url, parameter) {
     return url;
 }
 
+function removePageNum() {
+  history.pushState({}, null, removeURLParameter(document.URL, 'page'));
+  return true;
+}
+
 function resetBnplFilters() {
-  window.location.replace(removeURLParameter(document.URL, 'bnplFiltersSelected'));
+  filterRemoved = removeURLParameter(document.URL, 'bnplFiltersSelected');
+  pageRemoved = removeURLParameter(filterRemoved, 'page');
+  window.location.replace(pageRemoved);
 }
 
 function resetMerchantFilters() {
-  window.location.replace(removeURLParameter(document.URL, 'merchantFiltersSelected'));
+  filterRemoved = removeURLParameter(document.URL, 'merchantFiltersSelected');
+  pageRemoved = removeURLParameter(filterRemoved, 'page');
+  window.location.replace(pageRemoved);
 }
 
 function navigateToPage(pageNum) {
