@@ -11,7 +11,7 @@ public class ProductDto {
   private final String uuid;
   private final String name;
   private final String url;
-  private final String currencyCode;
+  private final String currencySymbol;
   private final String currentPriceLowerRange;
   private final String currentPriceUpperRange;
   @Nullable private final String originalPriceLowerRange;

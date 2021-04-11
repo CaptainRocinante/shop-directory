@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.Currency;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -253,7 +254,7 @@ public class Product {
         this.uuid.toString(),
         this.name,
         this.url.toString(),
-        this.currencyCode.toString(),
+        Currency.getInstance(this.currencyCode.toString()).getSymbol(),
         MoneyUtils.getFormattedAmount(currencyCode, this.currentPriceLowerRange),
         MoneyUtils.getFormattedAmount(currencyCode, this.currentPriceUpperRange),
         this.originalPriceLowerRange != null ? MoneyUtils.getFormattedAmount(currencyCode,
