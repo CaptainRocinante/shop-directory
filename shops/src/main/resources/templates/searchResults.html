@@ -165,51 +165,68 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
       <p><span th:text="${totalResultsCount}">8</span> results</p>
     </div>
     <div class="w3-row">
-      <div class="w3-col l3 s6">
+      <div class="w3-col l3 s6 w3-padding-16">
         <div th:each="index : ${#numbers.sequence(0, products.size(), 4)}"
-             th:if="${index < products.size()}" class="w3-container">
+             th:if="${index < products.size()}" class="w3-container w3-padding-16">
           <img th:src="${products.get(index).mainImageUrl}" style="width:100%">
           <p>
-            <span th:each="merchantName : ${products.get(index).merchantNames}" th:text="${merchantName + ' '}">Ripped Skinny Jeans</span><br>
-            <span th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br>
-            <span th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}"><b>$24.99</b></span><br>
-            <span th:each="bnplName : ${products.get(index).bnplProviders}" th:text="${bnplName + ' '}">Ripped Skinny Jeans</span>
+            <span style="font-size:large;font-weight:bolder;"
+                  th:each="merchantName : ${products.get(index).merchantNames}"
+                   th:text="${merchantName + ' '}">Ripped Skinny Jeans</span><br>
+            <span style="font-size:small"
+                  th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br>
+            <span style="font-size:small"
+                  th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}"><b>$24.99</b></span><br>
+            <span style="font-size:x-small"
+                  th:each="bnplName : ${products.get(index).bnplProviders}" th:text="${bnplName + ' '}">Ripped Skinny Jeans</span>
           </p>
         </div>
       </div>
-      <div class="w3-col l3 s6">
+      <div class="w3-col l3 s6 w3-padding-16">
         <div th:each="index : ${#numbers.sequence(1, products.size(), 4)}"
-             th:if="${index < products.size()}" class="w3-container">
+             th:if="${index < products.size()}" class="w3-container w3-padding-16">
           <img th:src="${products.get(index).mainImageUrl}" style="width:100%">
           <p>
-            <span th:each="merchantName : ${products.get(index).merchantNames}" th:text="${merchantName + ' '}">Ripped Skinny Jeans</span><br>
-            <span th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br>
-            <span th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}"><b>$24.99</b></span><br>
-            <span th:each="bnplName : ${products.get(index).bnplProviders}" th:text="${bnplName + ' '}">Ripped Skinny Jeans</span>
+            <span style="font-size:large;font-weight:bolder;"
+                  th:each="merchantName : ${products.get(index).merchantNames}" th:text="${merchantName + ' '}">Ripped Skinny Jeans</span><br>
+            <span style="font-size:small" th:text="${products.get(index).name}">Ripped Skinny
+              Jeans</span><br>
+            <span style="font-size:small"
+                  th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}"><b>$24.99</b></span><br>
+            <span style="font-size:x-small"
+                  th:each="bnplName : ${products.get(index).bnplProviders}" th:text="${bnplName + ' '}">Ripped Skinny Jeans</span>
           </p>
         </div>
       </div>
-      <div class="w3-col l3 s6">
+      <div class="w3-col l3 s6 w3-padding-16">
         <div th:each="index : ${#numbers.sequence(2, products.size(), 4)}"
-             th:if="${index < products.size()}" class="w3-container">
+             th:if="${index < products.size()}" class="w3-container w3-padding-16">
           <img th:src="${products.get(index).mainImageUrl}" style="width:100%">
           <p>
-            <span th:each="merchantName : ${products.get(index).merchantNames}" th:text="${merchantName + ' '}">Ripped Skinny Jeans</span><br>
-            <span th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br>
-            <span th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}"><b>$24.99</b></span><br>
-            <span th:each="bnplName : ${products.get(index).bnplProviders}" th:text="${bnplName + ' '}">Ripped Skinny Jeans</span>
+            <span style="font-size:large;font-weight:bolder;"
+                  th:each="merchantName : ${products.get(index).merchantNames}" th:text="${merchantName + ' '}">Ripped Skinny Jeans</span><br>
+            <span style="font-size:small" th:text="${products.get(index).name}">Ripped Skinny
+              Jeans</span><br>
+            <span style="font-size:small"
+                  th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}"><b>$24.99</b></span><br>
+            <span style="font-size:x-small"
+                  th:each="bnplName : ${products.get(index).bnplProviders}" th:text="${bnplName + ' '}">Ripped Skinny Jeans</span>
           </p>
         </div>
       </div>
-      <div class="w3-col l3 s6">
+      <div class="w3-col l3 s6 w3-padding-16">
         <div th:each="index : ${#numbers.sequence(3, products.size(), 4)}"
-             th:if="${index < products.size()}" class="w3-container">
+             th:if="${index < products.size()}" class="w3-container w3-padding-16">
           <img th:src="${products.get(index).mainImageUrl}" style="width:100%">
           <p>
-            <span th:each="merchantName : ${products.get(index).merchantNames}" th:text="${merchantName + ' '}">Ripped Skinny Jeans</span><br>
-            <span th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br>
-            <span th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}"><b>$24.99</b></span><br>
-            <span th:each="bnplName : ${products.get(index).bnplProviders}" th:text="${bnplName + ' '}">Ripped Skinny Jeans</span>
+            <span style="font-size:large;font-weight:bolder;"
+                  th:each="merchantName : ${products.get(index).merchantNames}" th:text="${merchantName + ' '}">Ripped Skinny Jeans</span><br>
+            <span style="font-size:small" th:text="${products.get(index).name}">Ripped Skinny
+              Jeans</span><br>
+            <span style="font-size:small"
+                  th:text="${products.get(index).currencyCode + ' ' + products.get(index).currentPriceLowerRange}"><b>$24.99</b></span><br>
+            <span style="font-size:x-small"
+                  th:each="bnplName : ${products.get(index).bnplProviders}" th:text="${bnplName + ' '}">Ripped Skinny Jeans</span>
           </p>
         </div>
       </div>
