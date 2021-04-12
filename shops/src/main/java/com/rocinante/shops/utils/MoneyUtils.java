@@ -6,7 +6,8 @@ import java.math.RoundingMode;
 
 public class MoneyUtils {
   public static String getFormattedAmount(CurrencyCode currencyCode, BigDecimal bigDecimal) {
-    return bigDecimal.setScale(currencyCode.getCurrency().getDefaultFractionDigits(),
-        RoundingMode.DOWN).toString();
+    return bigDecimal
+        .setScale(currencyCode.getCurrency().getDefaultFractionDigits(), RoundingMode.DOWN)
+        .toString();
   }
 }

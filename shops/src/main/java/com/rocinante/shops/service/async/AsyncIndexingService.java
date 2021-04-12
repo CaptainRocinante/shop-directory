@@ -45,7 +45,7 @@ public class AsyncIndexingService {
     for (final MerchantInferredCategory category : categories) {
       log.info("Re-indexing category {} {}", category.getUuid(), category.getUrl());
       final Set<Product> products = category.getProducts();
-      for (final Product product: products) {
+      for (final Product product : products) {
         log.info("Re-indexing product {} {}", product.getUuid(), product.getUrl());
         indexingPlan.addOrUpdate(product);
       }

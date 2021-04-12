@@ -27,8 +27,8 @@ public class MerchantService {
     if (merchant.applyUpdatesIfNeeded(merchantCrudDto)) {
       merchantDao.saveAndFlush(merchant);
       // Manually trigger async indexing of all the products of the merchant
-      asyncIndexingService
-          .reindexAllProductsForMerchant(UUID.fromString(merchantCrudDto.getUuid()));
+      asyncIndexingService.reindexAllProductsForMerchant(
+          UUID.fromString(merchantCrudDto.getUuid()));
     }
   }
 }

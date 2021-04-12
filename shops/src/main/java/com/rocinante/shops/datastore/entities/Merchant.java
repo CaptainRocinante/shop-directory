@@ -4,7 +4,6 @@ import com.neovisionaries.i18n.CountryCode;
 import com.rocinante.shops.api.MerchantCrudDto;
 import com.rocinante.shops.api.MerchantCsvUploadDto;
 import com.rocinante.shops.api.MerchantFilterDto;
-import com.rocinante.shops.service.async.AsyncIndexingService;
 import com.rocinante.shops.utils.NullabilityUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -114,8 +113,8 @@ public class Merchant {
   public boolean applyUpdatesIfNeeded(MerchantCrudDto merchantCrudDto) {
     boolean updated = false;
     if (!NullabilityUtils.areObjectsEqual(this.enabled, merchantCrudDto.isEnabled())) {
-      log.info("Enabled has changed for {} {} to {}", this.uuid, this.url,
-          merchantCrudDto.isEnabled());
+      log.info(
+          "Enabled has changed for {} {} to {}", this.uuid, this.url, merchantCrudDto.isEnabled());
       updated = true;
       this.enabled = merchantCrudDto.isEnabled();
     }

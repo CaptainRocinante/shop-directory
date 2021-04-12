@@ -258,8 +258,8 @@ public class Product {
   public boolean applyUpdatesIfNeeded(ProductCrudDto productCrudDto) {
     boolean updated = false;
     if (!NullabilityUtils.areObjectsEqual(this.enabled, productCrudDto.isEnabled())) {
-      log.info("Enabled has changed for {} {} to {}",
-          this.uuid, this.url, productCrudDto.isEnabled());
+      log.info(
+          "Enabled has changed for {} {} to {}", this.uuid, this.url, productCrudDto.isEnabled());
       updated = true;
       this.enabled = productCrudDto.isEnabled();
     }
@@ -270,12 +270,12 @@ public class Product {
   }
 
   public ProductDto toProductDto() {
-    final List<Merchant> merchants = this.merchantInferredCategories
-        .stream()
-        .map(MerchantInferredCategory::getMerchant)
-        .distinct()
-        .sorted((m1, m2) -> m1.getName().compareToIgnoreCase(m2.getName()))
-        .collect(Collectors.toList());
+    final List<Merchant> merchants =
+        this.merchantInferredCategories.stream()
+            .map(MerchantInferredCategory::getMerchant)
+            .distinct()
+            .sorted((m1, m2) -> m1.getName().compareToIgnoreCase(m2.getName()))
+            .collect(Collectors.toList());
 
     return new ProductDto(
         this.uuid.toString(),
@@ -284,21 +284,21 @@ public class Product {
         Currency.getInstance(this.currencyCode.toString()).getSymbol(),
         MoneyUtils.getFormattedAmount(currencyCode, this.currentPriceLowerRange),
         MoneyUtils.getFormattedAmount(currencyCode, this.currentPriceUpperRange),
-        this.originalPriceLowerRange != null ? MoneyUtils.getFormattedAmount(currencyCode,
-            this.originalPriceLowerRange) : null,
-        this.originalPriceUpperRange != null ? MoneyUtils.getFormattedAmount(currencyCode,
-            this.originalPriceUpperRange) : null,
+        this.originalPriceLowerRange != null
+            ? MoneyUtils.getFormattedAmount(currencyCode, this.originalPriceLowerRange)
+            : null,
+        this.originalPriceUpperRange != null
+            ? MoneyUtils.getFormattedAmount(currencyCode, this.originalPriceUpperRange)
+            : null,
         this.mainImageUrl.toString(),
         merchants.stream().map(Merchant::getName).collect(Collectors.toList()),
-        merchants
-            .stream()
+        merchants.stream()
             .map(Merchant::getBnplProviders)
             .map(Set::stream)
             .flatMap(Function.identity())
             .sorted((b1, b2) -> b1.getName().compareToIgnoreCase(b2.getName()))
             .distinct()
             .map(BnplProvider::getName)
-            .collect(Collectors.toList())
-        );
+            .collect(Collectors.toList()));
   }
 }

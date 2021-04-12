@@ -6,16 +6,18 @@ import org.hibernate.search.backend.elasticsearch.analysis.ElasticsearchAnalysis
 public class ProductsElasticsearchAnalysisConfigurer implements ElasticsearchAnalysisConfigurer {
   @Override
   public void configure(ElasticsearchAnalysisConfigurationContext context) {
-    context.analyzer( "custom_english" ).custom()
-        .tokenizer( "standard" )
-        .tokenFilters( "lowercase", "snowball_english", "asciifolding" );
+    context
+        .analyzer("custom_english")
+        .custom()
+        .tokenizer("standard")
+        .tokenFilters("lowercase", "snowball_english", "asciifolding");
 
-    context.tokenFilter( "snowball_english" )
-        .type( "snowball" )
-        .param( "language", "English" );
+    context.tokenFilter("snowball_english").type("snowball").param("language", "English");
 
-    context.analyzer( "name" ).custom()
-        .tokenizer( "standard" )
-        .tokenFilters( "lowercase", "asciifolding" );
+    context
+        .analyzer("name")
+        .custom()
+        .tokenizer("standard")
+        .tokenFilters("lowercase", "asciifolding");
   }
 }

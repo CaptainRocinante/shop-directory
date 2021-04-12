@@ -28,14 +28,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 @AllArgsConstructor
 @Slf4j
 public class SearchController {
-  private final static int SINGLE_PAGE_RESULT_COUNT = 50;
+  private static final int SINGLE_PAGE_RESULT_COUNT = 50;
 
   private final SearchService searchService;
   private final BnplService bnplService;
   private final MerchantService merchantService;
 
   @RequestMapping("/search")
-  public String search(Model model,
+  public String search(
+      Model model,
       @RequestParam final String query,
       @RequestParam(required = false) Integer page,
       @RequestParam(required = false) List<String> bnplFiltersSelected,
@@ -44,50 +45,42 @@ public class SearchController {
       page = 1;
     }
     final List<UUID> bnplFilterForSearchService =
-        bnplFiltersSelected == null ? Collections.emptyList() :
-            bnplFiltersSelected
-                .stream()
-                .map(UUID::fromString)
-              .collect(Collectors.toList());
-    final SearchServiceResults searchServiceResults = searchService
-        .search(query,
+        bnplFiltersSelected == null
+            ? Collections.emptyList()
+            : bnplFiltersSelected.stream().map(UUID::fromString).collect(Collectors.toList());
+    final SearchServiceResults searchServiceResults =
+        searchService.search(
+            query,
             bnplFilterForSearchService,
-            merchantFiltersSelected == null ? Collections.emptyList() :
-                merchantFiltersSelected
-                    .stream()
+            merchantFiltersSelected == null
+                ? Collections.emptyList()
+                : merchantFiltersSelected.stream()
                     .map(UUID::fromString)
                     .collect(Collectors.toList()),
             page - 1,
-            SINGLE_PAGE_RESULT_COUNT
-        );
+            SINGLE_PAGE_RESULT_COUNT);
     final List<ProductDto> productDtoList =
-        searchServiceResults
-            .getCurrentPageResults()
-            .stream()
+        searchServiceResults.getCurrentPageResults().stream()
             .map(Product::toProductDto)
             .collect(Collectors.toList());
     final List<BnplFilterDto> bnplFiltersList =
-        bnplService
-            .getAllBnplProviders()
-            .stream()
+        bnplService.getAllBnplProviders().stream()
             .map(BnplProvider::toBnplFilterDto)
             .sorted((b1, b2) -> b1.getBnplName().compareToIgnoreCase(b2.getBnplName()))
             .collect(Collectors.toList());
-    final List<BnplFilterDto> bnplFiltersSelectedList = bnplFiltersSelected == null ?
-        Collections.emptyList() :
-        bnplFiltersList
-            .stream()
-            .filter(b -> bnplFiltersSelected.contains(b.getBnplUuid()))
-            .collect(Collectors.toList());
+    final List<BnplFilterDto> bnplFiltersSelectedList =
+        bnplFiltersSelected == null
+            ? Collections.emptyList()
+            : bnplFiltersList.stream()
+                .filter(b -> bnplFiltersSelected.contains(b.getBnplUuid()))
+                .collect(Collectors.toList());
     //    productDtoList.forEach(p -> log.info(p.toString()));
     final List<MerchantFilterDto> merchantFiltersList;
-    if (merchantFiltersSelected == null || merchantFiltersSelected.isEmpty())  {
-      final SearchServiceResults top200Search = searchService
-          .searchFetchTop200(query, bnplFilterForSearchService);
+    if (merchantFiltersSelected == null || merchantFiltersSelected.isEmpty()) {
+      final SearchServiceResults top200Search =
+          searchService.searchFetchTop200(query, bnplFilterForSearchService);
       merchantFiltersList =
-          top200Search
-              .getCurrentPageResults()
-              .stream()
+          top200Search.getCurrentPageResults().stream()
               .map(Product::getMerchantInferredCategories)
               .map(Set::stream)
               .flatMap(Function.identity())
@@ -101,11 +94,11 @@ public class SearchController {
     }
 
     final List<MerchantFilterDto> merchantFiltersSelectedList =
-        merchantFiltersSelected == null ? Collections.emptyList() :
-            merchantService
+        merchantFiltersSelected == null
+            ? Collections.emptyList()
+            : merchantService
                 .getAllMerchantsForUuids(
-                    merchantFiltersSelected
-                        .stream()
+                    merchantFiltersSelected.stream()
                         .map(UUID::fromString)
                         .collect(Collectors.toList()))
                 .stream()
@@ -115,11 +108,17 @@ public class SearchController {
     model.addAttribute("query", query);
     model.addAttribute("products", productDtoList);
     model.addAttribute("page", page);
-    model.addAttribute("totalPageCount",
-        Math.max(1, Math.min(10,
-            (int) Math.ceil((1.0d * searchServiceResults.getTotalResultsCount()) / SINGLE_PAGE_RESULT_COUNT))));
-    model.addAttribute("totalResultsCount",
-        searchServiceResults.getTotalResultsCount());
+    model.addAttribute(
+        "totalPageCount",
+        Math.max(
+            1,
+            Math.min(
+                10,
+                (int)
+                    Math.ceil(
+                        (1.0d * searchServiceResults.getTotalResultsCount())
+                            / SINGLE_PAGE_RESULT_COUNT))));
+    model.addAttribute("totalResultsCount", searchServiceResults.getTotalResultsCount());
     model.addAttribute("bnplFilters", bnplFiltersList);
     model.addAttribute("bnplFiltersSelected", bnplFiltersSelectedList);
     model.addAttribute("merchantFilters", merchantFiltersList);
