@@ -4,6 +4,7 @@ import com.neovisionaries.i18n.CountryCode;
 import com.rocinante.shops.api.MerchantCrudDto;
 import com.rocinante.shops.api.MerchantCsvUploadDto;
 import com.rocinante.shops.api.MerchantFilterDto;
+import com.rocinante.shops.service.async.AsyncIndexingService;
 import com.rocinante.shops.utils.NullabilityUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -117,6 +118,9 @@ public class Merchant {
           merchantCrudDto.isEnabled());
       updated = true;
       this.enabled = merchantCrudDto.isEnabled();
+    }
+    if (updated) {
+      this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
     }
     return updated;
   }
