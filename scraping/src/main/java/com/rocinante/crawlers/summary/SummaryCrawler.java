@@ -142,6 +142,8 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     allTextNodesSelected.stream()
         .map(np -> (String) np.getProperty(TextNodeSelector.OWN_TEXT_PROPERTY))
         .distinct()
+        .filter(textNode -> textNode.trim().length() < 60) // Product Title should not be longer
+        // than 60 characters
         .forEach(
             text -> {
               final List<StringLCSToken> textTokens = Tokenizer.alphaNumericLcsTokens(text);
@@ -319,7 +321,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
         summaryCrawler.crawlUrl(
             //
             // "https://www.aritzia.com/en/clothing/womens-workout-clothes/womens-bike-shorts",
-            "https://www.freepeople.com/tops/", new MapCrawlContext(null));
+            "https://www.thenorthface.com/shop/womens-shirts-tops", new MapCrawlContext(null));
     productSummaries.forEach(ps -> log.info("ProductSummary: {}", ps.toString()));
   }
 }
