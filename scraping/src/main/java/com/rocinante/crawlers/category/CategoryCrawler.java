@@ -77,13 +77,14 @@ public class CategoryCrawler implements Crawler<List<Category>> {
     return bfs(doc);
   }
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) {
     //    Jsoup.parse(new File(
     //            CategoryCrawler.class.getClassLoader().getResource("nestnewyork.html").getFile()),
     //        "utf-8");
     //    Document doc = Jsoup.connect("https://www.dsw.com/").get();
 
-    CategoryCrawler categoryCrawler = new CategoryCrawler(new RenderedHtmlProvider());
+    CategoryCrawler categoryCrawler = new CategoryCrawler(
+        new RenderedHtmlProvider("http://127.0.0.1:8888"));
     List<Category> categories =
         categoryCrawler.crawlUrl("https://www.adidas.com/", new MapCrawlContext(null));
     categories.forEach(c -> log.info("Category {}", c.toString()));
