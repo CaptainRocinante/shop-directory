@@ -3,8 +3,10 @@ package com.rocinante.shops.service.sync;
 import com.rocinante.shops.api.MerchantCrudDto;
 import com.rocinante.shops.datastore.dao.MerchantDao;
 import com.rocinante.shops.datastore.entities.Merchant;
+import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
 import com.rocinante.shops.service.async.AsyncIndexingService;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,8 +29,12 @@ public class MerchantService {
     if (merchant.applyUpdatesIfNeeded(merchantCrudDto)) {
       merchantDao.saveAndFlush(merchant);
       // Manually trigger async indexing of all the products of the merchant
-      asyncIndexingService.reindexAllProductsForMerchant(
-          UUID.fromString(merchantCrudDto.getUuid()));
+      final Set<MerchantInferredCategory> merchantInferredCategorySet =
+          merchant.getMerchantInferredCategories();
+      for (final MerchantInferredCategory merchantInferredCategory : merchantInferredCategorySet) {
+        asyncIndexingService
+            .reindexAllProductsForMerchantInferredCategory(merchantInferredCategory.getUuid());
+      }
     }
   }
 }

@@ -1,6 +1,7 @@
 package com.rocinante.shops.service.async;
 
 import com.rocinante.shops.datastore.dao.MerchantDao;
+import com.rocinante.shops.datastore.dao.MerchantInferredCategoryDao;
 import com.rocinante.shops.datastore.entities.Merchant;
 import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
 import com.rocinante.shops.datastore.entities.Product;
@@ -22,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class AsyncIndexingService {
   private final EntityManager entityManager;
-  private final MerchantDao merchantDao;
+  private final MerchantInferredCategoryDao merchantInferredCategoryDao;
 
   @Async
   @Transactional(readOnly = true)
@@ -35,21 +36,19 @@ public class AsyncIndexingService {
 
   @Async
   @Transactional(readOnly = true)
-  public void reindexAllProductsForMerchant(UUID merchantUuid) {
+  public void reindexAllProductsForMerchantInferredCategory(UUID categoryUuid) {
     final SearchSession searchSession = Search.session(entityManager);
     final SearchIndexingPlan indexingPlan = searchSession.indexingPlan();
 
-    final Merchant merchant = merchantDao.getOne(merchantUuid);
-    final Set<MerchantInferredCategory> categories = merchant.getMerchantInferredCategories();
+    final MerchantInferredCategory category =
+        merchantInferredCategoryDao.getOne(categoryUuid);
+    log.info("Re-indexing category {} {}", category.getUuid(), category.getUrl());
+    final Set<Product> products = category.getProducts();
 
-    for (final MerchantInferredCategory category : categories) {
-      log.info("Re-indexing category {} {}", category.getUuid(), category.getUrl());
-      final Set<Product> products = category.getProducts();
-      for (final Product product : products) {
-        log.info("Re-indexing product {} {}", product.getUuid(), product.getUrl());
-        indexingPlan.addOrUpdate(product);
-      }
-      indexingPlan.execute();
+    for (final Product product : products) {
+      log.info("Re-indexing product {} {}", product.getUuid(), product.getUrl());
+      indexingPlan.addOrUpdate(product);
     }
+    indexingPlan.execute();
   }
 }
