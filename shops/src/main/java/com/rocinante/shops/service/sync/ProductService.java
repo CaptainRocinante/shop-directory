@@ -16,7 +16,8 @@ public class ProductService {
   @Transactional
   public void updateProduct(ProductCrudDto productCrudDto) {
     final Product product = productDao.getOne(UUID.fromString(productCrudDto.getUuid()));
-    product.setEnabled(productCrudDto.isEnabled());
-    productDao.save(product);
+    if (product.applyUpdatesIfNeeded(productCrudDto)) {
+      productDao.save(product);
+    }
   }
 }

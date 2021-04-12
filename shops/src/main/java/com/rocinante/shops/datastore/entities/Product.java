@@ -2,6 +2,7 @@ package com.rocinante.shops.datastore.entities;
 
 import com.neovisionaries.i18n.CurrencyCode;
 import com.rocinante.crawlers.summary.ProductSummary;
+import com.rocinante.shops.api.ProductCrudDto;
 import com.rocinante.shops.api.ProductDto;
 import com.rocinante.shops.utils.MoneyUtils;
 import com.rocinante.shops.utils.NullabilityUtils;
@@ -247,6 +248,20 @@ public class Product {
       log.info("MainImage has change for {} {}", this.uuid, this.url);
       updated = true;
       this.mainImageUrl = new URL(productSummary.mainProductImage());
+    }
+    if (updated) {
+      this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
+    }
+    return updated;
+  }
+
+  public boolean applyUpdatesIfNeeded(ProductCrudDto productCrudDto) {
+    boolean updated = false;
+    if (!NullabilityUtils.areObjectsEqual(this.enabled, productCrudDto.isEnabled())) {
+      log.info("Enabled has changed for {} {} to {}",
+          this.uuid, this.url, productCrudDto.isEnabled());
+      updated = true;
+      this.enabled = productCrudDto.isEnabled();
     }
     if (updated) {
       this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
