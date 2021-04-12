@@ -19,6 +19,7 @@
     <hibernate.version>5.4.28.Final</hibernate.version>
     <elasticsearch.version>7.9.0</elasticsearch.version>
     <hibernate-search.version>6.0.2.Final</hibernate-search.version>
+    <jbcrypt.version>0.4</jbcrypt.version>
   </properties>
 
   <dependencies>
@@ -84,6 +85,11 @@
       <groupId>org.hibernate.search</groupId>
       <artifactId>hibernate-search-backend-elasticsearch</artifactId>
       <version>${hibernate-search.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mindrot</groupId>
+      <artifactId>jbcrypt</artifactId>
+      <version>${jbcrypt.version}</version>
     </dependency>
   </dependencies>
 
