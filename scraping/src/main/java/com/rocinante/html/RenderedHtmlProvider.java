@@ -22,13 +22,12 @@ public class RenderedHtmlProvider {
   private final ThreadLocal<WebDriver> webDriverThreadLocal;
   private final UserAgentProvider userAgentProvider;
 
-  public RenderedHtmlProvider(String proxyServer) {
+  public RenderedHtmlProvider(String proxyServer, String chromeDriverPath) {
+    System.setProperty("webdriver.chrome.driver", chromeDriverPath);
     this.userAgentProvider = new UserAgentProvider();
     this.webDriverThreadLocal =
         new ThreadLocal<>() {
           private WebDriver initWebDriver() {
-            String chromeDriverPath = "/usr/local/bin/chromedriver";
-            System.setProperty("webdriver.chrome.driver", chromeDriverPath);
             ChromeOptions options = new ChromeOptions();
             options.addArguments(
                 "--headless",

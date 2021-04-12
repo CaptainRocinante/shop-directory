@@ -10,14 +10,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ScrapingSpringConfiguration {
   private final String scrapoxyUrl;
+  private final String chromeDriverPath;
 
-  public ScrapingSpringConfiguration(@Value("${scrapoxy.url}") String scrapoxyUrl) {
+  public ScrapingSpringConfiguration(@Value("${scraping.scrapoxy.url}") String scrapoxyUrl,
+      @Value("${scraping.chrome.driver.path}") String chromeDriverPath) {
     this.scrapoxyUrl = scrapoxyUrl;
+    this.chromeDriverPath = chromeDriverPath;
   }
 
   @Bean
   public RenderedHtmlProvider renderedHtmlProvider() {
-    return new RenderedHtmlProvider(scrapoxyUrl);
+    return new RenderedHtmlProvider(scrapoxyUrl, chromeDriverPath);
   }
 
   @Bean
