@@ -110,6 +110,18 @@ public class Product {
         .collect(Collectors.joining(" "));
   }
 
+  @GenericField
+  @Transient
+  @IndexingDependency(
+      derivedFrom = @ObjectPath(@PropertyValue(propertyName = "merchantInferredCategories")))
+  public boolean isMerchantEnabled() {
+    return merchantInferredCategories.stream()
+        .map(MerchantInferredCategory::getMerchant)
+        .map(Merchant::isEnabled)
+        // All merchants need to be enabled for product to be considered enabled
+        .reduce(true, (a, b) -> a && b);
+  }
+
   @KeywordField
   @Transient
   @IndexingDependency(
