@@ -32,8 +32,8 @@ public class MerchantService {
       final Set<MerchantInferredCategory> merchantInferredCategorySet =
           merchant.getMerchantInferredCategories();
       for (final MerchantInferredCategory merchantInferredCategory : merchantInferredCategorySet) {
-        asyncIndexingService
-            .reindexAllProductsForMerchantInferredCategory(merchantInferredCategory.getUuid());
+        asyncIndexingService.reindexAllProductsForMerchantInferredCategory(
+            merchantInferredCategory.getUuid());
       }
     }
   }

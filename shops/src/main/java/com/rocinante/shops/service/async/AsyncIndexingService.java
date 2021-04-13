@@ -40,8 +40,7 @@ public class AsyncIndexingService {
     final SearchSession searchSession = Search.session(entityManager);
     final SearchIndexingPlan indexingPlan = searchSession.indexingPlan();
 
-    final MerchantInferredCategory category =
-        merchantInferredCategoryDao.getOne(categoryUuid);
+    final MerchantInferredCategory category = merchantInferredCategoryDao.getOne(categoryUuid);
     log.info("Re-indexing category {} {}", category.getUuid(), category.getUrl());
     final Set<Product> products = category.getProducts();
 
