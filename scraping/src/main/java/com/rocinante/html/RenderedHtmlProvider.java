@@ -22,7 +22,10 @@ public class RenderedHtmlProvider {
   private final ThreadLocal<WebDriver> webDriverThreadLocal;
   private final UserAgentProvider userAgentProvider;
 
-  public RenderedHtmlProvider(String proxyServer, String chromeDriverPath) {
+  public RenderedHtmlProvider(boolean proxyServerEnabled,
+      String proxyServer,
+      String chromeDriverPath) {
+    log.info("Proxy server {} is {}", proxyServer, proxyServerEnabled ? "enabled" : "disabled");
     System.setProperty("webdriver.chrome.driver", chromeDriverPath);
     this.userAgentProvider = new UserAgentProvider();
     this.webDriverThreadLocal =
@@ -35,8 +38,10 @@ public class RenderedHtmlProvider {
                 "--ignore-certificate-errors",
                 "--silent",
                 "--enable-javascript",
-                String.format("--proxy-server=%s", proxyServer),
                 String.format("--user-agent=%s", userAgentProvider.getRandomUserAgent()));
+            if (proxyServerEnabled) {
+              options.addArguments(String.format("--proxy-server=%s", proxyServer));
+            }
             return new ChromeDriver(options);
           }
 
