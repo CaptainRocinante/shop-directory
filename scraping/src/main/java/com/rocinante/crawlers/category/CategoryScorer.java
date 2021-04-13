@@ -2,9 +2,6 @@ package com.rocinante.crawlers.category;
 
 import com.google.common.collect.ImmutableSet;
 import com.rocinante.util.ResourceUtils;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,8 +12,8 @@ import org.jsoup.nodes.Element;
 public class CategoryScorer {
   private static final ImmutableSet<String> CATEGORY_FILES =
       new ImmutableSet.Builder<String>()
-          .add("categories/overallCategories.txt")
-          .add("categories/clothesCategories.txt")
+          .add("/categories/overallCategories.txt")
+          .add("/categories/clothesCategories.txt")
           .build();
 
   private final ImmutableSet<String> categories;
@@ -25,15 +22,7 @@ public class CategoryScorer {
 
   private List<String> parseAllCategories() {
     return CATEGORY_FILES.stream()
-        .map(ResourceUtils::getFileAtPath)
-        .map(
-            f -> {
-              try {
-                return Files.readAllLines(f.toPath(), Charset.defaultCharset());
-              } catch (IOException e) {
-                throw new RuntimeException(e);
-              }
-            })
+        .map(ResourceUtils::readAllLinesFromFile)
         .flatMap(List::stream)
         .collect(Collectors.toList());
   }
