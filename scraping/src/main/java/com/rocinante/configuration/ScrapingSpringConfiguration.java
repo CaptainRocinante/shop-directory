@@ -12,7 +12,8 @@ public class ScrapingSpringConfiguration {
   private final String scrapoxyUrl;
   private final String chromeDriverPath;
 
-  public ScrapingSpringConfiguration(@Value("${scraping.scrapoxy.url}") String scrapoxyUrl,
+  public ScrapingSpringConfiguration(
+      @Value("${scraping.scrapoxy.url}") String scrapoxyUrl,
       @Value("${scraping.chrome.driver.path}") String chromeDriverPath) {
     this.scrapoxyUrl = scrapoxyUrl;
     this.chromeDriverPath = chromeDriverPath;

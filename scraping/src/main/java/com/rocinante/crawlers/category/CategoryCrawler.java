@@ -83,9 +83,9 @@ public class CategoryCrawler implements Crawler<List<Category>> {
     //        "utf-8");
     //    Document doc = Jsoup.connect("https://www.dsw.com/").get();
 
-    CategoryCrawler categoryCrawler = new CategoryCrawler(
-        new RenderedHtmlProvider("http://127.0.0.1:8888",
-            "/usr/local/bin/chromedriver"));
+    CategoryCrawler categoryCrawler =
+        new CategoryCrawler(
+            new RenderedHtmlProvider("http://127.0.0.1:8888", "/usr/local/bin/chromedriver"));
     List<Category> categories =
         categoryCrawler.crawlUrl("https://www.adidas.com/", new MapCrawlContext(null));
     categories.forEach(c -> log.info("Category {}", c.toString()));
