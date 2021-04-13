@@ -1,4 +1,3 @@
 FROM adoptopenjdk/openjdk11
-VOLUME /tmp
-COPY target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+COPY target/shops-1.0-SNAPSHOT.jar shops-1.0-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","/shops-1.0-SNAPSHOT.jar"]
