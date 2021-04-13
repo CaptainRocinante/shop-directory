@@ -1,14 +1,12 @@
 package com.rocinante.crawlers.category;
 
 import com.google.common.collect.ImmutableSet;
-import java.io.File;
+import com.rocinante.util.ResourceUtils;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import opennlp.tools.stemmer.PorterStemmer;
 import opennlp.tools.tokenize.SimpleTokenizer;
@@ -27,15 +25,7 @@ public class CategoryScorer {
 
   private List<String> parseAllCategories() {
     return CATEGORY_FILES.stream()
-        .map(
-            cFile -> {
-              try {
-                return new File(
-                    Objects.requireNonNull(getClass().getClassLoader().getResource(cFile)).toURI());
-              } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-              }
-            })
+        .map(ResourceUtils::getFileAtPath)
         .map(
             f -> {
               try {

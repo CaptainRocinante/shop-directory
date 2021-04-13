@@ -21,4 +21,9 @@ public class ResourceUtils {
     }
     return data;
   }
+
+  public static File getFileAtPath(String path) {
+    return new File(Objects.requireNonNull(ResourceUtils.class.getClassLoader().getResource(path))
+        .getFile());
+  }
 }
