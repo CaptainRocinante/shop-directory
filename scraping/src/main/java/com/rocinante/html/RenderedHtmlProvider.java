@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.exec.util.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -27,11 +28,17 @@ public class RenderedHtmlProvider {
       String chromeDriverPath) {
     log.info("Proxy server {} is {}", proxyServer, proxyServerEnabled ? "enabled" : "disabled");
     System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+
+    final String customChromeBinaryShim = System.getProperty("GOOGLE_CHROME_SHIM", "");
     this.userAgentProvider = new UserAgentProvider();
     this.webDriverThreadLocal =
         new ThreadLocal<>() {
           private WebDriver initWebDriver() {
             ChromeOptions options = new ChromeOptions();
+            if (!customChromeBinaryShim.isBlank()) {
+              log.info("Setting custom chrome shim {}", customChromeBinaryShim);
+              options.setBinary(customChromeBinaryShim);
+            }
             options.addArguments(
                 "--headless",
                 "--window-size=1920,1080",
