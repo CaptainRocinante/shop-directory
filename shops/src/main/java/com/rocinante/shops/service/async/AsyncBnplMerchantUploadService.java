@@ -7,9 +7,9 @@ import com.rocinante.shops.datastore.dao.BnplDao;
 import com.rocinante.shops.datastore.dao.MerchantDao;
 import com.rocinante.shops.datastore.entities.BnplProvider;
 import com.rocinante.shops.datastore.entities.Merchant;
-import com.rocinante.shops.utils.ResourceUtils;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Slf4j
 public class AsyncBnplMerchantUploadService {
-  private static final String BNPL_FILE_PATH = "bnpls/bnpls.csv";
+  private static final String BNPL_FILE_PATH = "/bnpls/bnpls.csv";
   private final BnplDao bnplDao;
   private final MerchantDao merchantDao;
 
@@ -33,7 +33,8 @@ public class AsyncBnplMerchantUploadService {
   public void setupBnplsAndUploadMerchantsIdempotent() throws FileNotFoundException {
     final List<BnplCsvUploadDto> bnpls =
         new CsvToBeanBuilder<BnplCsvUploadDto>(
-                new FileReader(ResourceUtils.getFileAtPath(BNPL_FILE_PATH)))
+                new BufferedReader(
+                    new InputStreamReader(getClass().getResourceAsStream(BNPL_FILE_PATH))))
             .withType(BnplCsvUploadDto.class)
             .build()
             .parse();
@@ -75,10 +76,11 @@ public class AsyncBnplMerchantUploadService {
 
   private void setupMerchantsForBnplIdempotent(BnplProvider bnplProvider)
       throws FileNotFoundException, MalformedURLException {
-    final String merchantCsvPath = "merchants/" + bnplProvider.getName().toLowerCase() + ".csv";
+    final String merchantCsvPath = "/merchants/" + bnplProvider.getName().toLowerCase() + ".csv";
     final List<MerchantCsvUploadDto> merchants =
         new CsvToBeanBuilder<MerchantCsvUploadDto>(
-                new FileReader(ResourceUtils.getFileAtPath(merchantCsvPath)))
+                new BufferedReader(new InputStreamReader(
+                    getClass().getResourceAsStream(merchantCsvPath))))
             .withType(MerchantCsvUploadDto.class)
             .build()
             .parse();
