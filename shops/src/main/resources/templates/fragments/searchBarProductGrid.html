@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="${lang}"
+      th:lang="${lang}"
+      th:with="lang=${#locale.language}" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="searchBarProductGrid">
+  <form action="/search" class="search">
+    <input type="text" class="searchTerm" placeholder="What are you looking for?"
+           id="query" name="query" th:value="${query}">
+    <button type="submit" class="searchButton">
+      <i class="fa fa-search"></i>
+    </button>
+  </form>
+  <div class="w3-container w3-text-grey" id="jeans">
+    <p>Page <span th:text="${page}">8</span> of <span th:text="${totalPageCount}">8</span></p>
+    <p><span th:text="${totalResultsCount}">8</span> results</p>
+  </div>
+  <div class="w3-row">
+    <div class="w3-col l3 s6 w3-padding-32">
+      <div th:each="index : ${#numbers.sequence(0, products.size(), 4)}"
+           th:if="${index < products.size()}" class="w3-container w3-padding-16">
+        <a target="_blank" th:href="${products.get(index).url}" style="text-decoration:none"
+           th:data-product-id="${products.get(index).uuid}">
+          <img th:src="${products.get(index).mainImageUrl}" class="zoom" style="width:100%">
+          <p>
+            <span style="font-size:large;font-weight:bolder;"
+                  th:each="merchantName : ${products.get(index).merchantNames}"
+                  th:text="${merchantName + ' '}">Ripped Skinny Jeans</span><br>
+            <span style="font-size:small"
+                  th:text="${products.get(index).name}">Ripped Skinny Jeans</span><br>
+            <span style="font-size:small"
+                  th:text="${products.get(index).currencySymbol + products.get(index).currentPriceLowerRange}"><b>$24.99</b></span><br>
+            <span style="font-size:x-small"
+                  th:each="bnplName : ${products.get(index).bnplProviders}" th:text="${bnplName + ' '}">Ripped Skinny Jeans</span>
+          </p>
+        </a>
+      </div>
+    </div>
+    <div class="w3-col l3 s6 w3-padding-32">
+      <div th:each="index : ${#numbers.sequence(1, products.size(), 4)}"
+           th:if="${index < products.size()}" class="w3-container w3-padding-16">
+        <a target="_blank" th:href="${products.get(index).url}" style="text-decoration:none"
+           th:data-product-id="${products.get(index).uuid}">
+          <img th:src="${products.get(index).mainImageUrl}" class="zoom" style="width:100%">
+          <p>
+            <span style="font-size:large;font-weight:bolder;"
+                  th:each="merchantName : ${products.get(index).merchantNames}" th:text="${merchantName + ' '}">Ripped Skinny Jeans</span><br>
+            <span style="font-size:small" th:text="${products.get(index).name}">Ripped Skinny
+              Jeans</span><br>
+            <span style="font-size:small"
+                  th:text="${products.get(index).currencySymbol + products.get(index).currentPriceLowerRange}"><b>$24.99</b></span><br>
+            <span style="font-size:x-small"
+                  th:each="bnplName : ${products.get(index).bnplProviders}" th:text="${bnplName + ' '}">Ripped Skinny Jeans</span>
+          </p>
+        </a>
+      </div>
+    </div>
+    <div class="w3-col l3 s6 w3-padding-32">
+      <div th:each="index : ${#numbers.sequence(2, products.size(), 4)}"
+           th:if="${index < products.size()}" class="w3-container w3-padding-16">
+        <a target="_blank" th:href="${products.get(index).url}" style="text-decoration:none"
+           th:data-product-id="${products.get(index).uuid}">
+          <img th:src="${products.get(index).mainImageUrl}" class="zoom" style="width:100%">
+          <p>
+            <span style="font-size:large;font-weight:bolder;"
+                  th:each="merchantName : ${products.get(index).merchantNames}" th:text="${merchantName + ' '}">Ripped Skinny Jeans</span><br>
+            <span style="font-size:small" th:text="${products.get(index).name}">Ripped Skinny
+              Jeans</span><br>
+            <span style="font-size:small"
+                  th:text="${products.get(index).currencySymbol + products.get(index).currentPriceLowerRange}"><b>$24.99</b></span><br>
+            <span style="font-size:x-small"
+                  th:each="bnplName : ${products.get(index).bnplProviders}" th:text="${bnplName + ' '}">Ripped Skinny Jeans</span>
+          </p>
+        </a>
+      </div>
+    </div>
+    <div class="w3-col l3 s6 w3-padding-32">
+      <div th:each="index : ${#numbers.sequence(3, products.size(), 4)}"
+           th:if="${index < products.size()}" class="w3-container w3-padding-16">
+        <a target="_blank" th:href="${products.get(index).url}" style="text-decoration:none"
+           th:data-product-id="${products.get(index).uuid}">
+          <img th:src="${products.get(index).mainImageUrl}" class="zoom" style="width:100%">
+          <p>
+            <span style="font-size:large;font-weight:bolder;"
+                  th:each="merchantName : ${products.get(index).merchantNames}" th:text="${merchantName + ' '}">Ripped Skinny Jeans</span><br>
+            <span style="font-size:small" th:text="${products.get(index).name}">Ripped Skinny
+              Jeans</span><br>
+            <span style="font-size:small"
+                  th:text="${products.get(index).currencySymbol + products.get(index).currentPriceLowerRange}"><b>$24.99</b></span><br>
+            <span style="font-size:x-small"
+                  th:each="bnplName : ${products.get(index).bnplProviders}" th:text="${bnplName + ' '}">Ripped Skinny Jeans</span>
+          </p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-center w3-padding-32">
+      <span th:each="pageNum: ${#numbers.sequence(1, totalPageCount)}" >
+        <a th:if="${pageNum != page}"
+           href="javascript:void(0)"
+           th:attr="onclick=|navigateToPage(${pageNum})|"
+           class="w3-padding-small" th:text="${pageNum}">1</a>
+        <a th:unless="${pageNum != page}"
+           href="javascript:void(0)"
+           th:attr="onclick=|navigateToPage(${pageNum})|"
+           class="w3-padding-small w3-blue" th:text="${pageNum}">1</a>
+      </span>
+  </div>
+</div>
