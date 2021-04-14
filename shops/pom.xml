@@ -20,6 +20,7 @@
     <elasticsearch.version>7.9.0</elasticsearch.version>
     <hibernate-search.version>6.0.2.Final</hibernate-search.version>
     <jbcrypt.version>0.4</jbcrypt.version>
+    <sendgrid.version>4.0.1</sendgrid.version>
   </properties>
 
   <dependencies>
@@ -90,6 +91,11 @@
       <groupId>org.mindrot</groupId>
       <artifactId>jbcrypt</artifactId>
       <version>${jbcrypt.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sendgrid</groupId>
+      <artifactId>sendgrid-java</artifactId>
+      <version>${sendgrid.version}</version>
     </dependency>
   </dependencies>
 
