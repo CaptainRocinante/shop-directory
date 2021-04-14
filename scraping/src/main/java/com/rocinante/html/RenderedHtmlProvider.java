@@ -5,6 +5,7 @@ import com.rocinante.util.UserAgentProvider;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.util.StringUtils;
 import org.openqa.selenium.By;
@@ -22,6 +23,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 public class RenderedHtmlProvider {
   private final ThreadLocal<WebDriver> webDriverThreadLocal;
   private final UserAgentProvider userAgentProvider;
+  @Nullable private final String customChromeBinaryShim;
 
   public RenderedHtmlProvider(boolean proxyServerEnabled,
       String proxyServer,
@@ -29,13 +31,14 @@ public class RenderedHtmlProvider {
     log.info("Proxy server {} is {}", proxyServer, proxyServerEnabled ? "enabled" : "disabled");
     System.setProperty("webdriver.chrome.driver", chromeDriverPath);
 
-    final String customChromeBinaryShim = System.getProperty("GOOGLE_CHROME_SHIM", "");
+    this.customChromeBinaryShim = System.getenv("GOOGLE_CHROME_SHIM");
+    log.info("Custom chrome binary shim {}", customChromeBinaryShim);
     this.userAgentProvider = new UserAgentProvider();
     this.webDriverThreadLocal =
         new ThreadLocal<>() {
           private WebDriver initWebDriver() {
             ChromeOptions options = new ChromeOptions();
-            if (!customChromeBinaryShim.isBlank()) {
+            if (customChromeBinaryShim != null && !customChromeBinaryShim.isBlank()) {
               log.info("Setting custom chrome shim {}", customChromeBinaryShim);
               options.setBinary(customChromeBinaryShim);
             }
