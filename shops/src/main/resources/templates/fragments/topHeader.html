@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="${lang}"
+      th:lang="${lang}"
+      th:with="lang=${#locale.language}" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="topHeader">
+  <header class="w3-container w3-xlarge">
+    <p class="w3-left">
+      <a href="/"><i class="fa fa-home"></i></a>
+    </p>
+    <p class="w3-center">Shop Directory</p>
+  </header>
+</div>

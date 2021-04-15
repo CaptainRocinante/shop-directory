@@ -145,12 +145,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   <div class="w3-hide-large" style="margin-top:83px"></div>
 
   <!-- Top header -->
-  <header class="w3-container w3-xlarge">
-    <p class="w3-left">
-      <a href="/"><i class="fa fa-home"></i></a>
-    </p>
-    <p class="w3-center">Shop Directory</p>
-  </header>
+  <div th:insert="fragments/topHeader :: topHeader">
+  </div>
 
   <!-- Image header -->
   <!--  <div class="w3-display-container w3-container">-->
