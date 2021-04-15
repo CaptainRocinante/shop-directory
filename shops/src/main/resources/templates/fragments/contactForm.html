@@ -4,13 +4,25 @@
       th:with="lang=${#locale.language}" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="contactForm">
-  <h4>Contact</h4>
-  <p>Questions? Go ahead.</p>
-  <form action="/action_page.php" target="_blank">
-    <p><input class="w3-input w3-border" type="text" placeholder="Name" name="Name" required></p>
-    <p><input class="w3-input w3-border" type="text" placeholder="Email" name="Email" required></p>
-    <p><input class="w3-input w3-border" type="text" placeholder="Subject" name="Subject" required></p>
-    <p><input class="w3-input w3-border" type="text" placeholder="Message" name="Message" required></p>
-    <button type="submit" class="w3-button w3-block w3-black">Send</button>
-  </form>
+  <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+  <div id="contactForm">
+    <h4>Contact</h4>
+    <p>Questions? Go ahead.</p>
+    <form action="/web/contact" method="post" th:object="${contactForm}" onsubmit="submitContactForm()">
+      <p><input class="w3-input w3-border" type="text" placeholder="Name" name="Name" required></p>
+      <p><input class="w3-input w3-border" type="text" placeholder="Email" name="Email" required></p>
+      <p><input class="w3-input w3-border" type="text" placeholder="Subject" name="Subject" required></p>
+      <p><input class="w3-input w3-border" type="text" placeholder="Message" name="Message" required></p>
+      <button type="submit" class="w3-button w3-block w3-black">Send</button>
+    </form>
+  </div>
+  <div id="contactFormPostSubmit" style="display: none;">
+    <p>Thank you for getting in touch. We'll contact you shortly.</p>
+  </div>
+  <script type="text/javascript">
+    function submitContactForm() {
+      document.getElementById("contactForm").style.display = "none";
+      document.getElementById("contactFormPostSubmit").style.display = "block";
+    }
+  </script>
 </div>
