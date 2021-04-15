@@ -47,11 +47,24 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   font-size: 20px;
 }
 
+.title {
+  font-size: 600%;
+}
+@media (max-width:993px) {
+  .title {
+    font-size: 200%;
+  }
+}
+@media (max-width:601px) {
+  .title {
+    font-size: 100%;
+  }
+}
 </style>
-<body class="w3-content" style="max-width:1200px">
+<body>
 
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
+<nav class="w3-sidebar w3-bar-block w3-black w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
   <div class="w3-container w3-display-container w3-padding-16">
     <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
     <h3 class="w3-wide"><b>LOGO</b></h3>
@@ -91,7 +104,10 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   <div class="w3-hide-large" style="margin-top:83px"></div>
 
   <!-- Top header -->
-  <div th:insert="fragments/topHeader :: topHeader">
+  <div class="w3-padding-16"  style="background-color:#FCE373;">
+    <header class="w3-container w3-xlarge w3-margin">
+      <h1 class="w3-center title">Shop Directory</h1>
+    </header>
   </div>
 
   <!-- Image header -->
@@ -106,15 +122,16 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 <!--  </div>-->
 
   <!-- Search Bar -->
-  <div class="w3-container w3-padding-64 w3-margin" th:insert="fragments/searchBar :: searchBar">
+  <div style="width:75%;margin: 0px auto;max-width: 500px;" class="w3-container w3-padding-64"
+       th:insert="fragments/searchBar :: searchBar">
   </div>
 
   <!-- Subscribe section -->
-  <div th:insert="fragments/subscribe :: subscribe">
+  <div th:insert="fragments/subscribe :: subscribe" style="display: none;">
   </div>
 
   <!-- Footer -->
-  <div th:insert="fragments/footer :: footer">
+  <div th:insert="fragments/footer :: footer" style="display: none;">
   </div>
 
   <!-- End page content -->
