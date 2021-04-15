@@ -1,7 +1,6 @@
 package com.rocinante.shops.config;
 
 import com.rocinante.shops.interceptors.ApiKeyAuthInterceptor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

@@ -1,8 +1,6 @@
 package com.rocinante.shops.service.async;
 
-import com.rocinante.shops.datastore.dao.MerchantDao;
 import com.rocinante.shops.datastore.dao.MerchantInferredCategoryDao;
-import com.rocinante.shops.datastore.entities.Merchant;
 import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
 import com.rocinante.shops.datastore.entities.Product;
 import java.util.Set;

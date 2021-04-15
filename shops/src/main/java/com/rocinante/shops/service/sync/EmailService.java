@@ -22,7 +22,10 @@ public class EmailService {
     this.sendGrid = new SendGrid(sendgridApiKey);
   }
 
-  public void sendEmail(String fromName, String fromEmail, String subjectStr, String toStr,
+  public void sendEmail(String fromName,
+      String fromEmail,
+      String subjectStr,
+      String toStr,
       String contentStr) {
     final Email from = new Email(fromEmail, fromName);
     final Email to = new Email(toStr);
