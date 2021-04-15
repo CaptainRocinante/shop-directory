@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="${lang}"
+      th:lang="${lang}"
+      th:with="lang=${#locale.language}" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="searchBar">
+  <form action="/search" class="search">
+    <input type="text" class="searchTerm" placeholder="What are you looking for?"
+           id="query" name="query" th:value="${query}">
+    <button type="submit" class="searchButton">
+      <i class="fa fa-search"></i>
+    </button>
+  </form>
+</div>

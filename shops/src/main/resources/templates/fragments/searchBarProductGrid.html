@@ -4,13 +4,9 @@
       th:with="lang=${#locale.language}" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="searchBarProductGrid">
-  <form action="/search" class="search">
-    <input type="text" class="searchTerm" placeholder="What are you looking for?"
-           id="query" name="query" th:value="${query}">
-    <button type="submit" class="searchButton">
-      <i class="fa fa-search"></i>
-    </button>
-  </form>
+  <!-- Search Bar -->
+  <div th:insert="fragments/searchBar :: searchBar">
+  </div>
   <div class="w3-container w3-text-grey" id="jeans">
     <p>Page <span th:text="${page}">8</span> of <span th:text="${totalPageCount}">8</span></p>
     <p><span th:text="${totalResultsCount}">8</span> results</p>

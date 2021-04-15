@@ -113,14 +113,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 <!--  </div>-->
 
   <!-- Search Bar -->
-  <div class="w3-container w3-padding-64 w3-margin">
-    <form action="/search" class="search">
-      <input type="text" class="searchTerm" placeholder="What are you looking for?"
-             id="query" name="query">
-      <button type="submit" class="searchButton">
-        <i class="fa fa-search"></i>
-      </button>
-    </form>
+  <div class="w3-container w3-padding-64 w3-margin" th:insert="fragments/searchBar :: searchBar">
   </div>
 
   <!-- Subscribe section -->

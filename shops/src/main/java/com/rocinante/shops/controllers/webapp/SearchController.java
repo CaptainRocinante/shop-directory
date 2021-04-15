@@ -34,6 +34,12 @@ public class SearchController {
   private final BnplService bnplService;
   private final MerchantService merchantService;
 
+  @RequestMapping("/")
+  public String index(Model model) {
+    model.addAttribute("query", "");
+    return "index";
+  }
+
   @RequestMapping("/search")
   public String search(
       Model model,
