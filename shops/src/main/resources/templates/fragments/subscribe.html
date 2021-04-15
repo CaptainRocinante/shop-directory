@@ -3,9 +3,28 @@
       th:lang="${lang}"
       th:with="lang=${#locale.language}" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="subscribe">
-  <h1>Subscribe</h1>
-  <p>To get special offers and VIP treatment:</p>
-  <p><input class="w3-input w3-border" type="text" placeholder="Enter e-mail" style="width:100%"></p>
-  <button type="button" class="w3-button w3-red w3-margin-bottom">Subscribe</button>
+<div class="w3-container w3-black w3-padding-32 w3-margin" th:fragment="subscribe"
+     id="subscribeFormContainer">
+  <div id="subscribeForm">
+    <h1>Subscribe</h1>
+    <p>To get special offers and VIP treatment:</p>
+    <form action="/web/subscribe" method="post" th:object="${subscriptionForm}"
+          onsubmit="submitSubscribeForm()">
+      <p><input class="w3-input w3-border" type="email" name="email" placeholder="Enter e-mail"
+                style="width:100%" required></p>
+      <button type="submit" class="w3-button w3-red w3-margin-bottom">Subscribe</button>
+    </form>
+  </div>
+  <div id="subscribeFormPostSubmit" style="display: none;">
+    <p>You are now subscribed.</p>
+  </div>
+  <script type="text/javascript">
+    function submitSubscribeForm() {
+      document.getElementById("subscribeForm").style.display = "none";
+      document.getElementById("subscribeFormPostSubmit").style.display = "block";
+      setTimeout(function(){
+        document.getElementById("subscribeFormContainer").style.display = "none";
+      }, 2000);
+    }
+  </script>
 </div>
