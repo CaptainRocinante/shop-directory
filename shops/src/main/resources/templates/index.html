@@ -37,39 +37,43 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 <body>
 
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-bar-block w3-black w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
+<nav class="w3-sidebar w3-bar-block w3-collapse w3-top"
+     style="z-index:3;width:250px;background-color:#212529;"
+     id="mySidebar">
+  <img style="width:50%;margin:0px auto;display:block;margin-top:50px;"
+  th:src="@{/img/paylaterGoodsLogo.png}" />
   <div class="w3-container w3-display-container w3-padding-16 w3-margin">
     <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
-    <h3 class="w3-wide"><b>LOGO</b></h3>
   </div>
-  <div class="w3-padding-64 w3-large w3-margin" style="font-weight:bold;color:#FCE373;">
-    <a href="/search?query=Shirts" class="w3-bar-item w3-button">Shirts</a>
-    <a href="/search?query=Dresses" class="w3-bar-item w3-button">Dresses</a>
-    <a onclick="myAccFunc()" href="javascript:void(0)" class="w3-bar-item w3-button">
+  <div class="w3-padding-64 w3-large w3-margin" style="margin:0px auto;font-weight:bold;color:#FCA311;">
+    <a href="/search?query=Shirts" class="w3-bar-item w3-button w3-center">Shirts</a>
+    <a href="/search?query=Dresses" class="w3-bar-item w3-button w3-center">Dresses</a>
+    <a onclick="myAccFunc()" href="javascript:void(0)" class="w3-bar-item w3-button w3-center">
       Jeans <i class="fa fa-caret-down"></i>
     </a>
     <div id="demoAcc" class="w3-bar-block w3-hide w3-padding-large w3-medium">
-      <a href="/search?query=Skinny+Jeans" class="w3-bar-item w3-button">Skinny</a>
-      <a href="/search?query=Relaxed+Jeans" class="w3-bar-item w3-button">Relaxed</a>
-      <a href="/search?query=Bootcut+Jeans" class="w3-bar-item w3-button">Bootcut</a>
-      <a href="/search?query=Straight+Jeans" class="w3-bar-item w3-button">Straight</a>
+      <a href="/search?query=Skinny+Jeans" class="w3-bar-item w3-button w3-center">Skinny</a>
+      <a href="/search?query=Relaxed+Jeans" class="w3-bar-item w3-button w3-center">Relaxed</a>
+      <a href="/search?query=Bootcut+Jeans" class="w3-bar-item w3-button w3-center">Bootcut</a>
+      <a href="/search?query=Straight+Jeans" class="w3-bar-item w3-button w3-center">Straight</a>
     </div>
-    <a href="/search?query=Jackets" class="w3-bar-item w3-button">Jackets</a>
-    <a href="/search?query=Gymwear" class="w3-bar-item w3-button">Gymwear</a>
-    <a href="/search?query=Blazers" class="w3-bar-item w3-button">Blazers</a>
-    <a href="/search?query=Shoes" class="w3-bar-item w3-button">Shoes</a>
+    <a href="/search?query=Jackets" class="w3-bar-item w3-button w3-center">Jackets</a>
+    <a href="/search?query=Gymwear" class="w3-bar-item w3-button w3-center">Gymwear</a>
+    <a href="/search?query=Blazers" class="w3-bar-item w3-button w3-center">Blazers</a>
+    <a href="/search?query=Shoes" class="w3-bar-item w3-button w3-center">Shoes</a>
   </div>
-  <div class="w3-padding-16 w3-large w3-margin" style="font-weight:bold;color:#FCE373;">
-    <a href="javascript:void(0)" class="w3-bar-item w3-button"
+  <div class="w3-padding-16 w3-large w3-margin" style="margin:0px auto;font-weight:bold;color:#FCA311;">
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-center"
        onclick="document.getElementById('subscribeFormContainer').style.display='block'">Newsletter</a>
-    <a href="javascript:void(0)" class="w3-bar-item w3-button"
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-center"
        onclick="document.getElementById('footerContainer').style.display='block'">Contact</a>
   </div>
 </nav>
 
 <!-- Top menu on small screens -->
 <header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
-  <div class="w3-bar-item w3-padding-24 w3-wide">LOGO</div>
+  <div class="w3-bar-item w3-padding-24 w3-wide"><img style="max-width:50px"
+                                                      th:src="@{/img/paylaterGoodsLogo.png}" /></div>
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-right" onclick="w3_open()"><i class="fa fa-bars"></i></a>
 </header>
 
@@ -83,9 +87,9 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   <div class="w3-hide-large" style="margin-top:83px"></div>
 
   <!-- Top header -->
-  <div class="w3-padding-small" style="background-color:#FCE373;">
+  <div class="w3-padding-small" style="background-color:#012A4A;">
     <header class="w3-container w3-xlarge w3-margin">
-      <h1 class="w3-center title">Shop Directory</h1>
+      <h1 class="w3-center title" style="color:#E5E5E5;">Shop Directory</h1>
     </header>
   </div>
 
