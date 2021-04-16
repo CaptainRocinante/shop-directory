@@ -4,15 +4,8 @@
       th:with="lang=${#locale.language}" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="topHeader" class="w3-padding-16"  style="background-color:#FCE373;">
-  <style>
-    @media (max-width:601px) {
-      .title {
-        font-size: 100%;
-      }
-    }
-  </style>
   <header class="w3-container w3-xlarge w3-margin">
     <a class="w3-left" href="/"><i class="fa fa-home"></i></a>
-    <h1 class="w3-center title">Shop Directory</h1>
+    <h1 class="w3-center" style="font-size:100%;">Shop Directory</h1>
   </header>
 </div>
