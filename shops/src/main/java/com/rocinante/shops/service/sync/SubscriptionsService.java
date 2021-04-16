@@ -19,6 +19,6 @@ public class SubscriptionsService {
     if (!EmailValidator.getInstance().isValid(email)) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email Invalid");
     }
-    subscriptionsDao.save(new Subscriptions(email));
+    subscriptionsDao.save(new Subscriptions(email, false));
   }
 }
