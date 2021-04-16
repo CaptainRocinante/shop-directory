@@ -65,11 +65,12 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 
 <!-- Sidebar/menu -->
 <nav class="w3-sidebar w3-bar-block w3-black w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
-  <div class="w3-container w3-display-container w3-padding-16">
+  <div class="w3-container w3-display-container w3-padding-16 w3-margin">
     <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
     <h3 class="w3-wide"><b>LOGO</b></h3>
   </div>
-  <div class="w3-container w3-display-container w3-padding-16" style="margin-top:100px">
+  <div class="w3-container w3-display-container w3-padding-16 w3-margin"
+       style="margin-top:100px;font-weight:bold;color:#FCE373;">
     <h4>Accepts</h4>
     <form onsubmit="removePageNum()">
       <div th:if="${bnplFiltersSelected.size() == 0}">
@@ -77,7 +78,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
           <input class="w3-check" type="checkbox" name="bnplFiltersSelected" th:value="${bnplFilter.bnplUuid}">
           <label class="w3-padding-small" th:text="${bnplFilter.bnplName}">BnplName</label>
         </p>
-        <button type="submit" class="w3-button w3-black">Filter</button>
+        <button style="color:black;background:#FCE373;" type="submit" class="w3-button">Filter
+        </button>
       </div>
       <div th:unless="${bnplFiltersSelected.size() == 0}">
         <p th:each="bnplFilter : ${bnplFiltersSelected}">
@@ -85,12 +87,13 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
                  th:value="${bnplFilter.bnplUuid}" checked>
           <label class="w3-padding-small" th:text="${bnplFilter.bnplName}">BnplName</label>
         </p>
-        <button type="button" onclick="resetBnplFilters()"
-                class="w3-button w3-black">Reset</button>
+        <button style="color:black;background:#FCE373;" type="button" onclick="resetBnplFilters()"
+                class="w3-button">Reset</button>
       </div>
     </form>
   </div>
-  <div class="w3-container w3-display-container w3-padding-16">
+  <div class="w3-container w3-display-container w3-padding-16 w3-margin"
+       style="font-weight:bold;color:#FCE373;">
     <h4>Brands</h4>
     <form onsubmit="removePageNum()">
       <div th:if="${merchantFiltersSelected.size() == 0}">
@@ -113,7 +116,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
           <a href="javascript:void(0)" class="w3-bar-item"
              onclick="document.getElementById('brandsFilter').style.display='block'">See All</a>
         </div>
-        <button type="submit" class="w3-button w3-black">Filter</button>
+        <button style="color:black;background:#FCE373;" type="submit" class="w3-button">Filter</button>
       </div>
       <div th:unless="${merchantFiltersSelected.size() == 0}">
         <p th:each="merchantFilter : ${merchantFiltersSelected}">
@@ -122,8 +125,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
           <label class="w3-padding-small" th:text="${merchantFilter.merchantName}">MerchantName
           </label>
         </p>
-        <button type="button" onclick="resetMerchantFilters()"
-                class="w3-button w3-black">Reset</button>
+        <button style="color:black;background:#FCE373;" type="button" onclick="resetMerchantFilters()"
+                class="w3-button">Reset</button>
       </div>
     </form>
   </div>
