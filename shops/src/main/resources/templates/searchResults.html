@@ -81,8 +81,9 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
             <label class="w3-padding-small" th:text="${merchantFilter.merchantName}">MerchantName
             </label>
           </p>
-          <a href="javascript:void(0)" class="w3-bar-item"
-             onclick="document.getElementById('brandsFilter').style.display='block'">See All</a>
+          <a href="javascript:void(0)"
+             onclick="document.getElementById('brandsFilter').style.display='block'"
+             style="display: inline-block;margin-bottom:20px;">See All</a>
         </div>
         <button style="color:black;background:#FCE373;" type="submit" class="w3-button">Filter</button>
       </div>
@@ -97,6 +98,15 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
                 class="w3-button">Reset</button>
       </div>
     </form>
+  </div>
+  <div class="w3-container w3-display-container w3-padding-16 w3-margin"
+       style="font-weight:bold;color:#FCE373;">
+    <h4>
+      <a href="javascript:void(0)"
+         onclick="document.getElementById('subscribeFormContainer').style.display='block'">Newsletter
+      </a>
+    </h4>
+
   </div>
 </nav>
 

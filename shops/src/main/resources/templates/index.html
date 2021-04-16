@@ -59,6 +59,10 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     <a href="/search?query=Blazers" class="w3-bar-item w3-button">Blazers</a>
     <a href="/search?query=Shoes" class="w3-bar-item w3-button">Shoes</a>
   </div>
+  <div class="w3-padding-16 w3-large w3-margin" style="font-weight:bold;color:#FCE373;">
+    <a href="javascript:void(0)" class="w3-bar-item w3-button"
+       onclick="document.getElementById('subscribeFormContainer').style.display='block'">Newsletter</a>
+  </div>
 </nav>
 
 <!-- Top menu on small screens -->
@@ -100,7 +104,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   </div>
 
   <!-- Subscribe section -->
-  <div th:insert="fragments/subscribe :: subscribe" style="display: none;">
+  <div th:insert="fragments/subscribe :: subscribe">
   </div>
 
   <!-- Footer -->
