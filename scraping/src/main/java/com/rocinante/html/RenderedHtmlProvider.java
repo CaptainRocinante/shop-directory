@@ -43,6 +43,8 @@ public class RenderedHtmlProvider {
             }
             options.addArguments(
                 "--headless",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
                 "--window-size=1920,1080",
                 "--ignore-certificate-errors",
                 "--silent",
