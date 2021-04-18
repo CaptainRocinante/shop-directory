@@ -1,4 +1,4 @@
-package com.rocinante.shops.utils;
+package com.rocinante.datastore.utils;
 
 import javax.annotation.Nullable;
 

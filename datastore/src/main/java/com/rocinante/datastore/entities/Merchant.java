@@ -1,10 +1,10 @@
-package com.rocinante.shops.datastore.entities;
+package com.rocinante.datastore.entities;
 
 import com.neovisionaries.i18n.CountryCode;
 import com.rocinante.common.api.dto.MerchantCrudDto;
 import com.rocinante.common.api.dto.MerchantCsvUploadDto;
 import com.rocinante.common.api.dto.MerchantFilterDto;
-import com.rocinante.shops.utils.NullabilityUtils;
+import com.rocinante.datastore.utils.NullabilityUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
@@ -40,11 +40,11 @@ public class Merchant {
   @Column private String name;
 
   @Column
-  @Type(type = "com.rocinante.shops.datastore.types.UrlType")
+  @Type(type = "com.rocinante.datastore.types.UrlType")
   private URL url;
 
   @Column
-  @Type(type = "com.rocinante.shops.datastore.types.CountryCodeType")
+  @Type(type = "com.rocinante.datastore.types.CountryCodeType")
   private CountryCode countryCode;
 
   @Column private boolean enabled;

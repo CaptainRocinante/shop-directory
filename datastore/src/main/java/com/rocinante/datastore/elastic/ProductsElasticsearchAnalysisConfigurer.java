@@ -1,4 +1,4 @@
-package com.rocinante.shops.config;
+package com.rocinante.datastore.elastic;
 
 import org.hibernate.search.backend.elasticsearch.analysis.ElasticsearchAnalysisConfigurationContext;
 import org.hibernate.search.backend.elasticsearch.analysis.ElasticsearchAnalysisConfigurer;

@@ -1,11 +1,11 @@
-package com.rocinante.shops.datastore.entities;
+package com.rocinante.datastore.entities;
 
 import com.neovisionaries.i18n.CurrencyCode;
 import com.rocinante.common.api.dto.ProductCrudDto;
 import com.rocinante.common.api.dto.ProductDto;
 import com.rocinante.common.api.crawlers.ProductSummary;
-import com.rocinante.shops.utils.MoneyUtils;
-import com.rocinante.shops.utils.NullabilityUtils;
+import com.rocinante.datastore.utils.MoneyUtils;
+import com.rocinante.datastore.utils.NullabilityUtils;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -61,12 +61,12 @@ public class Product {
   private Set<MerchantInferredCategory> merchantInferredCategories = new HashSet<>();
 
   @Column
-  @Type(type = "com.rocinante.shops.datastore.types.UrlType")
+  @Type(type = "com.rocinante.datastore.types.UrlType")
   private URL url;
 
   @Column @GenericField private boolean enabled;
 
-  @Type(type = "com.rocinante.shops.datastore.types.CurrencyCodeType")
+  @Type(type = "com.rocinante.datastore.types.CurrencyCodeType")
   private CurrencyCode currencyCode;
 
   @Column @GenericField private BigDecimal currentPriceLowerRange;
@@ -78,7 +78,7 @@ public class Product {
   @Column private BigDecimal originalPriceUpperRange;
 
   @Column
-  @Type(type = "com.rocinante.shops.datastore.types.UrlType")
+  @Type(type = "com.rocinante.datastore.types.UrlType")
   private URL mainImageUrl;
 
   @Column private OffsetDateTime createdAt;

@@ -1,7 +1,7 @@
-package com.rocinante.shops.datastore.entities;
+package com.rocinante.datastore.entities;
 
 import com.rocinante.common.api.crawlers.Category;
-import com.rocinante.shops.utils.NullabilityUtils;
+import com.rocinante.datastore.utils.NullabilityUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
@@ -37,7 +37,7 @@ public class MerchantInferredCategory {
   @Column private String name;
 
   @Column
-  @Type(type = "com.rocinante.shops.datastore.types.UrlType")
+  @Type(type = "com.rocinante.datastore.types.UrlType")
   private URL url;
 
   @Column private boolean enabled;

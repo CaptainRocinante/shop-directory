@@ -1,7 +1,7 @@
 package com.rocinante.shops.service.sync;
 
-import com.rocinante.shops.datastore.dao.SubscriptionsDao;
-import com.rocinante.shops.datastore.entities.Subscriptions;
+import com.rocinante.datastore.dao.SubscriptionsDao;
+import com.rocinante.datastore.entities.Subscriptions;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;

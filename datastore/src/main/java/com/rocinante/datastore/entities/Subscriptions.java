@@ -1,4 +1,4 @@
-package com.rocinante.shops.datastore.entities;
+package com.rocinante.datastore.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.rocinante.shops.datastore.types;
+package com.rocinante.datastore.types;
 
 import java.net.URL;
 import org.hibernate.type.AbstractSingleColumnStandardBasicType;

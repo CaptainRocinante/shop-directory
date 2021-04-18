@@ -1,10 +1,10 @@
 package com.rocinante.shops.controllers.rest;
 
 import com.rocinante.common.api.dto.MerchantCrawlDto;
-import com.rocinante.shops.datastore.dao.MerchantDao;
-import com.rocinante.shops.datastore.dao.MerchantInferredCategoryDao;
-import com.rocinante.shops.datastore.entities.Merchant;
-import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
+import com.rocinante.datastore.dao.MerchantDao;
+import com.rocinante.datastore.dao.MerchantInferredCategoryDao;
+import com.rocinante.datastore.entities.Merchant;
+import com.rocinante.datastore.entities.MerchantInferredCategory;
 import com.rocinante.shops.service.async.AsyncCrawlingService;
 import java.net.MalformedURLException;
 import java.time.Instant;

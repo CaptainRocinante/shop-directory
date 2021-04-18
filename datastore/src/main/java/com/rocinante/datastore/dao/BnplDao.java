@@ -1,6 +1,6 @@
-package com.rocinante.shops.datastore.dao;
+package com.rocinante.datastore.dao;
 
-import com.rocinante.shops.datastore.entities.BnplProvider;
+import com.rocinante.datastore.entities.BnplProvider;
 import java.net.URL;
 import java.util.Optional;
 import java.util.UUID;

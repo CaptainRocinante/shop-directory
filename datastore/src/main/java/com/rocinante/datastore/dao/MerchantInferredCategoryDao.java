@@ -1,6 +1,6 @@
-package com.rocinante.shops.datastore.dao;
+package com.rocinante.datastore.dao;
 
-import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
+import com.rocinante.datastore.entities.MerchantInferredCategory;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.rocinante.shops.datastore.types;
+package com.rocinante.datastore.types;
 
 import com.neovisionaries.i18n.CountryCode;
 import org.hibernate.type.descriptor.WrapperOptions;

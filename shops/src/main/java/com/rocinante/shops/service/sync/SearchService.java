@@ -1,6 +1,6 @@
 package com.rocinante.shops.service.sync;
 
-import com.rocinante.shops.datastore.entities.Product;
+import com.rocinante.datastore.entities.Product;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.EntityManager;

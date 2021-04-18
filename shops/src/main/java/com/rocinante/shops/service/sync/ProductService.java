@@ -1,8 +1,8 @@
 package com.rocinante.shops.service.sync;
 
 import com.rocinante.common.api.dto.ProductCrudDto;
-import com.rocinante.shops.datastore.dao.ProductDao;
-import com.rocinante.shops.datastore.entities.Product;
+import com.rocinante.datastore.dao.ProductDao;
+import com.rocinante.datastore.entities.Product;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

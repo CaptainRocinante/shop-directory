@@ -1,8 +1,8 @@
 package com.rocinante.shops.service.sync;
 
-import com.rocinante.shops.datastore.dao.BnplDao;
-import com.rocinante.shops.datastore.entities.BnplProvider;
-import com.rocinante.shops.datastore.entities.Merchant;
+import com.rocinante.datastore.dao.BnplDao;
+import com.rocinante.datastore.entities.BnplProvider;
+import com.rocinante.datastore.entities.Merchant;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;

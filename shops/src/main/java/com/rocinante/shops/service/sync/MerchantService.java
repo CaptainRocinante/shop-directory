@@ -1,9 +1,9 @@
 package com.rocinante.shops.service.sync;
 
 import com.rocinante.common.api.dto.MerchantCrudDto;
-import com.rocinante.shops.datastore.dao.MerchantDao;
-import com.rocinante.shops.datastore.entities.Merchant;
-import com.rocinante.shops.datastore.entities.MerchantInferredCategory;
+import com.rocinante.datastore.dao.MerchantDao;
+import com.rocinante.datastore.entities.Merchant;
+import com.rocinante.datastore.entities.MerchantInferredCategory;
 import com.rocinante.shops.service.async.AsyncIndexingService;
 import java.util.List;
 import java.util.Set;
