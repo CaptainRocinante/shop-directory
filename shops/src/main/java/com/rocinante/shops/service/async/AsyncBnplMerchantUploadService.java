@@ -1,8 +1,8 @@
 package com.rocinante.shops.service.async;
 
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.rocinante.shops.api.BnplCsvUploadDto;
-import com.rocinante.shops.api.MerchantCsvUploadDto;
+import com.rocinante.common.api.dto.BnplCsvUploadDto;
+import com.rocinante.common.api.dto.MerchantCsvUploadDto;
 import com.rocinante.shops.datastore.dao.BnplDao;
 import com.rocinante.shops.datastore.dao.MerchantDao;
 import com.rocinante.shops.datastore.entities.BnplProvider;

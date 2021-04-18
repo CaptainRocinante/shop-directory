@@ -1,6 +1,6 @@
 package com.rocinante.shops.service.sync;
 
-import com.rocinante.shops.api.MerchantCrudDto;
+import com.rocinante.common.api.dto.MerchantCrudDto;
 import com.rocinante.shops.datastore.dao.MerchantDao;
 import com.rocinante.shops.datastore.entities.Merchant;
 import com.rocinante.shops.datastore.entities.MerchantInferredCategory;

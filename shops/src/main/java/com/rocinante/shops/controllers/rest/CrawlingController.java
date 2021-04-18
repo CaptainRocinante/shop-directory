@@ -1,6 +1,6 @@
 package com.rocinante.shops.controllers.rest;
 
-import com.rocinante.shops.api.MerchantCrawlDto;
+import com.rocinante.common.api.dto.MerchantCrawlDto;
 import com.rocinante.shops.datastore.dao.MerchantDao;
 import com.rocinante.shops.datastore.dao.MerchantInferredCategoryDao;
 import com.rocinante.shops.datastore.entities.Merchant;

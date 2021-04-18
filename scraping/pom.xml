@@ -39,6 +39,11 @@
 
     <!--    Own   -->
     <dependency>
+      <groupId>com.rocinante</groupId>
+      <artifactId>common</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>org.jsoup</groupId>
       <artifactId>jsoup</artifactId>
       <version>${jsoup.version}</version>

@@ -1,8 +1,8 @@
 package com.rocinante.shops.controllers.webapp;
 
-import com.rocinante.shops.api.BnplFilterDto;
-import com.rocinante.shops.api.MerchantFilterDto;
-import com.rocinante.shops.api.ProductDto;
+import com.rocinante.common.api.dto.BnplFilterDto;
+import com.rocinante.common.api.dto.MerchantFilterDto;
+import com.rocinante.common.api.dto.ProductDto;
 import com.rocinante.shops.datastore.entities.BnplProvider;
 import com.rocinante.shops.datastore.entities.Merchant;
 import com.rocinante.shops.datastore.entities.MerchantInferredCategory;

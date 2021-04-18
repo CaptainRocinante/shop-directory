@@ -1,4 +1,4 @@
-package com.rocinante.shops.api;
+package com.rocinante.common.api.dto;
 
 import java.util.List;
 import javax.annotation.Nullable;

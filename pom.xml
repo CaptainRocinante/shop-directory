@@ -14,6 +14,7 @@
     <module>scraping</module>
     <module>shops</module>
     <module>datastore</module>
+    <module>common</module>
   </modules>
   <groupId>com.rocinante</groupId>
   <artifactId>shop-directory</artifactId>

@@ -1,9 +1,9 @@
 package com.rocinante.shops.datastore.entities;
 
 import com.neovisionaries.i18n.CountryCode;
-import com.rocinante.shops.api.MerchantCrudDto;
-import com.rocinante.shops.api.MerchantCsvUploadDto;
-import com.rocinante.shops.api.MerchantFilterDto;
+import com.rocinante.common.api.dto.MerchantCrudDto;
+import com.rocinante.common.api.dto.MerchantCsvUploadDto;
+import com.rocinante.common.api.dto.MerchantFilterDto;
 import com.rocinante.shops.utils.NullabilityUtils;
 import java.net.MalformedURLException;
 import java.net.URL;

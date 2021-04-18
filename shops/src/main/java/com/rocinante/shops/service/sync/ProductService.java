@@ -1,6 +1,6 @@
 package com.rocinante.shops.service.sync;
 
-import com.rocinante.shops.api.ProductCrudDto;
+import com.rocinante.common.api.dto.ProductCrudDto;
 import com.rocinante.shops.datastore.dao.ProductDao;
 import com.rocinante.shops.datastore.entities.Product;
 import java.util.UUID;

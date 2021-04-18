@@ -1,6 +1,6 @@
 package com.rocinante.shops.controllers.rest;
 
-import com.rocinante.shops.api.ProductCrudDto;
+import com.rocinante.common.api.dto.ProductCrudDto;
 import com.rocinante.shops.service.sync.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

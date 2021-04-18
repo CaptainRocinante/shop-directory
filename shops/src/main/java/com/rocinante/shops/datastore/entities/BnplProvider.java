@@ -1,7 +1,7 @@
 package com.rocinante.shops.datastore.entities;
 
-import com.rocinante.shops.api.BnplCsvUploadDto;
-import com.rocinante.shops.api.BnplFilterDto;
+import com.rocinante.common.api.dto.BnplCsvUploadDto;
+import com.rocinante.common.api.dto.BnplFilterDto;
 import com.rocinante.shops.utils.NullabilityUtils;
 import java.net.MalformedURLException;
 import java.net.URL;

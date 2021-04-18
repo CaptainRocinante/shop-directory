@@ -1,4 +1,4 @@
-package com.rocinante.shops.api;
+package com.rocinante.common.api.dto;
 
 import com.opencsv.bean.CsvBindByPosition;
 import lombok.Data;
