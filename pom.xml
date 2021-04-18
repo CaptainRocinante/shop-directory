@@ -13,6 +13,7 @@
   <modules>
     <module>scraping</module>
     <module>shops</module>
+    <module>datastore</module>
   </modules>
   <groupId>com.rocinante</groupId>
   <artifactId>shop-directory</artifactId>
