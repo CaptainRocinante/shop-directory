@@ -29,7 +29,7 @@
     <!-- Own -->
     <dependency>
       <groupId>com.rocinante</groupId>
-      <artifactId>common</artifactId>
+      <artifactId>common-api</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
