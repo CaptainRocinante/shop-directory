@@ -36,6 +36,7 @@ public class RenderedHtmlProvider {
     this.webDriverThreadLocal =
         new ThreadLocal<>() {
           private WebDriver initWebDriver() {
+            log.info("Initializing Web Driver");
             ChromeOptions options = new ChromeOptions();
             if (customChromeBinaryShim != null && !customChromeBinaryShim.isBlank()) {
               log.info("Setting custom chrome shim {}", customChromeBinaryShim);
@@ -133,7 +134,7 @@ public class RenderedHtmlProvider {
   }
 
   public RenderedHtml downloadHtml(String url) {
-    log.info("Downloading html content from {}", url);
+    log.info("Downloading rendered html content from {}", url);
     final WebDriver webDriver = webDriverThreadLocal.get();
     webDriver.get(url);
     try {

@@ -13,6 +13,8 @@ RUN apt-get install -yqq unzip
 RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
 RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 
+# set display port to avoid crash
+ENV DISPLAY=:99
 
 COPY target/shops-1.0-SNAPSHOT.jar shops-1.0-SNAPSHOT.jar
 EXPOSE 8080
