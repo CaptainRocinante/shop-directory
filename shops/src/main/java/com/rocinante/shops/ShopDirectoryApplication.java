@@ -1,6 +1,6 @@
 package com.rocinante.shops;
 
-import com.rocinante.configuration.ScrapingSpringConfiguration;
+import com.rocinante.scraping.configuration.ScrapingSpringConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

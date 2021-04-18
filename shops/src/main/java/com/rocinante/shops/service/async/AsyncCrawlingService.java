@@ -1,10 +1,10 @@
 package com.rocinante.shops.service.async;
 
-import com.rocinante.crawlers.MapCrawlContext;
+import com.rocinante.scraping.crawlers.MapCrawlContext;
 import com.rocinante.common.api.crawlers.Category;
-import com.rocinante.crawlers.category.CategoryCrawler;
+import com.rocinante.scraping.crawlers.category.CategoryCrawler;
 import com.rocinante.common.api.crawlers.ProductSummary;
-import com.rocinante.crawlers.summary.SummaryCrawler;
+import com.rocinante.scraping.crawlers.summary.SummaryCrawler;
 import com.rocinante.datastore.dao.MerchantDao;
 import com.rocinante.datastore.dao.MerchantInferredCategoryDao;
 import com.rocinante.datastore.dao.ProductDao;
