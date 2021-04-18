@@ -3,7 +3,7 @@ package com.rocinante.shops.datastore.entities;
 import com.neovisionaries.i18n.CurrencyCode;
 import com.rocinante.common.api.dto.ProductCrudDto;
 import com.rocinante.common.api.dto.ProductDto;
-import com.rocinante.crawlers.summary.ProductSummary;
+import com.rocinante.common.api.crawlers.ProductSummary;
 import com.rocinante.shops.utils.MoneyUtils;
 import com.rocinante.shops.utils.NullabilityUtils;
 import java.math.BigDecimal;

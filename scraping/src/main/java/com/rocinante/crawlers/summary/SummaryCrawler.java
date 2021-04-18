@@ -6,6 +6,7 @@ import static com.rocinante.crawlers.summary.selectors.AnyPriceRangeSelector.RAN
 import static com.rocinante.crawlers.summary.selectors.AnyPriceSelector.LIST_MONEY_OBJECT_PROPERTY;
 
 import com.google.common.collect.Range;
+import com.rocinante.common.api.crawlers.ProductSummary;
 import com.rocinante.crawlers.CrawlContext;
 import com.rocinante.crawlers.Crawler;
 import com.rocinante.crawlers.CrawlerType;

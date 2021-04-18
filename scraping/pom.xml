@@ -20,11 +20,6 @@
   <dependencies>
     <!--    From parent   -->
     <dependency>
-      <groupId>org.javamoney</groupId>
-      <artifactId>moneta</artifactId>
-      <type>pom</type>
-    </dependency>
-    <dependency>
       <groupId>io.vavr</groupId>
       <artifactId>vavr</artifactId>
     </dependency>

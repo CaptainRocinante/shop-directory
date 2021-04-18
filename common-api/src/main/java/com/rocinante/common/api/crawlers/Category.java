@@ -1,4 +1,4 @@
-package com.rocinante.crawlers.category;
+package com.rocinante.common.api.crawlers;
 
 import java.util.Objects;
 import lombok.Getter;

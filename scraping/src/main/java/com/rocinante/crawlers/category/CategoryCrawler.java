@@ -1,5 +1,6 @@
 package com.rocinante.crawlers.category;
 
+import com.rocinante.common.api.crawlers.Category;
 import com.rocinante.crawlers.CrawlContext;
 import com.rocinante.crawlers.Crawler;
 import com.rocinante.crawlers.CrawlerType;

@@ -1,6 +1,6 @@
 package com.rocinante.shops.datastore.entities;
 
-import com.rocinante.crawlers.category.Category;
+import com.rocinante.common.api.crawlers.Category;
 import com.rocinante.shops.utils.NullabilityUtils;
 import java.net.MalformedURLException;
 import java.net.URL;

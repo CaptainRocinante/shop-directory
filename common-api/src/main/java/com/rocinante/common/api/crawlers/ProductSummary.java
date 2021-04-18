@@ -1,4 +1,4 @@
-package com.rocinante.crawlers.summary;
+package com.rocinante.common.api.crawlers;
 
 import com.google.common.collect.Range;
 import java.math.BigDecimal;
