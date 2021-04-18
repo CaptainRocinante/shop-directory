@@ -316,7 +316,8 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     final SummaryCrawler summaryCrawler =
         new SummaryCrawler(
             new RenderedHtmlProvider(true,
-                "http://127.0.0.1:8888", "/usr/local/bin/chromedriver"));
+                "http://ec2-35-173-183-110.compute-1.amazonaws.com:8888",
+                "/usr/local/bin/chromedriver"));
     //    List<ProductSummary> productSummaries = summaryCrawler.crawlHtml(
     //        ResourceUtils.readFileContents("dswdummy.html"),
     //        "https://www.chubbiesshorts.com/", new MapCrawlContext(null));

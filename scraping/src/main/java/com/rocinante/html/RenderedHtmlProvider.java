@@ -42,9 +42,7 @@ public class RenderedHtmlProvider {
               options.setBinary(customChromeBinaryShim);
             }
             options.addArguments(
-                "--no-sandbox",
                 "--headless",
-                "--disable-dev-shm-usage",
                 "--window-size=1920,1080",
                 "--ignore-certificate-errors",
                 "--silent",
