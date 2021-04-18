@@ -27,7 +27,7 @@ public class RenderedHtmlProvider {
   public RenderedHtmlProvider(boolean proxyServerEnabled,
       String proxyServer,
       String chromeDriverPath) {
-    log.info("Proxy server {} is {}", proxyServer, proxyServerEnabled ? "enabled" : "disabled");
+    log.info("Proxy server url {} is {}", proxyServer, proxyServerEnabled ? "enabled" : "disabled");
     System.setProperty("webdriver.chrome.driver", chromeDriverPath);
 
     this.customChromeBinaryShim = System.getenv("GOOGLE_CHROME_SHIM");
