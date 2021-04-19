@@ -1,6 +1,6 @@
-package com.rocinante.shops.controllers.rest;
+package com.rocinante.scraping.controllers;
 
-import com.rocinante.shops.service.async.AsyncBnplMerchantUploadService;
+import com.rocinante.scraping.service.async.AsyncBnplMerchantUploadService;
 import java.io.FileNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;

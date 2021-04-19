@@ -1,7 +1,7 @@
 package com.rocinante.shops.controllers.webapp;
 
 import com.rocinante.shops.api.SubscriptionForm;
-import com.rocinante.shops.service.sync.SubscriptionsService;
+import com.rocinante.shops.service.SubscriptionsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

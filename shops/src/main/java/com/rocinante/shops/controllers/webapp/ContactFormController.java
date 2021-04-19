@@ -1,7 +1,7 @@
 package com.rocinante.shops.controllers.webapp;
 
 import com.rocinante.shops.api.ContactForm;
-import com.rocinante.shops.service.sync.EmailService;
+import com.rocinante.shops.service.EmailService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

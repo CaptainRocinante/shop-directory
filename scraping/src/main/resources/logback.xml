@@ -1,0 +1,39 @@
+<configuration>
+  <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+    <!-- reset all previous level configurations of all j.u.l. loggers -->
+    <resetJUL>true</resetJUL>
+  </contextListener>
+
+  # Console appender
+  <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      # Pattern of log message for console appender
+      <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%t] %-5p [%class{36}.%M] [L%L] %m%n</Pattern>
+    </layout>
+  </appender>
+
+  # File appender
+  <appender name="fout" class="ch.qos.logback.core.FileAppender">
+    <file>shop-directory.log</file>
+    <append>false</append>
+    <encoder>
+      # Pattern of log message for file appender
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} [%t] %-5p [%class{36}.%M] [L%L] %m%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="stdout" />
+    <appender-ref ref="fout" />
+  </root>
+
+  # Override log level for specified packages
+  <logger name="org.javamoney.moneta.FastMoney" level="ERROR">
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="fout"/>
+  </logger>
+  <logger name="org.javamoney.moneta.DefaultMonetaryContextFactory" level="ERROR">
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="fout"/>
+  </logger>
+</configuration>

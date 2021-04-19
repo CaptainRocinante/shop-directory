@@ -12,7 +12,6 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <jbcrypt.version>0.4</jbcrypt.version>
     <sendgrid.version>4.0.1</sendgrid.version>
   </properties>
 
@@ -43,18 +42,8 @@
     <!-- Own -->
     <dependency>
       <groupId>com.rocinante</groupId>
-      <artifactId>scraping</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.rocinante</groupId>
       <artifactId>datastore</artifactId>
       <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.mindrot</groupId>
-      <artifactId>jbcrypt</artifactId>
-      <version>${jbcrypt.version}</version>
     </dependency>
     <dependency>
       <groupId>com.sendgrid</groupId>

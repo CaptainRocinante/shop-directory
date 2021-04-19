@@ -1,4 +1,4 @@
-package com.rocinante.shops.service.sync;
+package com.rocinante.shops.service;
 
 import com.sendgrid.Content;
 import com.sendgrid.Email;

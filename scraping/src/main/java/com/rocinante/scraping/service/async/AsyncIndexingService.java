@@ -1,4 +1,4 @@
-package com.rocinante.shops.service.async;
+package com.rocinante.scraping.service.async;
 
 import com.rocinante.datastore.dao.MerchantInferredCategoryDao;
 import com.rocinante.datastore.entities.MerchantInferredCategory;

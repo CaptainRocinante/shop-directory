@@ -13,20 +13,24 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 /*
  This class stores and uses an instance of the Chrome driver from the ThreadLocal, so it should
  be used from a smaller dedicated thread-pool.
 */
+@Component
 public class RenderedHtmlProvider {
   private final ThreadLocal<WebDriver> webDriverThreadLocal;
   private final UserAgentProvider userAgentProvider;
   @Nullable private final String customChromeBinaryShim;
 
-  public RenderedHtmlProvider(boolean proxyServerEnabled,
-      String proxyServer,
-      String chromeDriverPath) {
+  public RenderedHtmlProvider(
+      @Value("${scraping.scrapoxy.enabled}") boolean proxyServerEnabled,
+      @Value("${scraping.scrapoxy.url}") String proxyServer,
+      @Value("${scraping.chrome.driver.path}") String chromeDriverPath) {
     log.info("Proxy server url {} is {}", proxyServer, proxyServerEnabled ? "enabled" : "disabled");
     System.setProperty("webdriver.chrome.driver", chromeDriverPath);
 

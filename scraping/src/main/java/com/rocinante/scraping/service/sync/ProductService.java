@@ -1,4 +1,4 @@
-package com.rocinante.shops.service.sync;
+package com.rocinante.scraping.service.sync;
 
 import com.rocinante.common.api.dto.ProductCrudDto;
 import com.rocinante.datastore.dao.ProductDao;

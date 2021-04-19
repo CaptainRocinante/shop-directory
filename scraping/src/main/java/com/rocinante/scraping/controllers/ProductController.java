@@ -1,7 +1,7 @@
-package com.rocinante.shops.controllers.rest;
+package com.rocinante.scraping.controllers;
 
 import com.rocinante.common.api.dto.ProductCrudDto;
-import com.rocinante.shops.service.sync.ProductService;
+import com.rocinante.scraping.service.sync.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

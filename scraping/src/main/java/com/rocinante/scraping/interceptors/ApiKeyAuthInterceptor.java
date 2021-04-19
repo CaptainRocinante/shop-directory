@@ -1,4 +1,4 @@
-package com.rocinante.shops.interceptors;
+package com.rocinante.scraping.interceptors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

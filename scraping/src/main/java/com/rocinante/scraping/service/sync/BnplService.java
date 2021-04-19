@@ -1,4 +1,4 @@
-package com.rocinante.shops.service.sync;
+package com.rocinante.scraping.service.sync;
 
 import com.rocinante.datastore.dao.BnplDao;
 import com.rocinante.datastore.entities.BnplProvider;
@@ -16,11 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class BnplService {
   private final BnplDao bnplDao;
-
-  @Transactional(readOnly = true)
-  public List<BnplProvider> getAllBnplProviders() {
-    return bnplDao.findAll();
-  }
 
   @Transactional(readOnly = true)
   public List<Merchant> getAllMerchantsForBnplProvider(UUID bnplUuid) {

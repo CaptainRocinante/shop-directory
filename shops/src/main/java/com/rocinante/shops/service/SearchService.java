@@ -1,4 +1,4 @@
-package com.rocinante.shops.service.sync;
+package com.rocinante.shops.service;
 
 import com.rocinante.datastore.entities.Product;
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.rocinante.shops.controllers.rest;
+package com.rocinante.scraping.controllers;
 
-import com.rocinante.shops.service.async.AsyncIndexingService;
+import com.rocinante.scraping.service.async.AsyncIndexingService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

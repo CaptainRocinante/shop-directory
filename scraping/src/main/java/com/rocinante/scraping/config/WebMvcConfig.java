@@ -1,6 +1,6 @@
-package com.rocinante.shops.config;
+package com.rocinante.scraping.config;
 
-import com.rocinante.shops.interceptors.ApiKeyAuthInterceptor;
+import com.rocinante.scraping.interceptors.ApiKeyAuthInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
