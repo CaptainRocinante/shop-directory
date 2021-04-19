@@ -19,8 +19,10 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class CategoryCrawler implements Crawler<List<Category>> {
   private final RenderedHtmlProvider renderedHtmlProvider;
 

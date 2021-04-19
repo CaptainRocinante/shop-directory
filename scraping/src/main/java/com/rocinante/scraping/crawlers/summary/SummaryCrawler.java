@@ -48,8 +48,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.javamoney.moneta.FastMoney;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Node;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   public static final AnyLinkWithHrefTextSelector ANY_LINK_WITH_HREF_SELECTOR =
       new AnyLinkWithHrefTextSelector();
