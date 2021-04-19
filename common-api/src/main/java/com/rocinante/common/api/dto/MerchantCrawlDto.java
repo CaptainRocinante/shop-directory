@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class MerchantCrawlDto {
-  private String uuid;
-  private int days;
+  private final String uuid;
+  private final int days;
 }

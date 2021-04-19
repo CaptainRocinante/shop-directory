@@ -1,11 +1,17 @@
 package com.rocinante.client;
 
 import com.opencsv.bean.CsvToBeanBuilder;
+import com.rocinante.common.api.dto.MerchantCrawlDto;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 
 /*
@@ -21,14 +27,28 @@ java -jar target/clients-1.0-SNAPSHOT.jar <API_KEY> <CSV_PATH> <NOT_CRAWLED_IN_X
  */
 @Slf4j
 public class ScrapingClient {
+  private static final String BASE_SCRAPE_API = "https://api.paylatergoods.com/crawl";
+
   private final String apiKey;
+  private final Client webClient;
 
   public ScrapingClient(String apiKey) {
     this.apiKey = apiKey;
+    this.webClient = ClientBuilder.newClient();
   }
 
   private void scrapeAllCategoriesForMerchant(UUID merchantUuid, int daysBefore) {
     log.info("Invoking category crawl for {} with daysBefore {}", merchantUuid, daysBefore);
+    final MerchantCrawlDto merchantCrawlDto = new MerchantCrawlDto(merchantUuid.toString(),
+        daysBefore);
+
+    final Response rs = webClient
+        .target(BASE_SCRAPE_API)
+        .path("categories")
+        .request(MediaType.APPLICATION_JSON)
+        .buildPost(Entity.entity(merchantCrawlDto, MediaType.APPLICATION_JSON))
+        .invoke();
+    log.info("Response code {}", rs.getStatus());
   }
 
   private void scrapeAllProductsForMerchant(UUID merchantUuid, int daysBefore) {

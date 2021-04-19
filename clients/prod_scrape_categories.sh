@@ -18,6 +18,6 @@ if [[ -z "$API_KEY" ]]; then
     exit 1
 fi
 
-./../mvnw install -DskipTests
+./../mvnw clean install -DskipTests
 
 java -jar target/clients-1.0-SNAPSHOT.jar $API_KEY $CSV_PATH $DAYS_BEFORE categories
