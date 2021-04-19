@@ -28,6 +28,7 @@ java -jar target/clients-1.0-SNAPSHOT.jar <API_KEY> <CSV_PATH> <NOT_CRAWLED_IN_X
 @Slf4j
 public class ScrapingClient {
   private static final String BASE_SCRAPE_API = "https://api.paylatergoods.com/crawl";
+  private static final String API_KEY_HEADER = "apiKey";
 
   private final String apiKey;
   private final Client webClient;
@@ -46,6 +47,7 @@ public class ScrapingClient {
         .target(BASE_SCRAPE_API)
         .path("categories")
         .request(MediaType.APPLICATION_JSON)
+        .header(API_KEY_HEADER, apiKey)
         .buildPost(Entity.entity(merchantCrawlDto, MediaType.APPLICATION_JSON))
         .invoke();
     log.info("Response code {}", rs.getStatus());
@@ -53,6 +55,17 @@ public class ScrapingClient {
 
   private void scrapeAllProductsForMerchant(UUID merchantUuid, int daysBefore) {
     log.info("Invoking product crawl for {} with daysBefore {}", merchantUuid, daysBefore);
+    final MerchantCrawlDto merchantCrawlDto = new MerchantCrawlDto(merchantUuid.toString(),
+        daysBefore);
+
+    final Response rs = webClient
+        .target(BASE_SCRAPE_API)
+        .path("products")
+        .request(MediaType.APPLICATION_JSON)
+        .header(API_KEY_HEADER, apiKey)
+        .buildPost(Entity.entity(merchantCrawlDto, MediaType.APPLICATION_JSON))
+        .invoke();
+    log.info("Response code {}", rs.getStatus());
   }
 
   public static void main(String[] args) throws FileNotFoundException {
