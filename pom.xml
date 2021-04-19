@@ -15,6 +15,7 @@
     <module>shops</module>
     <module>datastore</module>
     <module>common-api</module>
+    <module>clients</module>
   </modules>
   <groupId>com.rocinante</groupId>
   <artifactId>shop-directory</artifactId>
