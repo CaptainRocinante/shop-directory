@@ -13,11 +13,11 @@ Usage:
 
 Scrape all categories for a merchant:
 
-java -jar target/clients-1.0-SNAPSHOT.jar <API_KEY> <CSV_PATH> categories
+java -jar target/clients-1.0-SNAPSHOT.jar <API_KEY> <CSV_PATH> <NOT_CRAWLED_IN_X_DAYS> categories
 
 Scrape all products for a merchant:
 
-java -jar target/clients-1.0-SNAPSHOT.jar <API_KEY> <CSV_PATH> products
+java -jar target/clients-1.0-SNAPSHOT.jar <API_KEY> <CSV_PATH> <NOT_CRAWLED_IN_X_DAYS> products
  */
 @Slf4j
 public class ScrapingClient {
