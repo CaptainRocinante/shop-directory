@@ -5,12 +5,12 @@ RUN apt-get install -y gconf-service gnupg libasound2 libatk1.0-0 libcairo2 libc
 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
 
 # install google chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
+RUN wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_89.0.4389.128-1_amd64.deb
+RUN dpkg -i google-chrome-stable_89.0.4389.128-1_amd64.deb; apt-get -fy install
 
 # install chromedriver
 RUN apt-get install -yqq unzip
-RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
+RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/89.0.4389.23/chromedriver_linux64.zip
 RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 
 # set display port to avoid crash

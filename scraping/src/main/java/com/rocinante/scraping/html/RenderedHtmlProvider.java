@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -31,6 +32,7 @@ public class RenderedHtmlProvider {
       @Value("${scraping.scrapoxy.enabled}") boolean proxyServerEnabled,
       @Value("${scraping.scrapoxy.url}") String proxyServer,
       @Value("${scraping.chrome.driver.path}") String chromeDriverPath) {
+    log.info("Init RenderedHtmlProvider");
     log.info("Proxy server url {} is {}", proxyServer, proxyServerEnabled ? "enabled" : "disabled");
     System.setProperty("webdriver.chrome.driver", chromeDriverPath);
 
@@ -52,7 +54,6 @@ public class RenderedHtmlProvider {
                 "--headless",
                 "--disable-gpu",
                 "--window-size=1920,1080",
-                "--remote-debugging-port=9222",
                 "--ignore-certificate-errors",
                 "--silent",
                 "--enable-javascript",
@@ -65,7 +66,18 @@ public class RenderedHtmlProvider {
 
           @Override
           protected WebDriver initialValue() {
-            return initWebDriver();
+            try {
+              return initWebDriver();
+            } catch (SessionNotCreatedException ex) {
+              log.info("SessionNotCreatedException detected, sleeping and retrying");
+              try {
+                // Sleep for 5s and try again
+                Thread.sleep(5000L);
+                return initialValue();
+              } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+              }
+            }
           }
 
           @Override
