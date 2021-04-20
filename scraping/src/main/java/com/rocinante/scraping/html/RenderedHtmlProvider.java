@@ -50,6 +50,7 @@ public class RenderedHtmlProvider {
                 "--no-sandbox",
                 "--disable-dev-shm-usage",
                 "--headless",
+                "--disable-gpu",
                 "--window-size=1920,1080",
                 "--remote-debugging-port=9222",
                 "--ignore-certificate-errors",
