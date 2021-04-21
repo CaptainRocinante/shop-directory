@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="${lang}"
+      th:lang="${lang}"
+      th:with="lang=${#locale.language}" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="logoElement">
+  <style>
+    .tagLine {
+      font-size: 200%;
+      text-align: center;
+    }
+    @media (max-width:601px) {
+      .tagLine {
+        font-size: 100%;
+      }
+    }
+
+    hr {
+        border: none;
+        height: 5px;
+        max-width: 400px;
+        /* Set the hr color */
+        color: #333; /* old IE */
+        background-color: #333; /* Modern Browsers */
+    }
+  </style>
+  <!-- Top Logo -->
+  <div class="w3-padding-small">
+    <header class="w3-container w3-xlarge">
+      <img style="width:90%;margin:0px auto;display:block;margin-top:50px;max-width:900px;"
+           th:src="@{/img/paylaterGoodsHeader.png}" />
+    </header>
+  </div>
+
+  <!-- Tag Line -->
+  <div class="w3-container" style="width:70%;margin:0px auto;font-family:'Oswald',sans-serif;">
+    <p class="tagLine">Shop your favorite Afterpay, Klarna and Affirm stores</p>
+    <hr style="width:50%;margin:auto;">
+  </div>
+</div>

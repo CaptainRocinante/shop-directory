@@ -38,7 +38,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     <h3 class="w3-wide"><b>LOGO</b></h3>
   </div>
   <div class="w3-container w3-display-container w3-padding-16 w3-margin"
-       style="margin-top:100px;font-weight:bold;color:#FCE373;">
+       style="margin-top:100px;font-weight:bold;color:#cb8e7e;">
     <h4>Accepts</h4>
     <form onsubmit="removePageNum()">
       <div th:if="${bnplFiltersSelected.size() == 0}">
@@ -46,7 +46,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
           <input class="w3-check" type="checkbox" name="bnplFiltersSelected" th:value="${bnplFilter.bnplUuid}">
           <label class="w3-padding-small" th:text="${bnplFilter.bnplName}">BnplName</label>
         </p>
-        <button style="color:black;background:#FCE373;" type="submit" class="w3-button">Filter
+        <button style="color:black;background:#cb8e7e;" type="submit" class="w3-button">Filter
         </button>
       </div>
       <div th:unless="${bnplFiltersSelected.size() == 0}">
@@ -55,13 +55,13 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
                  th:value="${bnplFilter.bnplUuid}" checked>
           <label class="w3-padding-small" th:text="${bnplFilter.bnplName}">BnplName</label>
         </p>
-        <button style="color:black;background:#FCE373;" type="button" onclick="resetBnplFilters()"
+        <button style="color:black;background:#cb8e7e;" type="button" onclick="resetBnplFilters()"
                 class="w3-button">Reset</button>
       </div>
     </form>
   </div>
   <div class="w3-container w3-display-container w3-padding-16 w3-margin"
-       style="font-weight:bold;color:#FCE373;">
+       style="font-weight:bold;color:#cb8e7e;">
     <h4>Brands</h4>
     <form onsubmit="removePageNum()">
       <div th:if="${merchantFiltersSelected.size() == 0}">
@@ -85,7 +85,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
              onclick="document.getElementById('brandsFilter').style.display='block'"
              style="display: inline-block;margin-bottom:20px;">See All</a>
         </div>
-        <button style="color:black;background:#FCE373;" type="submit" class="w3-button">Filter</button>
+        <button style="color:black;background:#cb8e7e;" type="submit" class="w3-button">Filter</button>
       </div>
       <div th:unless="${merchantFiltersSelected.size() == 0}">
         <p th:each="merchantFilter : ${merchantFiltersSelected}">
@@ -94,13 +94,13 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
           <label class="w3-padding-small" th:text="${merchantFilter.merchantName}">MerchantName
           </label>
         </p>
-        <button style="color:black;background:#FCE373;" type="button" onclick="resetMerchantFilters()"
+        <button style="color:black;background:#cb8e7e;" type="button" onclick="resetMerchantFilters()"
                 class="w3-button">Reset</button>
       </div>
     </form>
   </div>
   <div class="w3-container w3-display-container w3-padding-16 w3-margin"
-       style="font-weight:bold;color:#FCE373;">
+       style="font-weight:bold;color:#cb8e7e;">
     <h4>
       <a href="javascript:void(0)"
          onclick="document.getElementById('subscribeFormContainer').style.display='block'">Newsletter
