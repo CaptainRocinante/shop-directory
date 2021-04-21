@@ -115,10 +115,19 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 </nav>
 
 <!-- Top menu on small screens -->
-<header class="w3-bar w3-top w3-hide-large w3-white w3-xlarge">
-  <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-left"
-     onclick="w3_open()"><i class="fa fa-bars"></i></a>
-  <a href="/" class="w3-bar-item w3-button w3-padding-24 w3-right"><i class="fa fa-home"></i></a>
+<header class="w3-bar w3-top w3-hide-large w3-white w3-xlarge"
+        style="text-align:center;">
+  <a href="javascript:void(0)" class="w3-button w3-padding-small"
+     onclick="w3_open()"
+     style="width:15%;margin:0px auto;vertical-align:middle;text-align:center;"><i
+      class="fa fa-bars"></i></a>
+  <!-- Logo Element -->
+  <img style="width:60%;margin:0px auto;max-width:900px;" th:src="@{/img/condensedLogoTagline.png}" />
+  <a href="/" class="w3-button w3-padding-small"
+     style="width:15%;margin:0px auto;vertical-align:middle;text-align:center;"><i
+      class="fa fa-home"></i></a>
+  <hr
+      style="width:50%;margin:auto;height:5px;color:#333;background-color:#333;margin-top:10px;">
 </header>
 
 <!-- Overlay effect when opening sidebar on small screens -->
@@ -127,8 +136,11 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:250px">
 
+  <!-- Push down content on medium screens -->
+  <div class="w3-hide-large w3-hide-small" style="margin-top:83px"></div>
+
   <!-- Push down content on small screens -->
-  <div class="w3-hide-large" style="margin-top:83px"></div>
+  <div class="w3-hide-large w3-hide-medium" style="margin-top:50px"></div>
 
   <!-- Logo Element -->
   <div class="w3-hide-small w3-hide-medium" th:insert="fragments/logoElement :: logoElement">
