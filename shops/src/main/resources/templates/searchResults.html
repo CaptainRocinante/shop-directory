@@ -94,8 +94,7 @@ check {width:24px;height:24px;position:relative;top:6px}
   <!--  Push down filters on large screens -->
   <div class="w3-hide-small w3-hide-medium hide-less-height" style="margin-top:300px"></div>
 
-  <div class="w3-container w3-padding-small w3-margin-left"
-       style="color:#cb8e7e;">
+  <div class="w3-container w3-padding-small w3-margin-left">
     <h4>Accepts</h4>
     <form onsubmit="removePageNum()">
       <div th:if="${bnplFiltersSelected.size() == 0}">
@@ -103,8 +102,7 @@ check {width:24px;height:24px;position:relative;top:6px}
           <input class="check" type="checkbox" name="bnplFiltersSelected" th:value="${bnplFilter.bnplUuid}">
           <label th:text="${bnplFilter.bnplName}">BnplName</label>
         </p>
-        <button style="color:black;background:#cb8e7e;" type="submit" class="w3-button">Filter
-        </button>
+        <button type="submit" class="w3-button w3-black">Filter</button>
       </div>
       <div th:unless="${bnplFiltersSelected.size() == 0}">
         <p th:each="bnplFilter : ${bnplFiltersSelected}">
@@ -112,13 +110,11 @@ check {width:24px;height:24px;position:relative;top:6px}
                  th:value="${bnplFilter.bnplUuid}" checked>
           <label class="w3-margin-left" th:text="${bnplFilter.bnplName}">BnplName</label>
         </p>
-        <button style="color:black;background:#cb8e7e;" type="button" onclick="resetBnplFilters()"
-                class="w3-button">Reset</button>
+        <button type="button" onclick="resetBnplFilters()" class="w3-button w3-black">Reset</button>
       </div>
     </form>
   </div>
-  <div class="w3-container w3-padding-small w3-margin-left"
-       style="color:#cb8e7e;">
+  <div class="w3-container w3-padding-small w3-margin-left">
     <h4>Brands</h4>
     <form onsubmit="removePageNum()">
       <div th:if="${merchantFiltersSelected.size() == 0}">
@@ -140,7 +136,7 @@ check {width:24px;height:24px;position:relative;top:6px}
              onclick="document.getElementById('brandsFilter').style.display='block'"
              style="display: inline-block;margin-bottom:20px;">See All</a>
         </div>
-        <button style="color:black;background:#cb8e7e;" type="submit" class="w3-button">Filter</button>
+        <button type="submit" class="w3-button w3-black">Filter</button>
       </div>
       <div th:unless="${merchantFiltersSelected.size() == 0}">
         <p th:each="merchantFilter : ${merchantFiltersSelected}">
@@ -149,13 +145,11 @@ check {width:24px;height:24px;position:relative;top:6px}
           <label class="w3-padding-small" th:text="${merchantFilter.merchantName}">MerchantName
           </label>
         </p>
-        <button style="color:black;background:#cb8e7e;" type="button" onclick="resetMerchantFilters()"
-                class="w3-button">Reset</button>
+        <button type="button" onclick="resetMerchantFilters()" class="w3-button w3-black">Reset</button>
       </div>
     </form>
   </div>
-  <div class="w3-container w3-padding-small w3-margin-left"
-       style="color:#cb8e7e;">
+  <div class="w3-container w3-padding-small w3-margin-left">
     <div>
       <a href="javascript:void(0)"
          onclick="document.getElementById('subscribeFormContainer').style.display='block'">Newsletter
