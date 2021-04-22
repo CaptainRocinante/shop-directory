@@ -49,20 +49,29 @@ footer {
     overflow: hidden;
 }
 
-.w3-sidebar {
-  height: auto;
+@media (min-width:993px) {
+  .w3-sidebar.w3-collapse {
+    height: auto;
+    padding: 25px;
+  }
+}
+
+@media (max-width:992px) {
+  .w3-sidebar.w3-collapse {
+    height: 100%;
+  }
 }
 
 </style>
 <body>
 
 <!-- Sidebar/menu -->
-<div class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px;"
+<nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px;"
      id="mySidebar">
-  <div class="w3-container w3-display-container w3-padding-16 w3-margin">
+  <div class="w3-container w3-padding-16 w3-margin">
     <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
   </div>
-  <div class="w3-container w3-display-container w3-padding-16 w3-margin"
+  <div class="w3-container w3-padding-16 w3-margin"
        style="margin-top:100px;font-weight:bold;color:#cb8e7e;">
     <h4>Accepts</h4>
     <form onsubmit="removePageNum()">
@@ -85,7 +94,7 @@ footer {
       </div>
     </form>
   </div>
-  <div class="w3-container w3-display-container w3-padding-16 w3-margin"
+  <div class="w3-container w3-padding-16 w3-margin"
        style="font-weight:bold;color:#cb8e7e;">
     <h4>Brands</h4>
     <form onsubmit="removePageNum()">
@@ -124,7 +133,7 @@ footer {
       </div>
     </form>
   </div>
-  <div class="w3-container w3-display-container w3-padding-16 w3-margin"
+  <div class="w3-container w3-padding-16 w3-margin"
        style="font-weight:bold;color:#cb8e7e;">
     <h4>
       <a href="javascript:void(0)"
@@ -137,7 +146,7 @@ footer {
       </a>
     </h4>
   </div>
-</div>
+</nav>
 
 <!-- Top menu on small screens -->
 <header class="w3-bar w3-top w3-hide-large w3-white w3-xlarge"
