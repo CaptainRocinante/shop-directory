@@ -62,6 +62,12 @@ footer {
   }
 }
 
+@media (max-height:1000px) {
+  .hide-less-height {
+    display: none;
+  }
+}
+
 hr {
   border: none;
   height: 5px;
@@ -88,7 +94,7 @@ check {width:24px;height:24px;position:relative;top:6px}
     </a>
   </div>
   <!--  Push down filters on large screens -->
-  <div class="w3-hide-small w3-hide-medium" style="margin-top:300px"></div>
+  <div class="w3-hide-small w3-hide-medium hide-less-height" style="margin-top:300px"></div>
 
   <div class="w3-container w3-padding-small w3-margin-left"
        style="color:#cb8e7e;">
