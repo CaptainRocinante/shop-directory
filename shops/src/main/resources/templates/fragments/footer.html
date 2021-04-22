@@ -3,5 +3,23 @@
       th:lang="${lang}"
       th:with="lang=${#locale.language}" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<footer th:fragment="footer" class="w3-black w3-small w3-center" style="height:30px">
-</footer>
+<div th:fragment="footer">
+  <!-- Subscribe section -->
+  <div th:insert="fragments/subscribe :: subscribe">
+  </div>
+  <!-- Contact form -->
+  <div th:insert="fragments/contactForm :: contactForm">
+  </div>
+  <footer class="w3-black w3-small w3-center" style="height:30px">
+    <div class="w3-container w3-padding-small">
+      <a class="w3-margin" href="javascript:void(0)"
+         onclick="document.getElementById('subscribeFormContainer').style.display='block'">Newsletter
+      </a>
+      <a class="w3-margin"
+         href="javascript:void(0)"
+         onclick="document.getElementById('contactFormContainer').style.display='block'">Contact
+      </a>
+    </div>
+  </footer>
+</div>
+

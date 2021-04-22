@@ -149,18 +149,6 @@ check {width:24px;height:24px;position:relative;top:6px}
       </div>
     </form>
   </div>
-  <div class="w3-container w3-padding-small w3-margin-left">
-    <div>
-      <a href="javascript:void(0)"
-         onclick="document.getElementById('subscribeFormContainer').style.display='block'">Newsletter
-      </a>
-    </div>
-    <div>
-      <a href="javascript:void(0)"
-         onclick="document.getElementById('contactFormContainer').style.display='block'">Contact
-      </a>
-    </div>
-  </div>
 </nav>
 
 <!-- Top menu on small screens -->
@@ -205,18 +193,9 @@ check {width:24px;height:24px;position:relative;top:6px}
        th:insert="fragments/searchBarProductGrid :: searchBarProductGrid">
   </div>
 
-  <!-- Subscribe section -->
-  <div th:insert="fragments/subscribe :: subscribe">
-  </div>
-
-  <!-- Contact form -->
-  <div th:insert="fragments/contactForm :: contactForm">
-  </div>
-
   <!-- Footer -->
   <div th:insert="fragments/footer :: footer">
   </div>
-
   <!-- End page content -->
 </div>
 
