@@ -5,7 +5,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="searchBarProductGrid">
   <!-- Search Bar -->
-  <div th:insert="fragments/searchBar :: searchBar">
+  <div class="w3-padding-16" th:insert="fragments/searchBar :: searchBar">
   </div>
   <div class="w3-container w3-text-grey" id="jeans">
     <p>Page <span th:text="${page}">8</span> of <span th:text="${totalPageCount}">8</span></p>
