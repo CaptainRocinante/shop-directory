@@ -133,7 +133,7 @@ footer {
     </h4>
     <h4>
       <a href="javascript:void(0)"
-         onclick="document.getElementById('footerContainer').style.display='block'">Contact
+         onclick="document.getElementById('contactFormContainer').style.display='block'">Contact
       </a>
     </h4>
   </div>
@@ -179,6 +179,10 @@ footer {
 
   <!-- Subscribe section -->
   <div th:insert="fragments/subscribe :: subscribe">
+  </div>
+
+  <!-- Contact form -->
+  <div th:insert="fragments/contactForm :: contactForm">
   </div>
 
   <!-- Footer -->
