@@ -36,6 +36,7 @@ public class SearchController {
 
   @RequestMapping("/")
   public String index(Model model) {
+    log.info("Landing Page Impression");
     model.addAttribute("query", "");
     return "index";
   }
