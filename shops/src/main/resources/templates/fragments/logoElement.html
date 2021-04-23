@@ -5,13 +5,23 @@
       xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="logoElement">
   <style>
-    .tagLine {
+    .headLine {
       font-size: 200%;
       text-align: center;
     }
     @media (max-width:601px) {
-      .tagLine {
+      .headLine {
         font-size: 100%;
+      }
+    }
+
+    .tagLine {
+      font-size: 100%;
+      text-align: center;
+    }
+    @media (max-width:601px) {
+      .tagLine {
+        font-size: 75%;
       }
     }
 
@@ -33,7 +43,8 @@
 
   <!-- Tag Line -->
   <div class="w3-container" style="width:70%;margin:0px auto;font-family:'Oswald',sans-serif;">
-    <p class="tagLine">Shop your favorite Afterpay, Klarna and Sezzle stores</p>
+    <p class="headLine">Buy Now Pay Later Product Finder</p>
+    <p class="tagLine">Search over a million products offering Afterpay, Klarna & Sezzle payment options</p>
     <hr style="width:50%;margin:auto;">
   </div>
 </div>
