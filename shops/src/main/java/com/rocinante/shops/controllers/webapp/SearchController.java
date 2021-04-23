@@ -47,6 +47,8 @@ public class SearchController {
       @RequestParam(required = false) Integer page,
       @RequestParam(required = false) List<String> bnplFiltersSelected,
       @RequestParam(required = false) List<String> merchantFiltersSelected) {
+    log.info("Performing Search query: {} for page: {} with bnplFilters: {} with merchantFilters:"
+            + " {}", query, page, bnplFiltersSelected, merchantFiltersSelected);
     if (page == null) {
       page = 1;
     }
