@@ -14,11 +14,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class MerchantService {
   private final BnplDao bnplDao;
   private final MerchantDao merchantDao;
@@ -44,12 +46,14 @@ public class MerchantService {
     final BnplProvider bnplProvider =
         bnplDao.findById(UUID.fromString(merchantCreateDto.getBnplUuid())).orElseThrow();
     final URL merchantUrl = new URL(merchantCreateDto.getMerchantUrl());
+    final Merchant merchant;
     final Optional<Merchant> existingMerchant = merchantDao.findByUrl(merchantUrl);
     if (existingMerchant.isPresent()) {
-      throw new IllegalStateException(String.format("Merchant with website %s already exists",
-          merchantUrl));
+      log.info("Existing merchant found");
+      merchant = existingMerchant.get();
+    } else {
+      merchant = merchantDao.save(new Merchant(merchantCreateDto));
     }
-    final Merchant merchant = merchantDao.save(new Merchant(merchantCreateDto));
     bnplProvider.addMerchant(merchant);
     bnplDao.save(bnplProvider);
     return merchant.getUuid().toString();
