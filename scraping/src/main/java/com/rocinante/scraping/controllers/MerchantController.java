@@ -1,7 +1,9 @@
 package com.rocinante.scraping.controllers;
 
+import com.rocinante.common.api.dto.MerchantCreateDto;
 import com.rocinante.common.api.dto.MerchantCrudDto;
 import com.rocinante.scraping.service.sync.MerchantService;
+import java.net.MalformedURLException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -20,5 +22,11 @@ public class MerchantController {
   @PostMapping("update")
   public void update(@RequestBody MerchantCrudDto merchantCrudDto) {
     merchantService.updateMerchant(merchantCrudDto);
+  }
+
+  @PostMapping("create")
+  public String create(@RequestBody MerchantCreateDto merchantCreateDto)
+      throws MalformedURLException {
+    return merchantService.createMerchant(merchantCreateDto);
   }
 }

@@ -1,6 +1,7 @@
 package com.rocinante.datastore.entities;
 
 import com.neovisionaries.i18n.CountryCode;
+import com.rocinante.common.api.dto.MerchantCreateDto;
 import com.rocinante.common.api.dto.MerchantCrudDto;
 import com.rocinante.common.api.dto.MerchantCsvUploadDto;
 import com.rocinante.common.api.dto.MerchantFilterDto;
@@ -69,6 +70,17 @@ public class Merchant {
     this.uuid = UUID.randomUUID();
     this.name = merchantCsvUploadDto.getMerchantName();
     this.url = new URL(merchantCsvUploadDto.getMerchantWebsite());
+    this.countryCode = CountryCode.US; // TODO: Remove hardcoded value
+    this.enabled = true;
+    this.createdAt = Instant.now().atOffset(ZoneOffset.UTC);
+    this.updatedAt = Instant.now().atOffset(ZoneOffset.UTC);
+    this.lastCrawledAt = null;
+  }
+
+  public Merchant(MerchantCreateDto merchantCreateDto) throws MalformedURLException {
+    this.uuid = UUID.randomUUID();
+    this.name = merchantCreateDto.getMerchantName();
+    this.url = new URL(merchantCreateDto.getMerchantUrl());
     this.countryCode = CountryCode.US; // TODO: Remove hardcoded value
     this.enabled = true;
     this.createdAt = Instant.now().atOffset(ZoneOffset.UTC);

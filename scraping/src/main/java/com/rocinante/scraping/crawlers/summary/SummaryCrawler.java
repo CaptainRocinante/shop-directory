@@ -328,7 +328,7 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
         summaryCrawler.crawlUrl(
             //
             // "https://www.aritzia.com/en/clothing/womens-workout-clothes/womens-bike-shorts",
-            "https://www.thenorthface.com/shop/womens-shirts-tops", new MapCrawlContext(null));
+            "https://www.untuckit.com/collections/sale-shirts", new MapCrawlContext(null));
     productSummaries.forEach(ps -> log.info("ProductSummary: {}", ps.toString()));
   }
 }

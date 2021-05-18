@@ -93,7 +93,7 @@ public class CategoryCrawler implements Crawler<List<Category>> {
                 "http://ec2-35-173-183-110.compute-1.amazonaws.com:8888",
                 "/usr/local/bin/chromedriver"));
     List<Category> categories =
-        categoryCrawler.crawlUrl("https://www.adidas.com/", new MapCrawlContext(null));
+        categoryCrawler.crawlUrl("https://www.untuckit.com/", new MapCrawlContext(null));
     categories.forEach(c -> log.info("Category {}", c.toString()));
   }
 }
