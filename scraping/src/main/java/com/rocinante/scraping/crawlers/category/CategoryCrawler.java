@@ -90,7 +90,7 @@ public class CategoryCrawler implements Crawler<List<Category>> {
     CategoryCrawler categoryCrawler =
         new CategoryCrawler(
             new RenderedHtmlProvider(true,
-                "http://ec2-35-173-183-110.compute-1.amazonaws.com:8888",
+                "http://ec2-18-209-34-13.compute-1.amazonaws.com:8888",
                 "/usr/local/bin/chromedriver"));
     List<Category> categories =
         categoryCrawler.crawlUrl("https://www.untuckit.com/", new MapCrawlContext(null));
