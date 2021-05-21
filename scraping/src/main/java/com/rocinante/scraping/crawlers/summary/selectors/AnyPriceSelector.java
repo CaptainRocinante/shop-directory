@@ -49,13 +49,20 @@ public class AnyPriceSelector implements NodeSelector {
       matchResults.forEach(
           result -> {
             final String amount = result.group(2) != null ? result.group(2) : result.group(3);
-            final MonetaryAmount monetaryAmount =
-                Monetary.getDefaultAmountFactory()
-                    .setCurrency("USD") // TODO: Hardcoded for now
-                    .setNumber(Double.parseDouble(amount.replace(",", "")))
-                    .create();
+            final MonetaryAmount monetaryAmount;
+            try {
+               monetaryAmount = Monetary.getDefaultAmountFactory()
+                      .setCurrency("USD") // TODO: Hardcoded for now
+                      .setNumber(Double.parseDouble(amount.replace(",", "")))
+                      .create();
+            } catch (NumberFormatException e) {
+              return;
+            }
             allMoney.add(FastMoney.from(monetaryAmount));
           });
+      if (allMoney.isEmpty()) {
+        return Either.left(NodeNotSelected.getInstance());
+      }
       properties.put(LIST_MONEY_OBJECT_PROPERTY, allMoney);
       return Either.right(new NodeProperties(element, properties));
     }
