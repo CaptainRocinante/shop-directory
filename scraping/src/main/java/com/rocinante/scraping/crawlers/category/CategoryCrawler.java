@@ -81,19 +81,22 @@ public class CategoryCrawler implements Crawler<List<Category>> {
     return bfs(doc);
   }
 
+  /*
+   * Demo List
+   *
+   * https://www.untuckit.com/
+   * https://bdgastore.com/
+   * https://www.notre-shop.com/
+   *
+   */
   public static void main(String[] args) {
-    //    Jsoup.parse(new File(
-    //            CategoryCrawler.class.getClassLoader().getResource("nestnewyork.html").getFile()),
-    //        "utf-8");
-    //    Document doc = Jsoup.connect("https://www.dsw.com/").get();
-
     CategoryCrawler categoryCrawler =
         new CategoryCrawler(
             new RenderedHtmlProvider(true,
                 "http://ec2-18-209-34-13.compute-1.amazonaws.com:8888",
                 "/usr/local/bin/chromedriver"));
     List<Category> categories =
-        categoryCrawler.crawlUrl("https://www.untuckit.com/", new MapCrawlContext(null));
+        categoryCrawler.crawlUrl("https://www.notre-shop.com/", new MapCrawlContext(null));
     categories.forEach(c -> log.info("Category {}", c.toString()));
   }
 }

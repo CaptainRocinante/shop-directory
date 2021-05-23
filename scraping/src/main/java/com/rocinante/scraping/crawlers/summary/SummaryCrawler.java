@@ -315,20 +315,28 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
     return results;
   }
 
+  /*
+   * Demo List
+   *
+   * https://www.patriotoutfitters.com/shirts
+   * https://bdgastore.com/collections/sale
+   * https://www.untuckit.com/collections/wrinkle-free
+   * https://www.blendsus.com/collections/outerwear
+   * https://www.onenessboutique.com/collections/hats
+   * https://www.youngla.com/collections/tanks
+   * https://thepremierstore.com/collections/apparel/T-Shirts
+   *
+   */
   public static void main(String[] args) {
     final SummaryCrawler summaryCrawler =
         new SummaryCrawler(
             new RenderedHtmlProvider(true,
                 "http://ec2-18-209-34-13.compute-1.amazonaws.com:8888",
                 "/usr/local/bin/chromedriver"));
-    //    List<ProductSummary> productSummaries = summaryCrawler.crawlHtml(
-    //        ResourceUtils.readFileContents("dswdummy.html"),
-    //        "https://www.chubbiesshorts.com/", new MapCrawlContext(null));
     List<ProductSummary> productSummaries =
         summaryCrawler.crawlUrl(
-            //
-            // "https://www.aritzia.com/en/clothing/womens-workout-clothes/womens-bike-shorts",
-            "https://www.untuckit.com/collections/sale-shirts", new MapCrawlContext(null));
+            "https://www.patriotoutfitters.com/shirts",
+            new MapCrawlContext(null));
     productSummaries.forEach(ps -> log.info("ProductSummary: {}", ps.toString()));
   }
 }
