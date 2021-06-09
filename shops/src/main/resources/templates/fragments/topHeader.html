@@ -3,9 +3,34 @@
       th:lang="${lang}"
       th:with="lang=${#locale.language}" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="topHeader" class="w3-padding-16"  style="background-color:#cb8e7e;">
-  <header class="w3-container w3-xlarge w3-margin">
-    <a class="w3-left" href="/"><i class="fa fa-home"></i></a>
-    <h1 class="w3-center" style="font-size:100%;">Shop Directory</h1>
-  </header>
+<div th:fragment="topHeader">
+  <style>
+    .topHeaderContainer {
+      text-align:center;
+      width:100%;
+      height: 80px;
+    }
+    .logoItem {
+      margin:1px;
+      width:20%;
+      text-align:left;
+      display:inline-block;
+    }
+    .searchItem {
+      margin:1px;
+      width:50%;
+      text-align:left;
+      display:inline-block;
+    }
+  </style>
+  <div class="topHeaderContainer">
+    <!-- Logo -->
+    <div class="logoItem">
+      <img style="width:90%; max-height:80px;" th:src="@{/img/paylaterGoodsHeader.png}"/>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="searchItem" th:insert="fragments/searchBar :: searchBar">
+    </div>
+  </div>
 </div>
