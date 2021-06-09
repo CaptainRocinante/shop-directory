@@ -6,28 +6,32 @@
 <div th:fragment="topHeader">
   <style>
     .topHeaderContainer {
-      text-align:center;
       width:100%;
+      height:auto;
     }
     .logoItem {
       margin:1px;
+      height:50px;
       width:20%;
-      text-align:left;
+      margin-left: 10px;
       display:inline-block;
     }
     .searchItem {
       margin:1px;
-      width:50%;
-      text-align:left;
+      width: 600px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
       display:inline-block;
     }
 
-    @media (max-width:901px) {
+    @media (max-width:1100px) {
       .logoItem {
         margin:1px;
-        width:70%;
+        width:50%;
         margin: 0 auto;
         display:block;
+        text-align:center;
       }
       .searchItem {
         margin:1px;
@@ -40,7 +44,8 @@
   <div class="topHeaderContainer">
     <!-- Logo -->
     <div class="logoItem">
-      <img style="width:90%; max-height:80px;" th:src="@{/img/paylaterGoodsHeader.png}"/>
+      <img style="width:90%;max-height:50px;max-width:200px;"
+           th:src="@{/img/paylaterGoodsHeader.png}"/>
     </div>
 
     <!-- Search Bar -->
