@@ -8,6 +8,7 @@
     .productGridContainer {
       width:100%;
       height:auto;
+      overflow:hidden;
     }
     .filters {
       width:20%;
@@ -20,12 +21,29 @@
       float: left;
       display:inline-block;
     }
+
+    @media (max-width:900px) {
+      .productGridContainer {
+        width:100%;
+        height:auto;
+        text-align:center;
+        overflow:hidden;
+      }
+      .filters {
+        display:none;
+      }
+      .products {
+        width:100%;
+        margin:0 auto;
+        display:inline-block;
+      }
+    }
   </style>
 
   <!-- Sidebar/menu -->
   <div class="productGridContainer">
     <div class="filters">
-      <div class="w3-white w3-collapse" id="mySidebar">
+      <div class="w3-white" id="mySidebar">
         <div class="w3-container w3-padding-small w3-margin-left">
           <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
         </div>
