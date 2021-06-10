@@ -9,10 +9,16 @@
       width:100%;
       height:auto;
     }
+    .logoContainer {
+      width:auto;
+      height:auto;
+      display:inline-block;
+      overflow:hidden;
+    }
     .logoItem {
       margin:1px;
       height:50px;
-      width:20%;
+      width:100%;
       margin-left: 10px;
       display:inline-block;
     }
@@ -24,14 +30,24 @@
       transform: translateX(-50%);
       display:inline-block;
     }
+    .smallScreenMenuBar {
+      display:none;
+    }
 
     @media (max-width:1100px) {
       .logoItem {
-        margin:1px;
         width:50%;
-        margin: 0 auto;
-        display:block;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
         text-align:center;
+      }
+      .logoContainer {
+        width:100%;
+        height:auto;
+        display:block;
+        overflow:hidden;
+        margin-bottom:10px;
       }
       .searchItem {
         margin:1px;
@@ -39,17 +55,31 @@
         margin: 0 auto;
         display:block;
       }
+      .smallScreenMenuBar {
+        margin-left: 10px;
+        display:inline-block;
+        float:left;
+      }
     }
   </style>
   <div class="topHeaderContainer">
-    <!-- Logo -->
-    <div class="logoItem">
-      <a href="/"><img style="width:90%;max-height:50px;max-width:200px;"
-                       th:src="@{/img/paylaterGoodsHeader.png}"/></a>
+    <div class="logoContainer">
+      <!-- Logo -->
+      <div class="logoItem">
+        <a href="/"><img style="width:90%;max-height:50px;max-width:200px;"
+                         th:src="@{/img/paylaterGoodsHeader.png}"/></a>
+      </div>
+      <!-- Small Screen Menu Bar -->
+      <div class="smallScreenMenuBar">
+        <a href="javascript:void(0)" class="w3-button w3-padding-small">
+          <i class="fa fa-bars"></i></a>
+      </div>
     </div>
 
     <!-- Search Bar -->
     <div class="searchItem" th:insert="fragments/searchBar :: searchBar">
     </div>
+
+
   </div>
 </div>
