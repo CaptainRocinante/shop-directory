@@ -132,7 +132,7 @@ check {width:24px;height:24px;position:relative;top:6px}
       </p>
       <h4>Brands</h4>
       <form>
-        <div th:if="${merchantFiltersSelected.size() == 0}">
+        <div>
           <p th:each="merchantFilter : ${merchantFilters}">
             <input class="check" type="checkbox" name="merchantFiltersSelected"
                    th:value="${merchantFilter.merchantUuid}">
@@ -141,32 +141,12 @@ check {width:24px;height:24px;position:relative;top:6px}
           </p>
           <button type="submit" class="w3-button w3-black">Filter</button>
         </div>
-        <div th:unless="${merchantFiltersSelected.size() == 0}">
-          <p th:each="merchantFilter : ${merchantFiltersSelected}">
-            <input class="check" type="checkbox" name="merchantFiltersSelected"
-                   th:value="${merchantFilter.merchantUuid}" checked>
-            <label class="w3-padding-small" th:text="${merchantFilter.merchantName}">MerchantName
-            </label>
-          </p>
-          <button type="button" onclick="resetMerchantFilters()"
-                  class="w3-button w3-black">Reset</button>
-        </div>
       </form>
     </div>
   </div>
 </div>
 
 <script>
-// Accordion
-function myAccFunc() {
-  var x = document.getElementById("demoAcc");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else {
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
-
 // Open and close sidebar
 function w3_open() {
   document.getElementById("mySidebar").style.display = "block";
