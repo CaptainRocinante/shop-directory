@@ -39,6 +39,57 @@
       }
     }
   </style>
+  <script>
+    function removeURLParameter(url, parameter) {
+      //prefer to use l.search if you have a location/link object
+      var urlparts = url.split('?');
+      if (urlparts.length >= 2) {
+
+        var prefix = encodeURIComponent(parameter) + '=';
+        var pars = urlparts[1].split(/[&;]/g);
+
+        //reverse iteration as may be destructive
+        for (var i = pars.length; i-- > 0;) {
+            //idiom for string.startsWith
+            if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                pars.splice(i, 1);
+            }
+        }
+        return urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : '');
+      }
+      return url;
+    }
+
+    function removePageNum() {
+      history.pushState({}, null, removeURLParameter(document.URL, 'page'));
+      return true;
+    }
+
+    function resetBnplFilters() {
+      filterRemoved = removeURLParameter(document.URL, 'bnplFiltersSelected');
+      pageRemoved = removeURLParameter(filterRemoved, 'page');
+      window.location.replace(pageRemoved);
+    }
+
+    function resetMerchantFilters() {
+      filterRemoved = removeURLParameter(document.URL, 'merchantFiltersSelected');
+      pageRemoved = removeURLParameter(filterRemoved, 'page');
+      window.location.replace(pageRemoved);
+    }
+
+    function navigateToPage(pageNum) {
+      var url = new URL(document.URL);
+      var search_params = url.searchParams;
+      search_params.set('page', pageNum);
+
+      // change the search property of the main url
+      url.search = search_params.toString();
+
+      // the new url string
+      var new_url = url.toString();
+      window.location.replace(new_url);
+    }
+  </script>
 
   <!-- Sidebar/menu -->
   <div class="productGridContainer">
