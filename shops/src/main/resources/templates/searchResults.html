@@ -104,22 +104,16 @@ check {width:24px;height:24px;position:relative;top:6px}
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
-<header>
+<!-- !PAGE CONTENT! -->
+<div class="w3-main">
+
   <!-- Header -->
   <div th:insert="fragments/topHeader :: topHeader">
   </div>
-</header>
-
-<!-- !PAGE CONTENT! -->
-<div class="w3-main">
-  <!-- Push down content on medium screens -->
-  <div class="w3-hide-large w3-hide-small" style="margin-top:83px"></div>
-
-  <!-- Push down content on small screens -->
-  <div class="w3-hide-large w3-hide-medium" style="margin-top:50px"></div>
 
   <!-- Product grid -->
-  <div class="w3-container" th:insert="fragments/productGrid :: productGrid">
+  <div class="w3-container" style="margin-top:70px"
+       th:insert="fragments/productGrid :: productGrid">
   </div>
 
   <!-- Footer -->
