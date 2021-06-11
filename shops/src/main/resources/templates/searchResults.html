@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head th:insert="fragments/html-head :: html-head">
+<head th:insert="fragments/htmlHead :: htmlHead">
 </head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -101,9 +101,6 @@ check {width:24px;height:24px;position:relative;top:6px}
 <!--      style="width:50%;margin:auto;height:5px;color:#333;background-color:#333;margin-top:10px;">-->
 <!--</header>-->
 
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
 <!-- !PAGE CONTENT! -->
 <div class="w3-main">
 
@@ -119,7 +116,6 @@ check {width:24px;height:24px;position:relative;top:6px}
   <!-- Footer -->
   <div th:insert="fragments/footer :: footer">
   </div>
-  <!-- End page content -->
 </div>
 
 <script>
