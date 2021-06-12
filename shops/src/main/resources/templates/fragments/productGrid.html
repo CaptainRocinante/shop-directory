@@ -91,8 +91,10 @@
     }
   </script>
 
-  <!-- Sidebar/menu -->
+  <!-- Product Grid and Filters -->
   <div class="productGridContainer">
+
+    <!-- Filters -->
     <div class="filters">
       <div class="w3-white" id="mySidebar">
         <div class="w3-container w3-padding-small w3-margin-left">
@@ -158,6 +160,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Products -->
     <div class="products">
       <div class="w3-container w3-text-grey" id="jeans">
         <p>Page <span th:text="${page}">8</span> of <span th:text="${totalPageCount}">8</span></p>
