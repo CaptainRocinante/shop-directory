@@ -60,17 +60,6 @@
       return url;
     }
 
-    function removePageNum() {
-      history.pushState({}, null, removeURLParameter(document.URL, 'page'));
-      return true;
-    }
-
-    function resetBnplFilters() {
-      filterRemoved = removeURLParameter(document.URL, 'bnplFiltersSelected');
-      pageRemoved = removeURLParameter(filterRemoved, 'page');
-      window.location.replace(pageRemoved);
-    }
-
     function navigateToPage(pageNum) {
       var url = new URL(document.URL);
       var search_params = url.searchParams;
@@ -87,36 +76,15 @@
 
   <!-- Product Grid and Filters -->
   <div class="productGridContainer">
-
     <!-- Filters -->
     <div class="filters">
-      <div class="w3-white" id="mySidebar">
-        <div class="w3-container w3-padding-small w3-margin-left">
-          <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
-        </div>
+      <div class="w3-white">
         <!--  Push down filters on large screens -->
         <div class="w3-hide-small w3-hide-medium hide-less-height" style="margin-top:300px"></div>
 
         <!-- Bnpl Filter -->
-        <div class="w3-container w3-padding-small w3-margin-left">
-          <h4>Accepts</h4>
-          <form onsubmit="removePageNum()">
-            <div th:if="${bnplFiltersSelected.size() == 0}">
-              <p th:each="bnplFilter : ${bnplFilters}">
-                <input class="check" type="checkbox" name="bnplFiltersSelected" th:value="${bnplFilter.bnplUuid}">
-                <label th:text="${bnplFilter.bnplName}">BnplName</label>
-              </p>
-              <button type="submit" class="w3-button w3-black">Filter</button>
-            </div>
-            <div th:unless="${bnplFiltersSelected.size() == 0}">
-              <p th:each="bnplFilter : ${bnplFiltersSelected}">
-                <input class="check" type="checkbox" name="bnplFiltersSelected"
-                       th:value="${bnplFilter.bnplUuid}" checked>
-                <label class="w3-margin-left" th:text="${bnplFilter.bnplName}">BnplName</label>
-              </p>
-              <button type="button" onclick="resetBnplFilters()" class="w3-button w3-black">Reset</button>
-            </div>
-          </form>
+        <div class="w3-container w3-padding-small w3-margin-left"
+             th:insert="fragments/bnplFilter :: bnplFilter">
         </div>
 
         <!-- Brands Filter -->
