@@ -17,13 +17,23 @@
     }
 
     function showAllBrands() {
-      document.getElementById("onlyFiveBrands").style.display = "none";
-      document.getElementById("allBrands").style.display = "block";
+      var elmsToHide = document.querySelectorAll("[id='onlyFiveBrands']");
+      for(var i = 0; i < elmsToHide.length; i++)
+        elmsToHide[i].style.display='none';
+
+      var elmsToShow = document.querySelectorAll("[id='allBrands']");
+      for(var i = 0; i < elmsToShow.length; i++)
+        elmsToShow[i].style.display='block';
     }
 
     function showOnlyFiveBrands() {
-      document.getElementById("onlyFiveBrands").style.display = "block";
-      document.getElementById("allBrands").style.display = "none";
+      var elmsToHide = document.querySelectorAll("[id='allBrands']");
+      for(var i = 0; i < elmsToHide.length; i++)
+        elmsToHide[i].style.display='none';
+
+      var elmsToShow = document.querySelectorAll("[id='onlyFiveBrands']");
+      for(var i = 0; i < elmsToShow.length; i++)
+        elmsToShow[i].style.display='block';
     }
   </script>
 
