@@ -220,12 +220,18 @@
   <div id="filtersModal" class="w3-modal">
     <div class="w3-modal-content w3-animate-zoom" style="padding:32px">
       <div class="w3-container w3-white">
-        <p class="w3-right">
-          <a href="javascript:void(0)"
-             onclick="document.getElementById('filtersModal').style.display='none'"><i
-              class="fa fa-remove"></i></a>
-        </p>
-        <div th:insert="fragments/merchantFilter :: merchantFilter">
+        <div style="display:block;height:auto;width:100%;overflow:hidden;">
+          <p class="w3-right">
+            <a href="javascript:void(0)"
+               onclick="document.getElementById('filtersModal').style.display='none'"><i
+                class="fa fa-remove"></i></a>
+          </p>
+        </div>
+        <div style="display:block;width:100%;float:left;"
+             th:insert="fragments/bnplFilter :: bnplFilter">
+        </div>
+        <div style="display:block;width:100%;float:left;margin-top:20px;"
+             th:insert="fragments/merchantFilter :: merchantFilter">
         </div>
       </div>
     </div>
