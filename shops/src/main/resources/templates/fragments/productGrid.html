@@ -16,6 +16,12 @@
       float: left;
       display:inline-block;
     }
+    .filtersButton {
+      display:none;
+    }
+    .resultsCount {
+      display:inline-block;
+    }
     .products {
       width: 70%;
       float: left;
@@ -26,11 +32,19 @@
       .productGridContainer {
         width:100%;
         height:auto;
-        text-align:center;
         overflow:hidden;
       }
       .filters {
         display:none;
+      }
+      .filtersButton {
+        width:10%;
+        display:inline-block;
+      }
+      .resultsCount {
+        width:80%;
+        text-align:center;
+        display:inline-block;
       }
       .products {
         width:100%;
@@ -97,8 +111,13 @@
     <!-- Products -->
     <div class="products">
       <div class="w3-container w3-text-grey" id="jeans">
-        <p>Page <span th:text="${page}">8</span> of <span th:text="${totalPageCount}">8</span></p>
-        <p><span th:text="${totalResultsCount}">8</span> results</p>
+        <div class="filtersButton">
+          <a href="javascript:void(0)">Refine</a>
+        </div>
+        <div class="resultsCount">
+          <p>Page <span th:text="${page}">8</span> of <span th:text="${totalPageCount}">8</span>
+            of <span th:text="${totalResultsCount}">8</span> results</p>
+        </div>
       </div>
       <div class="w3-row">
         <div class="w3-col l3 s6 w3-padding-32">
