@@ -38,13 +38,16 @@
         display:none;
       }
       .filtersButton {
-        width:10%;
-        display:inline-block;
+        width:100%;
+        float: left;
+        text-align:left;
+        display:block;
       }
       .resultsCount {
-        width:80%;
-        text-align:center;
-        display:inline-block;
+        width:100%;
+        float: left;
+        text-align:left;
+        display:block;
       }
       .products {
         width:100%;
@@ -110,13 +113,12 @@
 
     <!-- Products -->
     <div class="products">
-      <div class="w3-container w3-text-grey" id="jeans">
+      <div class="w3-container w3-text-grey">
         <div class="filtersButton">
           <a href="javascript:void(0)">Refine</a>
         </div>
         <div class="resultsCount">
-          <p>Page <span th:text="${page}">8</span> of <span th:text="${totalPageCount}">8</span>
-            of <span th:text="${totalResultsCount}">8</span> results</p>
+          <p><span th:text="${totalResultsCount}">8</span> total results</p>
         </div>
       </div>
       <div class="w3-row">
