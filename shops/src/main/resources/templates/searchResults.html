@@ -1,134 +1,122 @@
 <!DOCTYPE html>
 <html>
-<head th:insert="fragments/htmlHead :: htmlHead">
-</head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:400,700&display=swap">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300&display=swap">
-<style>
-.w3-sidebar a {font-family: "Roboto", sans-serif}
-body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
+  <head th:insert="fragments/htmlHead :: htmlHead">
+  </head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:400,700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300&display=swap">
+  <style>
+    .w3-sidebar a {font-family: "Roboto", sans-serif}
+    body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 
-.zoom {
-  transition: transform .2s;
-  margin: 0 auto;
-}
+    .zoom {
+      transition: transform .2s;
+      margin: 0 auto;
+    }
 
-.zoom:hover {
-  -ms-transform: scale(1.5); /* IE 9 */
-  -webkit-transform: scale(1.5); /* Safari 3-8 */
-  transform: scale(1.5);
-  transition-delay: 0.5s;
-}
+    .zoom:hover {
+      -ms-transform: scale(1.5); /* IE 9 */
+      -webkit-transform: scale(1.5); /* Safari 3-8 */
+      transform: scale(1.5);
+      transition-delay: 0.5s;
+    }
 
-html {
-    position: relative;
-    min-height: 100%;
-}
+    html {
+        position: relative;
+        min-height: 100%;
+    }
 
-body {
-    margin: 0 0 100px;
-    /* bottom = footer height */
-    padding: 25px;
-}
+    body {
+        margin: 0 0 100px;
+        /* bottom = footer height */
+        padding: 25px;
+    }
 
-footer {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 100px;
-    width: 100%;
-    overflow: hidden;
-}
+    footer {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 100px;
+        width: 100%;
+        overflow: hidden;
+    }
 
-@media (min-width:993px) {
-  .w3-sidebar.w3-collapse {
-    height: auto;
-    padding: 25px;
-  }
-}
+    @media (min-width:993px) {
+      .w3-sidebar.w3-collapse {
+        height: auto;
+        padding: 25px;
+      }
+    }
 
-@media (max-width:992px) {
-  .w3-sidebar.w3-collapse {
-    height: 100%;
-  }
-}
+    @media (max-width:992px) {
+      .w3-sidebar.w3-collapse {
+        height: 100%;
+      }
+    }
 
-@media (max-height:1000px) {
-  .hide-less-height {
-    display: none;
-  }
-}
+    @media (max-height:1000px) {
+      .hide-less-height {
+        display: none;
+      }
+    }
+    check {width:24px;height:24px;position:relative;top:6px}
+  </style>
+  <script>
+    // Open and close sidebar
+    function w3_open() {
+      document.getElementById("mySidebar").style.display = "block";
+      document.getElementById("myOverlay").style.display = "block";
+    }
 
-hr {
-  border: none;
-  height: 5px;
-  max-width: 400px;
-  /* Set the hr color */
-  color: #333; /* old IE */
-  background-color: #333; /* Modern Browsers */
-}
+    function w3_close() {
+      document.getElementById("mySidebar").style.display = "none";
+      document.getElementById("myOverlay").style.display = "none";
+    }
+  </script>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5BBPTLZ"
+                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
-check {width:24px;height:24px;position:relative;top:6px}
+    <!-- Top menu on small screens -->
+    <!--<header class="w3-bar w3-top w3-hide-large w3-white w3-xlarge"-->
+    <!--        style="text-align:center;">-->
+    <!--  <a href="javascript:void(0)" class="w3-button w3-padding-small"-->
+    <!--     onclick="w3_open()"-->
+    <!--     style="width:15%;margin:0px auto;vertical-align:middle;text-align:center;"><i-->
+    <!--      class="fa fa-bars"></i></a>-->
+    <!--  &lt;!&ndash; Logo Element &ndash;&gt;-->
+    <!--  <img style="width:60%;margin:0px auto;max-width:900px;"-->
+    <!--       th:src="@{/img/paylaterGoodsHeader.png}" />-->
+    <!--  <a href="/" class="w3-button w3-padding-small"-->
+    <!--     style="width:15%;margin:0px auto;vertical-align:middle;text-align:center;"><i-->
+    <!--      class="fa fa-home"></i></a>-->
+    <!--  <hr-->
+    <!--      style="width:50%;margin:auto;height:5px;color:#333;background-color:#333;margin-top:10px;">-->
+    <!--</header>-->
 
-</style>
-<body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5BBPTLZ"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main">
 
-<!-- Top menu on small screens -->
-<!--<header class="w3-bar w3-top w3-hide-large w3-white w3-xlarge"-->
-<!--        style="text-align:center;">-->
-<!--  <a href="javascript:void(0)" class="w3-button w3-padding-small"-->
-<!--     onclick="w3_open()"-->
-<!--     style="width:15%;margin:0px auto;vertical-align:middle;text-align:center;"><i-->
-<!--      class="fa fa-bars"></i></a>-->
-<!--  &lt;!&ndash; Logo Element &ndash;&gt;-->
-<!--  <img style="width:60%;margin:0px auto;max-width:900px;"-->
-<!--       th:src="@{/img/paylaterGoodsHeader.png}" />-->
-<!--  <a href="/" class="w3-button w3-padding-small"-->
-<!--     style="width:15%;margin:0px auto;vertical-align:middle;text-align:center;"><i-->
-<!--      class="fa fa-home"></i></a>-->
-<!--  <hr-->
-<!--      style="width:50%;margin:auto;height:5px;color:#333;background-color:#333;margin-top:10px;">-->
-<!--</header>-->
+      <!-- Header -->
+      <header th:insert="fragments/topHeader :: topHeader">
+      </header>
 
-<!-- !PAGE CONTENT! -->
-<div class="w3-main">
+      <!-- Product grid -->
+      <div class="w3-container" style="margin-top:70px"
+           th:insert="fragments/productGrid :: productGrid">
+      </div>
 
-  <!-- Header -->
-  <div th:insert="fragments/topHeader :: topHeader">
-  </div>
-
-  <!-- Product grid -->
-  <div class="w3-container" style="margin-top:70px"
-       th:insert="fragments/productGrid :: productGrid">
-  </div>
-
-  <!-- Footer -->
-  <div th:insert="fragments/footer :: footer">
-  </div>
-</div>
-
-<script>
-// Open and close sidebar
-function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
-  document.getElementById("myOverlay").style.display = "block";
-}
-
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
-  document.getElementById("myOverlay").style.display = "none";
-}
-</script>
-</body>
+      <!-- Footer -->
+      <footer th:insert="fragments/footer :: footer">
+      </footer>
+    </div>
+  </body>
 </html>

@@ -34,6 +34,26 @@
     .smallScreenMenuBar {
       display:none;
     }
+    .categoriesContainer {
+      display:block;
+      width:100%;
+      height:auto;
+      margin-top:30px;
+      overflow:hidden;
+    }
+    .category {
+      display:inline-block;
+      width:10%;
+      float:left;
+      text-align:center;
+    }
+    hr {
+      border: none;
+      height: 2px;
+      /* Set the hr color */
+      color: #A9A9A9; /* old IE */
+      background-color: #A9A9A9; /* Modern Browsers */
+    }
 
     @media (max-width:1100px) {
       .logoContainer {
@@ -65,6 +85,9 @@
         display:inline-block;
         float:left;
       }
+      .categoriesContainer {
+        display:none;
+      }
     }
 
     @media (max-width:600px) {
@@ -91,6 +114,16 @@
     <div class="searchItem" th:insert="fragments/searchBar :: searchBar">
     </div>
 
+    <!-- Categories -->
+    <div class="categoriesContainer">
+      <div class="category">
+        <a href="javascript:void(0)">Men</a>
+      </div>
+      <div class="category">
+        <a href="javascript:void(0)">Women</a>
+      </div>
+    </div>
 
+    <hr>
   </div>
 </div>
