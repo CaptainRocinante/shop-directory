@@ -9,27 +9,24 @@
       width:100%;
       height:auto;
       overflow:hidden;
-      display:block;
     }
     .logoContainer {
-      width:auto;
-      height:auto;
-      display:inline-block;
-      overflow:hidden;
-    }
-    .logoItem {
-      margin:1px;
+      width:20%;
       height:50px;
-      width:100%;
       margin-left: 10px;
       display:inline-block;
     }
+    .logoItem {
+      height:100%;
+      width:100%;
+      display:inline-block;
+    }
+    .logoImage {
+      width:100%;
+    }
     .searchItem {
-      margin:1px;
-      width: 600px;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      width:60%;
+      height:auto;
       display:inline-block;
     }
     .smallScreenMenuBar {
@@ -37,30 +34,39 @@
     }
 
     @media (max-width:1100px) {
-      .logoItem {
-        width:50%;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        text-align:center;
-      }
       .logoContainer {
         width:100%;
-        height:auto;
+        height:50px;
         display:block;
-        overflow:hidden;
-        margin-bottom:10px;
+        margin-bottom:20px;
+      }
+      .logoItem {
+        width:80%;
+        height:100%;
+        margin:0 auto;
+        text-align: center;
+        display:inline-block;
+      }
+      .logoImage {
+        width:50%;
       }
       .searchItem {
-        margin:1px;
         width:90%;
+        height:auto;
         margin: 0 auto;
         display:block;
       }
       .smallScreenMenuBar {
-        margin-left: 10px;
+        width:10%;
+        text-align:center;
         display:inline-block;
         float:left;
+      }
+    }
+
+    @media (max-width:600px) {
+      .logoImage {
+        width:90%;
       }
     }
   </style>
@@ -68,8 +74,7 @@
     <div class="logoContainer">
       <!-- Logo -->
       <div class="logoItem">
-        <a href="/"><img style="width:90%;max-height:50px;max-width:200px;"
-                         th:src="@{/img/paylaterGoodsHeader.png}"/></a>
+        <a href="/"><img class="logoImage" th:src="@{/img/paylaterGoodsHeader.png}"/></a>
       </div>
       <!-- Small Screen Menu Bar -->
       <div class="smallScreenMenuBar">
