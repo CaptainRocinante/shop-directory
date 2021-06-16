@@ -7,6 +7,9 @@ import com.rocinante.datastore.entities.BnplProvider;
 import com.rocinante.datastore.entities.Merchant;
 import com.rocinante.datastore.entities.MerchantInferredCategory;
 import com.rocinante.datastore.entities.Product;
+import com.rocinante.shops.search.SearchIndexedField;
+import com.rocinante.shops.search.SearchServiceQuery;
+import com.rocinante.shops.search.SingleFieldSearchQueryParam;
 import com.rocinante.shops.service.BnplService;
 import com.rocinante.shops.service.MerchantService;
 import com.rocinante.shops.service.SearchService;
@@ -59,7 +62,21 @@ public class SearchController {
             : bnplFiltersSelected.stream().map(UUID::fromString).collect(Collectors.toList());
     final SearchServiceResults searchServiceResults =
         searchService.search(
-            query,
+            new SearchServiceQuery
+                .Builder(query)
+                .addQueryParam(
+                    new SingleFieldSearchQueryParam(SearchIndexedField.NAME,
+                        2.0f, false))
+                .addQueryParam(
+                    new SingleFieldSearchQueryParam(SearchIndexedField.MERCHANT_CATEGORY,
+                        1.0f, false))
+                .addQueryParam(
+                    new SingleFieldSearchQueryParam(SearchIndexedField.MERCHANT_NAME,
+                        1.0f, false))
+                .addQueryParam(
+                    new SingleFieldSearchQueryParam(SearchIndexedField.BNPL_NAME,
+                        1.0f, false))
+                .build(),
             bnplFilterForSearchService,
             merchantFiltersSelected == null
                 ? Collections.emptyList()
