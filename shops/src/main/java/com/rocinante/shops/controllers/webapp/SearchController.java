@@ -32,6 +32,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 public class SearchController {
   private static final int SINGLE_PAGE_RESULT_COUNT = 50;
+  private static final Function<String, SearchServiceQuery> SEARCH_SERVICE_QUERY_FUNC = query ->
+      new SearchServiceQuery
+      .Builder(query)
+      .addQueryParam(
+          new SingleFieldSearchQueryParam(SearchIndexedField.NAME,
+              2.0f, false))
+      .addQueryParam(
+          new SingleFieldSearchQueryParam(SearchIndexedField.MERCHANT_CATEGORY,
+              1.0f, false))
+      .addQueryParam(
+          new SingleFieldSearchQueryParam(SearchIndexedField.MERCHANT_NAME,
+              1.0f, false))
+      .addQueryParam(
+          new SingleFieldSearchQueryParam(SearchIndexedField.BNPL_NAME,
+              1.0f, false))
+      .build();
 
   private final SearchService searchService;
   private final BnplService bnplService;
@@ -61,22 +77,7 @@ public class SearchController {
             ? Collections.emptyList()
             : bnplFiltersSelected.stream().map(UUID::fromString).collect(Collectors.toList());
     final SearchServiceResults searchServiceResults =
-        searchService.search(
-            new SearchServiceQuery
-                .Builder(query)
-                .addQueryParam(
-                    new SingleFieldSearchQueryParam(SearchIndexedField.NAME,
-                        2.0f, false))
-                .addQueryParam(
-                    new SingleFieldSearchQueryParam(SearchIndexedField.MERCHANT_CATEGORY,
-                        1.0f, false))
-                .addQueryParam(
-                    new SingleFieldSearchQueryParam(SearchIndexedField.MERCHANT_NAME,
-                        1.0f, false))
-                .addQueryParam(
-                    new SingleFieldSearchQueryParam(SearchIndexedField.BNPL_NAME,
-                        1.0f, false))
-                .build(),
+        searchService.search(SEARCH_SERVICE_QUERY_FUNC.apply(query),
             bnplFilterForSearchService,
             merchantFiltersSelected == null
                 ? Collections.emptyList()
@@ -104,7 +105,8 @@ public class SearchController {
     final List<MerchantFilterDto> merchantFiltersList;
     if (merchantFiltersSelected == null || merchantFiltersSelected.isEmpty()) {
       final SearchServiceResults top200Search =
-          searchService.searchFetchTop200(query, bnplFilterForSearchService);
+          searchService.searchFetchTop200(SEARCH_SERVICE_QUERY_FUNC.apply(query),
+              bnplFilterForSearchService);
       merchantFiltersList =
           top200Search.getCurrentPageResults().stream()
               .map(Product::getMerchantInferredCategories)

@@ -84,7 +84,9 @@ public class SearchService {
   }
 
   @Transactional(readOnly = true)
-  public SearchServiceResults searchFetchTop200(final String query, final List<UUID> bnplFilters) {
+  public SearchServiceResults searchFetchTop200(
+      final SearchServiceQuery searchServiceQuery,
+      final List<UUID> bnplFilters) {
     final SearchSession searchSession = Search.session(entityManager);
     final SearchResult<Product> productSearchResult =
         searchSession
@@ -94,11 +96,22 @@ public class SearchService {
                   var predicate =
                       f.bool()
                           .must(f.match().field("enabled").matching(true))
-                          .must(f.match().field("merchantEnabled").matching(true))
-                          .should(f.match().field("name").matching(query).boost(2.0f))
-                          .should(f.match().field("merchantInferredCategoryText").matching(query))
-                          .should(f.match().field("merchantNameText").matching(query))
-                          .should(f.match().field("bnplNameText").matching(query));
+                          .must(f.match().field("merchantEnabled").matching(true));
+
+                  searchServiceQuery
+                      .getSingleFieldSearchQueryParamList()
+                      .forEach(qp -> {
+                        var predicateStep = f.match()
+                            .field(qp.getSearchIndexedField().getFieldName())
+                            .matching(searchServiceQuery.getQuery())
+                            .boost(qp.getWeight());
+                        if (qp.isRequired()) {
+                          predicate.must(predicateStep);
+                        } else {
+                          predicate.should(predicateStep);
+                        }
+                      });
+
                   if (!bnplFilters.isEmpty()) {
                     var bnplFilterPredicate = f.bool();
                     for (final UUID bnplFilter : bnplFilters) {
