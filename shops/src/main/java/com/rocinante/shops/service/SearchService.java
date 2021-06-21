@@ -2,11 +2,10 @@ package com.rocinante.shops.service;
 
 import com.rocinante.datastore.entities.Product;
 import com.rocinante.shops.search.SearchServiceQuery;
-import java.util.List;
+import com.rocinante.shops.search.SearchServiceResults;
 import java.util.UUID;
 import javax.persistence.EntityManager;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.hibernate.search.engine.search.query.SearchResult;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.session.SearchSession;
@@ -16,19 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @AllArgsConstructor
 public class SearchService {
-  @Data
-  public static class SearchServiceResults {
-    private final long totalResultsCount;
-    private final List<Product> currentPageResults;
-  }
-
   private final EntityManager entityManager;
 
   @Transactional(readOnly = true)
   public SearchServiceResults search(
       final SearchServiceQuery searchServiceQuery,
-      final List<UUID> bnplFilters,
-      final List<UUID> merchantFilters,
       int zeroBasedPageNumber,
       int pageResultCount) {
     final SearchSession searchSession = Search.session(entityManager);
@@ -56,18 +47,18 @@ public class SearchService {
                         }
                       });
 
-                  if (!bnplFilters.isEmpty()) {
+                  if (!searchServiceQuery.getUserAppliedBnplFilters().isEmpty()) {
                     var bnplFilterPredicate = f.bool();
-                    for (final UUID bnplFilter : bnplFilters) {
+                    for (final UUID bnplFilter : searchServiceQuery.getUserAppliedBnplFilters()) {
                       bnplFilterPredicate =
                           bnplFilterPredicate.should(
                               f.match().field("bnplUuids").matching(bnplFilter));
                     }
                     predicate.filter(bnplFilterPredicate.minimumShouldMatchNumber(1));
                   }
-                  if (!merchantFilters.isEmpty()) {
+                  if (!searchServiceQuery.getUserAppliedMerchantFilters().isEmpty()) {
                     var merchantFilterPredicate = f.bool();
-                    for (final UUID merchantFilter : merchantFilters) {
+                    for (final UUID merchantFilter : searchServiceQuery.getUserAppliedMerchantFilters()) {
                       merchantFilterPredicate =
                           merchantFilterPredicate.should(
                               f.match().field("merchantUuids").matching(merchantFilter));
@@ -84,9 +75,7 @@ public class SearchService {
   }
 
   @Transactional(readOnly = true)
-  public SearchServiceResults searchFetchTop200(
-      final SearchServiceQuery searchServiceQuery,
-      final List<UUID> bnplFilters) {
+  public SearchServiceResults searchFetchTop200(final SearchServiceQuery searchServiceQuery) {
     final SearchSession searchSession = Search.session(entityManager);
     final SearchResult<Product> productSearchResult =
         searchSession
@@ -112,9 +101,9 @@ public class SearchService {
                         }
                       });
 
-                  if (!bnplFilters.isEmpty()) {
+                  if (!searchServiceQuery.getUserAppliedBnplFilters().isEmpty()) {
                     var bnplFilterPredicate = f.bool();
-                    for (final UUID bnplFilter : bnplFilters) {
+                    for (final UUID bnplFilter : searchServiceQuery.getUserAppliedBnplFilters()) {
                       bnplFilterPredicate =
                           bnplFilterPredicate.should(
                               f.match().field("bnplUuids").matching(bnplFilter));

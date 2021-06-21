@@ -13,13 +13,14 @@ import com.rocinante.shops.search.SingleFieldSearchQueryParam;
 import com.rocinante.shops.service.BnplService;
 import com.rocinante.shops.service.MerchantService;
 import com.rocinante.shops.service.SearchService;
-import com.rocinante.shops.service.SearchService.SearchServiceResults;
+import com.rocinante.shops.search.SearchServiceResults;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -32,26 +33,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 public class SearchController {
   private static final int SINGLE_PAGE_RESULT_COUNT = 50;
-  private static final Function<String, SearchServiceQuery> SEARCH_SERVICE_QUERY_FUNC = query ->
-      new SearchServiceQuery
-      .Builder(query)
-      .addQueryParam(
-          new SingleFieldSearchQueryParam(SearchIndexedField.NAME,
-              2.0f, false))
-      .addQueryParam(
-          new SingleFieldSearchQueryParam(SearchIndexedField.MERCHANT_CATEGORY,
-              1.0f, false))
-      .addQueryParam(
-          new SingleFieldSearchQueryParam(SearchIndexedField.MERCHANT_NAME,
-              1.0f, false))
-      .addQueryParam(
-          new SingleFieldSearchQueryParam(SearchIndexedField.BNPL_NAME,
-              1.0f, false))
-      .build();
 
   private final SearchService searchService;
   private final BnplService bnplService;
   private final MerchantService merchantService;
+
+  private SearchServiceQuery getDefaultSearchServiceQuery(String query,
+      @Nullable List<String> bnplFiltersSelected,
+      @Nullable List<String> merchantFiltersSelected) {
+    return new SearchServiceQuery
+        .Builder(query)
+        .addQueryParam(
+            new SingleFieldSearchQueryParam(SearchIndexedField.NAME,
+                2.0f, false))
+        .addQueryParam(
+            new SingleFieldSearchQueryParam(SearchIndexedField.MERCHANT_CATEGORY,
+                1.0f, false))
+        .addQueryParam(
+            new SingleFieldSearchQueryParam(SearchIndexedField.MERCHANT_NAME,
+                1.0f, false))
+        .addQueryParam(
+            new SingleFieldSearchQueryParam(SearchIndexedField.BNPL_NAME,
+                1.0f, false))
+        .addUserAppliedBnplFilters(bnplFiltersSelected)
+        .addUserAppliedMerchantFilters(merchantFiltersSelected)
+        .build();
+  }
 
   @RequestMapping("/")
   public String index(Model model) {
@@ -72,19 +79,11 @@ public class SearchController {
     if (page == null) {
       page = 1;
     }
-    final List<UUID> bnplFilterForSearchService =
-        bnplFiltersSelected == null
-            ? Collections.emptyList()
-            : bnplFiltersSelected.stream().map(UUID::fromString).collect(Collectors.toList());
-    final SearchServiceResults searchServiceResults =
-        searchService.search(SEARCH_SERVICE_QUERY_FUNC.apply(query),
-            bnplFilterForSearchService,
-            merchantFiltersSelected == null
-                ? Collections.emptyList()
-                : merchantFiltersSelected.stream()
-                    .map(UUID::fromString)
-                    .collect(Collectors.toList()),
-            page - 1,
+    final SearchServiceQuery defaultSearchQuery = getDefaultSearchServiceQuery(query,
+        bnplFiltersSelected, merchantFiltersSelected);
+
+    final SearchServiceResults searchServiceResults = searchService.search(defaultSearchQuery,
+        page - 1,
             SINGLE_PAGE_RESULT_COUNT);
     final List<ProductDto> productDtoList =
         searchServiceResults.getCurrentPageResults().stream()
@@ -104,9 +103,7 @@ public class SearchController {
     //    productDtoList.forEach(p -> log.info(p.toString()));
     final List<MerchantFilterDto> merchantFiltersList;
     if (merchantFiltersSelected == null || merchantFiltersSelected.isEmpty()) {
-      final SearchServiceResults top200Search =
-          searchService.searchFetchTop200(SEARCH_SERVICE_QUERY_FUNC.apply(query),
-              bnplFilterForSearchService);
+      final SearchServiceResults top200Search = searchService.searchFetchTop200(defaultSearchQuery);
       merchantFiltersList =
           top200Search.getCurrentPageResults().stream()
               .map(Product::getMerchantInferredCategories)
