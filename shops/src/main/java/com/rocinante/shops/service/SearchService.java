@@ -1,9 +1,19 @@
 package com.rocinante.shops.service;
 
+import com.rocinante.common.api.dto.BnplFilterDto;
+import com.rocinante.common.api.dto.MerchantFilterDto;
+import com.rocinante.datastore.entities.BnplProvider;
+import com.rocinante.datastore.entities.Merchant;
+import com.rocinante.datastore.entities.MerchantInferredCategory;
 import com.rocinante.datastore.entities.Product;
 import com.rocinante.shops.search.SearchServiceQuery;
 import com.rocinante.shops.search.SearchServiceResults;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.hibernate.search.engine.search.query.SearchResult;
@@ -16,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class SearchService {
   private final EntityManager entityManager;
+  private final BnplService bnplService;
 
   @Transactional(readOnly = true)
   public SearchServiceResults search(
@@ -70,14 +81,37 @@ public class SearchService {
             .totalHitCountThreshold(1000)
             .fetch(zeroBasedPageNumber * pageResultCount, pageResultCount);
 
+    final List<BnplFilterDto> bnplFiltersList =
+        bnplService.getAllBnplProviders().stream()
+            .map(BnplProvider::toBnplFilterDto)
+            .sorted((b1, b2) -> b1.getBnplName().compareToIgnoreCase(b2.getBnplName()))
+            .collect(Collectors.toList());
+    final List<MerchantFilterDto> merchantFiltersList;
+    if (searchServiceQuery.getUserAppliedMerchantFilters() == null ||
+        searchServiceQuery.getUserAppliedMerchantFilters().isEmpty()) {
+      merchantFiltersList =
+          searchFetchTop200(searchServiceQuery)
+              .stream()
+              .map(Product::getMerchantInferredCategories)
+              .map(Set::stream)
+              .flatMap(Function.identity())
+              .map(MerchantInferredCategory::getMerchant)
+              .distinct()
+              .sorted((m1, m2) -> m1.getName().compareToIgnoreCase(m2.getName()))
+              .map(Merchant::toMerchantFilterDto)
+              .collect(Collectors.toList());
+    } else {
+      merchantFiltersList = Collections.emptyList();
+    }
     return new SearchServiceResults(
-        productSearchResult.total().hitCountLowerBound(), productSearchResult.hits());
+        productSearchResult.total().hitCountLowerBound(), productSearchResult.hits(),
+        bnplFiltersList, merchantFiltersList);
   }
 
   @Transactional(readOnly = true)
-  public SearchServiceResults searchFetchTop200(final SearchServiceQuery searchServiceQuery) {
+  public List<Product> searchFetchTop200(final SearchServiceQuery searchServiceQuery) {
     final SearchSession searchSession = Search.session(entityManager);
-    final SearchResult<Product> productSearchResult =
+    return
         searchSession
             .search(Product.class)
             .where(
@@ -113,9 +147,7 @@ public class SearchService {
                   return predicate;
                 })
             .totalHitCountThreshold(200)
-            .fetch(200);
-
-    return new SearchServiceResults(
-        productSearchResult.total().hitCountLowerBound(), productSearchResult.hits());
+            .fetch(200)
+            .hits();
   }
 }
