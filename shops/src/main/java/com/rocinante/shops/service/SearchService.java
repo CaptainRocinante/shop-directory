@@ -90,7 +90,7 @@ public class SearchService {
     if (searchServiceQuery.getUserAppliedMerchantFilters() == null ||
         searchServiceQuery.getUserAppliedMerchantFilters().isEmpty()) {
       merchantFiltersList =
-          searchFetchTop200(searchServiceQuery)
+          searchFetchTop200ForBrandsFilter(searchServiceQuery)
               .stream()
               .map(Product::getMerchantInferredCategories)
               .map(Set::stream)
@@ -108,8 +108,7 @@ public class SearchService {
         bnplFiltersList, merchantFiltersList);
   }
 
-  @Transactional(readOnly = true)
-  public List<Product> searchFetchTop200(final SearchServiceQuery searchServiceQuery) {
+  private List<Product> searchFetchTop200ForBrandsFilter(final SearchServiceQuery searchServiceQuery) {
     final SearchSession searchSession = Search.session(entityManager);
     return
         searchSession
