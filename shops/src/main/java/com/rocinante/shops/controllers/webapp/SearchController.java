@@ -41,13 +41,6 @@ public class SearchController {
         .build();
   }
 
-  @RequestMapping("/")
-  public String index(Model model) {
-    log.info("Landing Page Impression");
-    model.addAttribute("query", "");
-    return "index";
-  }
-
   @RequestMapping("/search")
   public String search(
       Model model,
