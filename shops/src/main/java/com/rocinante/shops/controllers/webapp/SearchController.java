@@ -41,6 +41,11 @@ public class SearchController {
         .build();
   }
 
+  private int getPageCountFromTotalResultCount(long totalResultCount) {
+    return Math.max(1,
+        Math.min(10, (int) Math.ceil((1.0d * totalResultCount) / SINGLE_PAGE_RESULT_COUNT)));
+  }
+
   @RequestMapping("/search")
   public String search(
       Model model,
@@ -70,22 +75,12 @@ public class SearchController {
     model.addAttribute("query", query);
     model.addAttribute("products", productDtoList);
     model.addAttribute("page", page);
-    model.addAttribute(
-        "totalPageCount",
-        Math.max(
-            1,
-            Math.min(
-                10,
-                (int)
-                    Math.ceil(
-                        (1.0d * searchServiceResults.getTotalResultsCount())
-                            / SINGLE_PAGE_RESULT_COUNT))));
+    model.addAttribute("totalPageCount", getPageCountFromTotalResultCount(searchServiceResults.getTotalResultsCount()));
     model.addAttribute("totalResultsCount", searchServiceResults.getTotalResultsCount());
     model.addAttribute("bnplFilters", searchServiceResults.getBnplFilterDtos());
     model.addAttribute("bnplFiltersSelected", searchServiceResults.getBnplFiltersSelectedDtos());
     model.addAttribute("merchantFilters", searchServiceResults.getMerchantFilterDtos());
-    model.addAttribute(
-        "merchantFiltersSelected", searchServiceResults.getMerchantSelectedFilterDtos());
+    model.addAttribute("merchantFiltersSelected", searchServiceResults.getMerchantSelectedFilterDtos());
     return "searchResults";
   }
 }
