@@ -1,9 +1,9 @@
 package com.rocinante.datastore.entities;
 
 import com.neovisionaries.i18n.CurrencyCode;
+import com.rocinante.common.api.crawlers.ProductSummary;
 import com.rocinante.common.api.dto.ProductCrudDto;
 import com.rocinante.common.api.dto.ProductDto;
-import com.rocinante.common.api.crawlers.ProductSummary;
 import com.rocinante.datastore.utils.MoneyUtils;
 import com.rocinante.datastore.utils.NullabilityUtils;
 import java.math.BigDecimal;

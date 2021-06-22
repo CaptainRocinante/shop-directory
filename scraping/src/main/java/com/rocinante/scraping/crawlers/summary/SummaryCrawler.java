@@ -330,13 +330,13 @@ public class SummaryCrawler implements Crawler<List<ProductSummary>> {
   public static void main(String[] args) {
     final SummaryCrawler summaryCrawler =
         new SummaryCrawler(
-            new RenderedHtmlProvider(true,
+            new RenderedHtmlProvider(
+                true,
                 "http://ec2-18-209-34-13.compute-1.amazonaws.com:8888",
                 "/usr/local/bin/chromedriver"));
     List<ProductSummary> productSummaries =
         summaryCrawler.crawlUrl(
-            "https://www.patriotoutfitters.com/shirts",
-            new MapCrawlContext(null));
+            "https://www.patriotoutfitters.com/shirts", new MapCrawlContext(null));
     productSummaries.forEach(ps -> log.info("ProductSummary: {}", ps.toString()));
   }
 }

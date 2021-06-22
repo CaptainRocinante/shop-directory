@@ -31,9 +31,7 @@ public class SearchService {
 
   @Transactional(readOnly = true)
   public SearchServiceResults search(
-      final SearchServiceQuery searchServiceQuery,
-      int zeroBasedPageNumber,
-      int pageResultCount) {
+      final SearchServiceQuery searchServiceQuery, int zeroBasedPageNumber, int pageResultCount) {
     final SearchSession searchSession = Search.session(entityManager);
     final SearchResult<Product> productSearchResult =
         searchSession
@@ -47,17 +45,19 @@ public class SearchService {
 
                   searchServiceQuery
                       .getSingleFieldSearchQueryParamList()
-                      .forEach(qp -> {
-                        var predicateStep = f.match()
-                            .field(qp.getSearchIndexedField().getFieldName())
-                            .matching(searchServiceQuery.getQuery())
-                            .boost(qp.getWeight());
-                        if (qp.isRequired()) {
-                          predicate.must(predicateStep);
-                        } else {
-                          predicate.should(predicateStep);
-                        }
-                      });
+                      .forEach(
+                          qp -> {
+                            var predicateStep =
+                                f.match()
+                                    .field(qp.getSearchIndexedField().getFieldName())
+                                    .matching(searchServiceQuery.getQuery())
+                                    .boost(qp.getWeight());
+                            if (qp.isRequired()) {
+                              predicate.must(predicateStep);
+                            } else {
+                              predicate.should(predicateStep);
+                            }
+                          });
 
                   if (!searchServiceQuery.getUserAppliedBnplFilters().isEmpty()) {
                     var bnplFilterPredicate = f.bool();
@@ -70,7 +70,8 @@ public class SearchService {
                   }
                   if (!searchServiceQuery.getUserAppliedMerchantFilters().isEmpty()) {
                     var merchantFilterPredicate = f.bool();
-                    for (final UUID merchantFilter : searchServiceQuery.getUserAppliedMerchantFilters()) {
+                    for (final UUID merchantFilter :
+                        searchServiceQuery.getUserAppliedMerchantFilters()) {
                       merchantFilterPredicate =
                           merchantFilterPredicate.should(
                               f.match().field("merchantUuids").matching(merchantFilter));
@@ -90,10 +91,12 @@ public class SearchService {
     final List<BnplFilterDto> bnplFiltersSelectedList =
         searchServiceQuery.getUserAppliedBnplFilters() == null
             ? Collections.emptyList()
-            : bnplFiltersList
-                .stream()
-                .filter(b -> searchServiceQuery
-                    .getUserAppliedBnplFilters().contains(UUID.fromString(b.getBnplUuid())))
+            : bnplFiltersList.stream()
+                .filter(
+                    b ->
+                        searchServiceQuery
+                            .getUserAppliedBnplFilters()
+                            .contains(UUID.fromString(b.getBnplUuid())))
                 .collect(Collectors.toList());
     final List<MerchantFilterDto> merchantFiltersSelectedList =
         searchServiceQuery.getUserAppliedMerchantFilters() == null
@@ -108,8 +111,7 @@ public class SearchService {
       // It takes an extra query to populate the merchant filters for the query, so don't do it if
       // the user has already applied the filters
       merchantFiltersList =
-          searchFetchTop200ForBrandsFilter(searchServiceQuery)
-              .stream()
+          searchFetchTop200ForBrandsFilter(searchServiceQuery).stream()
               .map(Product::getMerchantInferredCategories)
               .map(Set::stream)
               .flatMap(Function.identity())
@@ -123,29 +125,35 @@ public class SearchService {
     }
 
     return new SearchServiceResults(
-        productSearchResult.total().hitCountLowerBound(), productSearchResult.hits(),
-        bnplFiltersSelectedList, bnplFiltersList, merchantFiltersSelectedList, merchantFiltersList);
+        productSearchResult.total().hitCountLowerBound(),
+        productSearchResult.hits(),
+        bnplFiltersSelectedList,
+        bnplFiltersList,
+        merchantFiltersSelectedList,
+        merchantFiltersList);
   }
 
-  private List<Product> searchFetchTop200ForBrandsFilter(final SearchServiceQuery searchServiceQuery) {
+  private List<Product> searchFetchTop200ForBrandsFilter(
+      final SearchServiceQuery searchServiceQuery) {
     final SearchSession searchSession = Search.session(entityManager);
-    return
-        searchSession
-            .search(Product.class)
-            .where(
-                f -> {
-                  var predicate =
-                      f.bool()
-                          .must(f.match().field("enabled").matching(true))
-                          .must(f.match().field("merchantEnabled").matching(true));
+    return searchSession
+        .search(Product.class)
+        .where(
+            f -> {
+              var predicate =
+                  f.bool()
+                      .must(f.match().field("enabled").matching(true))
+                      .must(f.match().field("merchantEnabled").matching(true));
 
-                  searchServiceQuery
-                      .getSingleFieldSearchQueryParamList()
-                      .forEach(qp -> {
-                        var predicateStep = f.match()
-                            .field(qp.getSearchIndexedField().getFieldName())
-                            .matching(searchServiceQuery.getQuery())
-                            .boost(qp.getWeight());
+              searchServiceQuery
+                  .getSingleFieldSearchQueryParamList()
+                  .forEach(
+                      qp -> {
+                        var predicateStep =
+                            f.match()
+                                .field(qp.getSearchIndexedField().getFieldName())
+                                .matching(searchServiceQuery.getQuery())
+                                .boost(qp.getWeight());
                         if (qp.isRequired()) {
                           predicate.must(predicateStep);
                         } else {
@@ -153,19 +161,18 @@ public class SearchService {
                         }
                       });
 
-                  if (!searchServiceQuery.getUserAppliedBnplFilters().isEmpty()) {
-                    var bnplFilterPredicate = f.bool();
-                    for (final UUID bnplFilter : searchServiceQuery.getUserAppliedBnplFilters()) {
-                      bnplFilterPredicate =
-                          bnplFilterPredicate.should(
-                              f.match().field("bnplUuids").matching(bnplFilter));
-                    }
-                    predicate.filter(bnplFilterPredicate.minimumShouldMatchNumber(1));
-                  }
-                  return predicate;
-                })
-            .totalHitCountThreshold(200)
-            .fetch(200)
-            .hits();
+              if (!searchServiceQuery.getUserAppliedBnplFilters().isEmpty()) {
+                var bnplFilterPredicate = f.bool();
+                for (final UUID bnplFilter : searchServiceQuery.getUserAppliedBnplFilters()) {
+                  bnplFilterPredicate =
+                      bnplFilterPredicate.should(f.match().field("bnplUuids").matching(bnplFilter));
+                }
+                predicate.filter(bnplFilterPredicate.minimumShouldMatchNumber(1));
+              }
+              return predicate;
+            })
+        .totalHitCountThreshold(200)
+        .fetch(200)
+        .hits();
   }
 }

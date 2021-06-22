@@ -18,6 +18,7 @@ public enum Mode {
       LOOKUP.put(m.getKey(), m);
     }
   }
+
   Mode(String key) {
     this.key = key;
   }

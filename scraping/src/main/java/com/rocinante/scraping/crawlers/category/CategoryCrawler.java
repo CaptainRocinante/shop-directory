@@ -76,7 +76,7 @@ public class CategoryCrawler implements Crawler<List<Category>> {
 
   @Override
   public List<Category> crawlHtml(RenderedHtml html, String baseUrl, CrawlContext crawlContext) {
-//    log.info(html.getHtml());
+    //    log.info(html.getHtml());
     final Document doc = Jsoup.parse(html.getHtml(), baseUrl);
     return bfs(doc);
   }
@@ -92,7 +92,8 @@ public class CategoryCrawler implements Crawler<List<Category>> {
   public static void main(String[] args) {
     CategoryCrawler categoryCrawler =
         new CategoryCrawler(
-            new RenderedHtmlProvider(true,
+            new RenderedHtmlProvider(
+                true,
                 "http://ec2-18-209-34-13.compute-1.amazonaws.com:8888",
                 "/usr/local/bin/chromedriver"));
     List<Category> categories =

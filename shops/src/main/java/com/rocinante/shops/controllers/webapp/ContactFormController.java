@@ -22,9 +22,12 @@ public class ContactFormController {
   public ResponseEntity<String> handleContactFormSubmission(ContactForm contactForm) {
     log.info("ContactForm {}", contactForm);
     try {
-      emailService.sendEmail(contactForm.getName() + " " + contactForm.getEmail(),
-          "admin@paylatergoods.com", contactForm.getSubject(),
-          "admin@paylatergoods.com", contactForm.getMessage());
+      emailService.sendEmail(
+          contactForm.getName() + " " + contactForm.getEmail(),
+          "admin@paylatergoods.com",
+          contactForm.getSubject(),
+          "admin@paylatergoods.com",
+          contactForm.getMessage());
     } catch (Exception e) {
       log.error("Failed to send email", e);
     }

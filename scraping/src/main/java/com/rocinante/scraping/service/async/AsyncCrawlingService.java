@@ -1,16 +1,16 @@
 package com.rocinante.scraping.service.async;
 
-import com.rocinante.scraping.crawlers.MapCrawlContext;
 import com.rocinante.common.api.crawlers.Category;
-import com.rocinante.scraping.crawlers.category.CategoryCrawler;
 import com.rocinante.common.api.crawlers.ProductSummary;
-import com.rocinante.scraping.crawlers.summary.SummaryCrawler;
 import com.rocinante.datastore.dao.MerchantDao;
 import com.rocinante.datastore.dao.MerchantInferredCategoryDao;
 import com.rocinante.datastore.dao.ProductDao;
 import com.rocinante.datastore.entities.Merchant;
 import com.rocinante.datastore.entities.MerchantInferredCategory;
 import com.rocinante.datastore.entities.Product;
+import com.rocinante.scraping.crawlers.MapCrawlContext;
+import com.rocinante.scraping.crawlers.category.CategoryCrawler;
+import com.rocinante.scraping.crawlers.summary.SummaryCrawler;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;

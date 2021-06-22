@@ -41,16 +41,21 @@ public class SearchServiceQuery {
     }
 
     public Builder addUserAppliedBnplFilters(@Nullable List<String> userAppliedBnplFilters) {
-      this.userAppliedBnplFilters.addAll(userAppliedBnplFilters == null
-          ? Collections.emptyList()
-          : userAppliedBnplFilters.stream().map(UUID::fromString).collect(Collectors.toList()));
+      this.userAppliedBnplFilters.addAll(
+          userAppliedBnplFilters == null
+              ? Collections.emptyList()
+              : userAppliedBnplFilters.stream().map(UUID::fromString).collect(Collectors.toList()));
       return this;
     }
 
-    public Builder addUserAppliedMerchantFilters(@Nullable List<String> userAppliedMerchantFilters) {
-      this.userAppliedMerchantFilters.addAll(userAppliedMerchantFilters == null
-          ? Collections.emptyList()
-          : userAppliedMerchantFilters.stream().map(UUID::fromString).collect(Collectors.toList()));
+    public Builder addUserAppliedMerchantFilters(
+        @Nullable List<String> userAppliedMerchantFilters) {
+      this.userAppliedMerchantFilters.addAll(
+          userAppliedMerchantFilters == null
+              ? Collections.emptyList()
+              : userAppliedMerchantFilters.stream()
+                  .map(UUID::fromString)
+                  .collect(Collectors.toList()));
       return this;
     }
 

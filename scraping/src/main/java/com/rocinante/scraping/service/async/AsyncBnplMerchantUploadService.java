@@ -79,8 +79,8 @@ public class AsyncBnplMerchantUploadService {
     final String merchantCsvPath = "/merchants/" + bnplProvider.getName().toLowerCase() + ".csv";
     final List<MerchantCsvUploadDto> merchants =
         new CsvToBeanBuilder<MerchantCsvUploadDto>(
-                new BufferedReader(new InputStreamReader(
-                    getClass().getResourceAsStream(merchantCsvPath))))
+                new BufferedReader(
+                    new InputStreamReader(getClass().getResourceAsStream(merchantCsvPath))))
             .withType(MerchantCsvUploadDto.class)
             .build()
             .parse();

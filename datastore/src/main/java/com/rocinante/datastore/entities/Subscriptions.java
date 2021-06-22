@@ -14,9 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Slf4j
 public class Subscriptions {
-  @Id
-  private String email;
+  @Id private String email;
 
-  @Column
-  private boolean verified;
+  @Column private boolean verified;
 }

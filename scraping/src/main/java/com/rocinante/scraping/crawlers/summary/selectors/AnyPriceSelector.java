@@ -51,7 +51,8 @@ public class AnyPriceSelector implements NodeSelector {
             final String amount = result.group(2) != null ? result.group(2) : result.group(3);
             final MonetaryAmount monetaryAmount;
             try {
-               monetaryAmount = Monetary.getDefaultAmountFactory()
+              monetaryAmount =
+                  Monetary.getDefaultAmountFactory()
                       .setCurrency("USD") // TODO: Hardcoded for now
                       .setNumber(Double.parseDouble(amount.replace(",", "")))
                       .create();

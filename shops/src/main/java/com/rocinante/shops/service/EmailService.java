@@ -22,11 +22,8 @@ public class EmailService {
     this.sendGrid = new SendGrid(sendgridApiKey);
   }
 
-  public void sendEmail(String fromName,
-      String fromEmail,
-      String subjectStr,
-      String toStr,
-      String contentStr) {
+  public void sendEmail(
+      String fromName, String fromEmail, String subjectStr, String toStr, String contentStr) {
     final Email from = new Email(fromEmail, fromName);
     final Email to = new Email(toStr);
     final Content content = new Content("text/plain", contentStr);
@@ -39,11 +36,10 @@ public class EmailService {
       request.setBody(mail.build());
       final Response response = sendGrid.api(request);
       if (response.getStatusCode() == HttpStatus.ACCEPTED.value()) {
-        log.info("Email sent successfully from {} to {} with subject {}",
-            fromEmail, toStr, subjectStr);
+        log.info(
+            "Email sent successfully from {} to {} with subject {}", fromEmail, toStr, subjectStr);
       } else {
-        log.error("Email send failed from {} to {} with subject {}",
-            fromEmail, toStr, subjectStr);
+        log.error("Email send failed from {} to {} with subject {}", fromEmail, toStr, subjectStr);
       }
     } catch (IOException ex) {
       throw new RuntimeException(ex);
