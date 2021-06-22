@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="${lang}"
+      th:lang="${lang}"
+      th:with="lang=${#locale.language}" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="footwearCategories">
+  <a href="/category/shoes">Shoes</a>
+  <a href="/category/boots">Boots</a>
+  <a href="/category/sneakers">Sneakers</a>
+  <a href="/category/sandals">Sandals</a>
+  <a href="/category/heels">Heels</a>
+</div>

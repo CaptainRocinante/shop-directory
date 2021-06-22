@@ -172,6 +172,12 @@
       .categoriesContainer {
         display:none;
       }
+      .dropdown {
+        display:inline-block;
+        width:100%;
+        float:center;
+        text-align:left;
+      }
     }
 
     @media (max-width:600px) {
@@ -212,48 +218,20 @@
     <div class="categoriesContainer">
       <div class="dropdown">
         <button class="dropbtn">Clothing</button>
-        <div class="dropdown-content">
-          <a href="/category/tops">Tops</a>
-          <a href="/category/bottoms">Bottoms</a>
-          <a href="/category/shorts">Shorts</a>
-          <a href="/category/dresses">Dresses</a>
-          <a href="/category/jeans">Jeans</a>
-          <a href="/category/jackets">Jackets</a>
-          <a href="/category/socks">Socks</a>
-          <a href="/category/outwear">Outwear</a>
-          <a href="/category/sweaters">Sweaters</a>
-          <a href="/category/loungewear">Loungewear</a>
-          <a href="/category/skirts">Skirts</a>
-          <a href="/category/swim">Swimwear</a>
-          <a href="/category/shirts">Shirts</a>
-          <a href="/category/t-shirts">T-Shirts</a>
-          <a href="/category/jumpsuits">Jumpsuits</a>
-          <a href="/category/leggings">Leggings</a>
+        <div class="dropdown-content"
+             th:insert="fragments/clothingCategories :: clothingCategories">
         </div>
       </div>
       <div class="dropdown">
         <button class="dropbtn">Accessories</button>
-        <div class="dropdown-content">
-          <a href="/category/masks">Face Masks</a>
-          <a href="/category/hats">Hats</a>
-          <a href="/category/jewelry">Jewelry</a>
-          <a href="/category/sunglasses">Sunglasses</a>
-          <a href="/category/belts">Belts</a>
-          <a href="/category/beauty">Beauty</a>
-          <a href="/category/bags">Bags</a>
-          <a href="/category/hair">Hair</a>
-          <a href="/category/nails">Nails</a>
-          <a href="/category/lips">Lips</a>
+        <div class="dropdown-content"
+             th:insert="fragments/accessoryCategories :: accessoryCategories">
         </div>
       </div>
       <div class="dropdown">
         <button class="dropbtn">Footwear</button>
-        <div class="dropdown-content">
-          <a href="/category/shoes">Shoes</a>
-          <a href="/category/boots">Boots</a>
-          <a href="/category/sneakers">Sneakers</a>
-          <a href="/category/sandals">Sandals</a>
-          <a href="/category/heels">Heels</a>
+        <div class="dropdown-content"
+             th:insert="fragments/footwearCategories :: footwearCategories">
         </div>
       </div>
       <div class="dropdown">
@@ -271,10 +249,34 @@
 
     <div id="mySidenav" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <a href="#">About</a>
-      <a href="#">Services</a>
-      <a href="#">Clients</a>
-      <a href="#">Contact</a>
+      <div class="dropdown">
+        <button class="dropbtn">Clothing</button>
+        <div class="dropdown-content"
+             th:insert="fragments/clothingCategories :: clothingCategories">
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Accessories</button>
+        <div class="dropdown-content"
+             th:insert="fragments/accessoryCategories :: accessoryCategories">
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Footwear</button>
+        <div class="dropdown-content"
+             th:insert="fragments/footwearCategories :: footwearCategories">
+        </div>
+      </div>
+      <div class="dropdown">
+        <form>
+          <button class="dropbtn" formaction="/category/best-sellers">Best Sellers</button>
+        </form>
+      </div>
+      <div class="dropdown">
+        <form>
+          <button class="dropbtn" formaction="/category/sale">Sale</button>
+        </form>
+      </div>
     </div>
   </div>
 </div>
