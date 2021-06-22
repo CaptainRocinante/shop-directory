@@ -31,8 +31,6 @@ public class SearchController {
 
   private final SearchService searchService;
 
-  private final MerchantService merchantService;
-
   private SearchServiceQuery getDefaultSearchServiceQuery(String query,
       @Nullable List<String> bnplFiltersSelected,
       @Nullable List<String> merchantFiltersSelected) {
@@ -76,7 +74,6 @@ public class SearchController {
     }
     final SearchServiceQuery defaultSearchQuery = getDefaultSearchServiceQuery(query,
         bnplFiltersSelected, merchantFiltersSelected);
-
     final SearchServiceResults searchServiceResults = searchService.search(defaultSearchQuery,
         page - 1,
             SINGLE_PAGE_RESULT_COUNT);
@@ -84,26 +81,6 @@ public class SearchController {
         searchServiceResults.getCurrentPageResults().stream()
             .map(Product::toProductDto)
             .collect(Collectors.toList());
-
-    final List<BnplFilterDto> bnplFiltersSelectedList =
-        bnplFiltersSelected == null
-            ? Collections.emptyList()
-            : searchServiceResults
-                .getBnplFilterDtos()
-                .stream()
-                .filter(b -> bnplFiltersSelected.contains(b.getBnplUuid()))
-                .collect(Collectors.toList());
-    final List<MerchantFilterDto> merchantFiltersSelectedList =
-        merchantFiltersSelected == null
-            ? Collections.emptyList()
-            : merchantService
-                .getAllMerchantsForUuids(
-                    merchantFiltersSelected.stream()
-                        .map(UUID::fromString)
-                        .collect(Collectors.toList()))
-                .stream()
-                .map(Merchant::toMerchantFilterDto)
-                .collect(Collectors.toList());
 
     model.addAttribute("query", query);
     model.addAttribute("products", productDtoList);
@@ -118,11 +95,14 @@ public class SearchController {
                     Math.ceil(
                         (1.0d * searchServiceResults.getTotalResultsCount())
                             / SINGLE_PAGE_RESULT_COUNT))));
-    model.addAttribute("totalResultsCount", searchServiceResults.getTotalResultsCount());
+    model.addAttribute("totalResultsCount",
+        searchServiceResults.getTotalResultsCount());
     model.addAttribute("bnplFilters", searchServiceResults.getBnplFilterDtos());
-    model.addAttribute("bnplFiltersSelected", bnplFiltersSelectedList);
+    model.addAttribute("bnplFiltersSelected",
+        searchServiceResults.getBnplFiltersSelectedDtos());
     model.addAttribute("merchantFilters", searchServiceResults.getMerchantFilterDtos());
-    model.addAttribute("merchantFiltersSelected", merchantFiltersSelectedList);
+    model.addAttribute("merchantFiltersSelected",
+        searchServiceResults.getMerchantSelectedFilterDtos());
     return "searchResults";
   }
 }

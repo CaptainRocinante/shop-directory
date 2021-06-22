@@ -10,8 +10,8 @@ import lombok.Data;
 public class SearchServiceResults {
   private final long totalResultsCount;
   private final List<Product> currentPageResults;
-  // Following filters are only populated if the incoming search query did not have any filter
-  // selected
+  private final List<BnplFilterDto> bnplFiltersSelectedDtos;
   private final List<BnplFilterDto> bnplFilterDtos;
+  private final List<MerchantFilterDto> merchantSelectedFilterDtos;
   private final List<MerchantFilterDto> merchantFilterDtos;
 }

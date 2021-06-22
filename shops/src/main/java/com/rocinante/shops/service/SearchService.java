@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SearchService {
   private final EntityManager entityManager;
   private final BnplService bnplService;
+  private final MerchantService merchantService;
 
   @Transactional(readOnly = true)
   public SearchServiceResults search(
@@ -86,9 +87,26 @@ public class SearchService {
             .map(BnplProvider::toBnplFilterDto)
             .sorted((b1, b2) -> b1.getBnplName().compareToIgnoreCase(b2.getBnplName()))
             .collect(Collectors.toList());
+    final List<BnplFilterDto> bnplFiltersSelectedList =
+        searchServiceQuery.getUserAppliedBnplFilters() == null
+            ? Collections.emptyList()
+            : bnplFiltersList
+                .stream()
+                .filter(b -> searchServiceQuery
+                    .getUserAppliedBnplFilters().contains(UUID.fromString(b.getBnplUuid())))
+                .collect(Collectors.toList());
+    final List<MerchantFilterDto> merchantFiltersSelectedList =
+        searchServiceQuery.getUserAppliedMerchantFilters() == null
+            ? Collections.emptyList()
+            : merchantService
+                .getAllMerchantsForUuids(searchServiceQuery.getUserAppliedMerchantFilters())
+                .stream()
+                .map(Merchant::toMerchantFilterDto)
+                .collect(Collectors.toList());
     final List<MerchantFilterDto> merchantFiltersList;
-    if (searchServiceQuery.getUserAppliedMerchantFilters() == null ||
-        searchServiceQuery.getUserAppliedMerchantFilters().isEmpty()) {
+    if (merchantFiltersSelectedList.isEmpty()) {
+      // It takes an extra query to populate the merchant filters for the query, so don't do it if
+      // the user has already applied the filters
       merchantFiltersList =
           searchFetchTop200ForBrandsFilter(searchServiceQuery)
               .stream()
@@ -103,9 +121,10 @@ public class SearchService {
     } else {
       merchantFiltersList = Collections.emptyList();
     }
+
     return new SearchServiceResults(
         productSearchResult.total().hitCountLowerBound(), productSearchResult.hits(),
-        bnplFiltersList, merchantFiltersList);
+        bnplFiltersSelectedList, bnplFiltersList, merchantFiltersSelectedList, merchantFiltersList);
   }
 
   private List<Product> searchFetchTop200ForBrandsFilter(final SearchServiceQuery searchServiceQuery) {
