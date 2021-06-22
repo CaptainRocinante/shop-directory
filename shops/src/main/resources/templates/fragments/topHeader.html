@@ -66,10 +66,6 @@
       font-family: inherit; /* Important for vertical align on mobile phones */
       margin: 0; /* Important for vertical align on mobile phones */
     }
-    /* Add a grey background color to navbar links on hover */
-    .navbar a:hover, .dropdown:hover .dropbtn {
-      background-color: #ddd;
-    }
     /* Dropdown content (hidden by default) */
     .dropdown-content {
       display: none;
@@ -116,27 +112,6 @@
       overflow-x: hidden;
       transition: 0.5s;
       padding-top: 60px;
-    }
-
-    .sidenav a {
-      padding: 8px 8px 8px 32px;
-      text-decoration: none;
-      font-size: 25px;
-      color: black;
-      display: block;
-      transition: 0.3s;
-    }
-
-    .sidenav a:hover {
-      color: #ddd;
-    }
-
-    .sidenav .closebtn {
-      position: absolute;
-      top: 0;
-      right: 25px;
-      font-size: 36px;
-      margin-left: 50px;
     }
 
     @media (max-width:1100px) {
@@ -206,7 +181,7 @@
       <!-- Small Screen Menu Bar -->
       <div class="smallScreenMenuBar">
         <a href="javascript:void(0)" class="w3-button w3-padding-small" onclick="openNav()">
-          <i class="fa fa-bars"></i></a>
+          <i class="fa fa-bars w3-xlarge"></i></a>
       </div>
     </div>
 
@@ -248,7 +223,7 @@
     <hr>
 
     <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <i class="fa fa-remove w3-right w3-button w3-transparent w3-large" onclick="closeNav()"></i>
       <div class="dropdown">
         <button class="dropbtn">Clothing</button>
         <div class="dropdown-content"
