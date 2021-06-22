@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,7 +26,7 @@ public class SearchController {
 
   private final SearchService searchService;
 
-  private SearchServiceQuery getDefaultSearchServiceQuery(
+  private SearchServiceQuery createDefaultSearchServiceQuery(
       String query,
       @Nullable List<String> bnplFiltersSelected,
       @Nullable List<String> merchantFiltersSelected) {
@@ -41,9 +42,45 @@ public class SearchController {
         .build();
   }
 
+  private SearchServiceQuery createCategorySearchServiceQuery(
+      String query,
+      @Nullable List<String> bnplFiltersSelected,
+      @Nullable List<String> merchantFiltersSelected) {
+    return new SearchServiceQuery.Builder(query)
+        .addQueryParam(
+            new SingleFieldSearchQueryParam(SearchIndexedField.MERCHANT_CATEGORY, 1.0f, false))
+        .addUserAppliedBnplFilters(bnplFiltersSelected)
+        .addUserAppliedMerchantFilters(merchantFiltersSelected)
+        .build();
+  }
+
   private int getPageCountFromTotalResultCount(long totalResultCount) {
     return Math.max(1,
         Math.min(10, (int) Math.ceil((1.0d * totalResultCount) / SINGLE_PAGE_RESULT_COUNT)));
+  }
+
+  private void performSearchAndPopulateModel(
+      Model model,
+      SearchServiceQuery searchServiceQuery,
+      int pageNumber) {
+    final SearchServiceResults searchServiceResults =
+        searchService.search(searchServiceQuery,
+            pageNumber - 1,
+            SINGLE_PAGE_RESULT_COUNT);
+    final List<ProductDto> productDtoList =
+        searchServiceResults.getCurrentPageResults().stream()
+            .map(Product::toProductDto)
+            .collect(Collectors.toList());
+
+    model.addAttribute("query", searchServiceQuery.getQuery());
+    model.addAttribute("products", productDtoList);
+    model.addAttribute("page", pageNumber);
+    model.addAttribute("totalPageCount", getPageCountFromTotalResultCount(searchServiceResults.getTotalResultsCount()));
+    model.addAttribute("totalResultsCount", searchServiceResults.getTotalResultsCount());
+    model.addAttribute("bnplFilters", searchServiceResults.getBnplFilterDtos());
+    model.addAttribute("bnplFiltersSelected", searchServiceResults.getBnplFiltersSelectedDtos());
+    model.addAttribute("merchantFilters", searchServiceResults.getMerchantFilterDtos());
+    model.addAttribute("merchantFiltersSelected", searchServiceResults.getMerchantSelectedFilterDtos());
   }
 
   @RequestMapping("/search")
@@ -64,23 +101,33 @@ public class SearchController {
       page = 1;
     }
     final SearchServiceQuery defaultSearchQuery =
-        getDefaultSearchServiceQuery(query, bnplFiltersSelected, merchantFiltersSelected);
-    final SearchServiceResults searchServiceResults =
-        searchService.search(defaultSearchQuery, page - 1, SINGLE_PAGE_RESULT_COUNT);
-    final List<ProductDto> productDtoList =
-        searchServiceResults.getCurrentPageResults().stream()
-            .map(Product::toProductDto)
-            .collect(Collectors.toList());
+        createDefaultSearchServiceQuery(query, bnplFiltersSelected, merchantFiltersSelected);
+    performSearchAndPopulateModel(model, defaultSearchQuery, page);
+    return "searchResults";
+  }
 
-    model.addAttribute("query", query);
-    model.addAttribute("products", productDtoList);
-    model.addAttribute("page", page);
-    model.addAttribute("totalPageCount", getPageCountFromTotalResultCount(searchServiceResults.getTotalResultsCount()));
-    model.addAttribute("totalResultsCount", searchServiceResults.getTotalResultsCount());
-    model.addAttribute("bnplFilters", searchServiceResults.getBnplFilterDtos());
-    model.addAttribute("bnplFiltersSelected", searchServiceResults.getBnplFiltersSelectedDtos());
-    model.addAttribute("merchantFilters", searchServiceResults.getMerchantFilterDtos());
-    model.addAttribute("merchantFiltersSelected", searchServiceResults.getMerchantSelectedFilterDtos());
+  @RequestMapping("/category/{categoryName}")
+  public String categorySearch(
+      Model model,
+      @PathVariable String categoryName,
+      @RequestParam(required = false) Integer page,
+      @RequestParam(required = false) List<String> bnplFiltersSelected,
+      @RequestParam(required = false) List<String> merchantFiltersSelected) {
+    log.info(
+        "Performing Category query: {} for page: {} with bnplFilters: {} with merchantFilters: {}",
+        categoryName,
+        page,
+        bnplFiltersSelected,
+        merchantFiltersSelected);
+    if (page == null) {
+      page = 1;
+    }
+    final SearchServiceQuery categorySearchQuery =
+        createCategorySearchServiceQuery(categoryName, bnplFiltersSelected,
+            merchantFiltersSelected);
+    performSearchAndPopulateModel(model, categorySearchQuery, page);
+    // Don't need to populate search bar for category results page
+    model.addAttribute("query", "");
     return "searchResults";
   }
 }
