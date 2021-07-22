@@ -1,5 +1,7 @@
 # shop-directory
 
+The codebase powering https://www.paylatergoods.com/.
+
 Two main applications in the project:
 
 # shops
